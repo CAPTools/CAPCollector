@@ -6,6 +6,7 @@
 # 
 #     See LICENSE.txt for license terms (Modified BSD) 
 #     
+#    REQUIRED PYTHON PACKAGES IN ENVIRONMENT:  pytz, ISO8601, lxml
  
 import cgi
 from config import Config
@@ -35,14 +36,19 @@ authentic = Authenticator.isAuthentic( uid,password )
 # if it authenticates, validate as well
 if (authentic):
     # parse CAP
-    xml_tree = etree.fromstring( xml_string )
-    # and validate against the XML Schema
-    with open("cap1.2.xsd","r") as schema_file:
-        schema_string = schema_file.read()    
-    xml_schema = etree.XMLSchema( etree.fromstring( schema_string ) )
-    valid = xml_schema.validate( xml_tree )
-    log = xml_schema.error_log
-    error = str( log.last_error )
+    try:
+        xml_tree = etree.fromstring( xml_string )
+        # and validate against the XML Schema
+        with open("cap1.2.xsd","r") as schema_file:
+            schema_string = schema_file.read()    
+        xml_schema = etree.XMLSchema( etree.fromstring( schema_string ) )
+        valid = xml_schema.validate( xml_tree )
+        log = xml_schema.error_log
+        error = str( log.last_error )
+    except:
+        valid = False
+        log = ""
+        error = "Validation Error"
     
 # otherwise skip validation
 else:
