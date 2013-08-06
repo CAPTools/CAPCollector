@@ -16,13 +16,13 @@ import sys
 import uuid
 
 # load configuration variables
-config = Config();
-sender_domain = config.sender_domain
-path_to_data = config.path_to_data 
-web_path_to_data = config.web_path_to_data
-expired_file_path = config.expired_file_path
-cap_ns = config.cap_ns
-version = config.version
+config_obj = Config();
+sender_domain = config_obj.sender_domain
+path_to_data = config_obj.path_to_data 
+web_path_to_data = config_obj.web_path_to_data
+expired_file_path = config_obj.expired_file_path
+cap_ns = config_obj.cap_ns
+version = config_obj.version
     
 # Extract the XML from the HTTP POST
 form = cgi.FieldStorage()
@@ -80,7 +80,8 @@ if (valid and authentic):
     signed_xml_string = Signer.signCAP( uid, releasable_xml_string )
     
     # store CAP XML
-    filer = Filer(path_to_data, web_path_to_data, expired_file_path, version)
+    #filer = Filer(path_to_data, web_path_to_data, expired_file_path, version)
+    filer = Filer(config_obj)
     filer.fileCAP( msg_id, signed_xml_string )
     
     # regenerate the ATOM index

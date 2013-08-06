@@ -35,11 +35,11 @@ class Signer():
     
 class Filer():
     
-    def __init__(self, path, web_path, expired_file_path, version):
-        self.path = path
-        self.web_path = web_path
-        self.expired_file_path = expired_file_path
-        self.version = version
+    def __init__(self, config):
+        self.path = config.path_to_data
+        self.web_path = config.web_path_to_data
+        self.expired_file_path = config.expired_file_path
+        self.version = config.version
     
     def fileCAP(self, id, xml):
         f = self.path + "/" + id + ".xml"
@@ -156,9 +156,12 @@ class Forwarder():
     def forwardCAP(path, id):
         pass
         # forward as appropriate
+   
         
-# for testing only
+# for testing only, force a manual reindex of messages
 if __name__ == '__main__':
-    filer = Filer( "/var/www/incident.com/secure_html/map/data", "https://www.incident.com/map/data", "/var/www/incident.com/secure_html/map/expired" )
+    from config import Config
+    config = Config()
+    filer = Filer( config )
     filer.reindex()
     
