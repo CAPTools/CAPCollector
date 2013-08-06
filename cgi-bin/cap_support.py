@@ -35,10 +35,11 @@ class Signer():
     
 class Filer():
     
-    def __init__(self, path, web_path, expired_file_path):
+    def __init__(self, path, web_path, expired_file_path, version):
         self.path = path
         self.web_path = web_path
         self.expired_file_path = expired_file_path
+        self.version = version
     
     def fileCAP(self, id, xml):
         f = self.path + "/" + id + ".xml"
@@ -57,7 +58,7 @@ class Filer():
         atom = atom + '<link href="' + self.web_path + '/index.atom" rel="self" />\n'
         atom = atom + '<id>' + self.web_path+ '</id>\n'
         atom = atom + '<updated>' + timestamp + '</updated>\n'
-        atom = atom + '<generator>CAPCollector v1.0</generator>\n'
+        atom = atom + '<generator>' + self.version + '</generator>\n'
  
         # get a directory list
         filelist = os.listdir(self.path)

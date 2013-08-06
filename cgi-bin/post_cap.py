@@ -8,16 +8,20 @@
 #     
  
 import cgi
+from config import Config
 from cap_support import Authenticator, Signer, Filer, Forwarder
 from lxml import etree
 import sys
 import uuid
 
-sender_domain = "incident.com"
-path_to_data = "/var/www/incident.com/secure_html/map/data"
-web_path_to_data = "https://www.incident.com/map/data"
-expired_file_path = "/var/www/incident.com/secure_html/map/data"
-cap_ns = "urn:oasis:names:tc:emergency:cap:1.2"
+# load configuration variables
+config = Config();
+sender_domain = config.sender_domain
+path_to_data = config.path_to_data 
+web_path_to_data = config.web_path_to_data
+expired_file_path = config.expired_file_path
+cap_ns = config.cap_ns
+version = config.version
     
 # Extract the XML from the HTTP POST
 form = cgi.FieldStorage()
@@ -70,7 +74,7 @@ if (valid and authentic):
     signed_xml_string = Signer.signCAP( uid, releasable_xml_string )
     
     # store CAP XML
-    filer = Filer(path_to_data, web_path_to_data, expired_file_path)
+    filer = Filer(path_to_data, web_path_to_data, expired_file_path, version)
     filer.fileCAP( msg_id, signed_xml_string )
     
     # regenerate the ATOM index
