@@ -1,5 +1,6 @@
+#! /usr/bin/python
 #     post_cap.py -- python CGI for posting CAP XML (as POST) to CAPCollector
-#     version 0.9 - 6 August 2013
+#     version 0.9 - 16 August 2013
 #     
 #     Copyright (c) 2013, Carnegie Mellon University
 #     All rights reserved.
@@ -10,10 +11,12 @@
  
 import cgi
 from config import Config
-from cap_support import Authenticator, Signer, Filer, Forwarder
-from lxml import etree
 import sys
 import uuid
+from lxml import etree
+
+from cap_support import Authenticator, Signer, Filer, Forwarder
+
 
 # load configuration variables
 config_obj = Config();

@@ -1,5 +1,5 @@
 #     cap_support.py -- python support objects for CAPCollector (post_cap.py)
-#     version 0.9 - 6 August 2013
+#     version 0.9 - 16 August 2013
 #     
 #     Copyright (c) 2013, Carnegie Mellon University
 #     All rights reserved.
@@ -11,10 +11,9 @@
 from datetime import datetime, timedelta
 import pytz
 import iso8601
-
+from lxml import etree
 import uuid
 import os
-from lxml import etree
 import dateutil.parser
 
 cap_ns = "urn:oasis:names:tc:emergency:cap:1.2"
