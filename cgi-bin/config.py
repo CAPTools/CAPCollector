@@ -11,7 +11,7 @@
 class Config():
     
     def __init__(self):
-        
+         
         self.sender_domain = "incident.com"
         
         self.web_path_to_data = "http://localhost/cap/data"
