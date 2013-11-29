@@ -1,5 +1,5 @@
 #     cap_support.py -- python support objects for CAPCollector (post_cap.py)
-#     version 0.9 - 16 August 2013
+#     version 0.9.2 - 29 November 2013
 #     
 #     Copyright (c) 2013, Carnegie Mellon University
 #     All rights reserved.
@@ -15,6 +15,7 @@ from lxml import etree
 import uuid
 import os
 import dateutil.parser
+import pam
 
 cap_ns = "urn:oasis:names:tc:emergency:cap:1.2"
 
@@ -22,7 +23,7 @@ class Authenticator():
     
     @staticmethod
     def isAuthentic(uid, password ):
-        return True # forced for now
+        return pam.authenticate(uid,password)
  
     
 class Signer():
@@ -48,7 +49,6 @@ class Filer():
     def reindex(self):  # rebuild ATOM index (may also be called periodically, e.g. from cron)
         
         af = self.path + '/index.atom'
-        
         # build ATOM header
         timestamp = datetime.utcnow().isoformat().split(".")[0] + "+00:00"
         atom = '<?xml version = "1.0" encoding = "UTF-8"?>\n'

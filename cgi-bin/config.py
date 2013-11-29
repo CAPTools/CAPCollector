@@ -1,5 +1,5 @@
 #     config.py -- configuration class for CAPCollector
-#     version 0.9 - 6 August 2013
+#     version 0.9.2 - 29 Nov 2013
 #     
 #     Copyright (c) 2013, Carnegie Mellon University
 #     All rights reserved.
@@ -14,7 +14,7 @@ class Config():
         
         self.sender_domain = "incident.com"
         
-        self.web_path_to_data = "http://localhost/~acb/cap/data"
+        self.web_path_to_data = "http://localhost/cap/data"
         
         self.path_to_data = "/Users/acb/git/CAPTools/CAPCreator/data"
         
