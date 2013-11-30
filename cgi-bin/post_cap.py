@@ -1,6 +1,6 @@
 #! /usr/bin/python
 #     post_cap.py -- python CGI for posting CAP XML (as POST) to CAPCollector
-#     version 0.9 - 16 August 2013
+#     version 0.9.2 - 16 August 2013
 #     
 #     Copyright (c) 2013, Carnegie Mellon University
 #     All rights reserved.
@@ -75,12 +75,12 @@ if (valid and authentic):
     find_sender = etree.XPath( "//p:sender", namespaces={ 'p': cap_ns } )
     sender = find_sender( xml_tree )[0]
     sender.text = uid + "@" + sender_domain
-  
-    # re-serialize
-    releasable_xml_string = etree.tostring( xml_tree, pretty_print=True )
-    
+      
     # sign the XML
     signed_xml_string = Signer.signCAP( uid, releasable_xml_string )
+    
+    # re-serialize
+    releasable_xml_string = etree.tostring( xml_tree, pretty_print=True )
     
     # store CAP XML
     #filer = Filer(path_to_data, web_path_to_data, expired_file_path, version)

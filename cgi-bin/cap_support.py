@@ -6,7 +6,10 @@
 # 
 #    See LICENSE.txt for license terms (Modified BSD) 
 #
-#     
+#     REQUIRES PYTHON MODULES pytz, iso8601, lxml, pam, xmldsig
+#     (pam module is from the web2py framework: https://code.google.com/p/web2py/source/browse/gluon/contrib/pam.py)
+#     (xmldsig has some installation peculiarities and dependencies, see https://github.com/AntagonistHQ/xmldsig)
+#     (xmldsig requires libxml2, libsxlt and libxmlsec)
 
 from datetime import datetime, timedelta
 import pytz
