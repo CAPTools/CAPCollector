@@ -66,7 +66,7 @@ print '{ "authenticated": ' + str( authentic ).lower() + ',"valid": ' + str( val
     # force lowercase above to conform with JSON usage for boolean
  
 # and now... if valid and authenticated
-if (valid and authentic):
+if (valid and authentic): 
     
     # assign <identifier> and <sender> values
     find_identifier = etree.XPath( "//p:identifier", namespaces={ 'p': cap_ns } )
