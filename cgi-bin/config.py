@@ -30,4 +30,4 @@ class Config():
     
         self.cap_ns = "urn:oasis:names:tc:emergency:cap:1.2"
         
-        self.sig_ns = "http://www.w3.org/2000/09/xmldsig#"
+        self.cert_ns = "http://www.w3.org/2000/09/xmldsig#"

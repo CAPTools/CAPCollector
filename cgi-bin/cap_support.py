@@ -25,6 +25,8 @@ import dateutil.parser
 import xmlsec
 import copy
 
+import sys
+
 class Signer():
     
     def __init__(self, config, uid):
@@ -32,6 +34,7 @@ class Signer():
         self.version = config.version
         self.key_path = self.creds_path + "/" + uid + ".key"
         self.cert_path = self.creds_path + "/" + uid + ".cert"
+        self.config = config
         self.uid = uid
         
     # try to sign the message xml etree with the identified user's key and cert, else return unsigned etree
@@ -42,14 +45,9 @@ class Signer():
             xmlsec.sign(signed_xml_tree, self.key_path, self.cert_path)
             return signed_xml_tree
         except:
-            return xml_tree
+            return xml_tree   
         
-    def verifyCAP(self, xml_string):
-        xml_tree = etree.fromstring( xml_string )
-        return xmlsec.verify(xml_tree, self.cert_path)
     
-        
-         
     
 class Filer():
     
