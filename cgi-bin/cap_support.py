@@ -1,5 +1,5 @@
 #    cap_support.py -- python support objects for CAPCollector (post_cap.py)
-#    version 0.9.2 - 1 December 2013
+#    version 0.9.2 - 2 December 2013
 #     
 #    Copyright (c) 2013, Carnegie Mellon University
 #    All rights reserved.
@@ -56,6 +56,7 @@ class Filer():
         self.web_path = config.web_path_to_data
         self.expired_file_path = config.expired_file_path
         self.version = config.version
+        self.config = config
     
     def fileCAP(self, id, xml):
         f = self.path + "/" + id + ".xml"
@@ -161,7 +162,7 @@ class Filer():
     # use lxml.XPath to extract elements from CAP XML tree
     def get_cap_element(self, element_name, xml_tree ):
         element = "//p:" + element_name
-        finder = etree.XPath( element, namespaces={ 'p': config.cap_ns } )
+        finder = etree.XPath( element, namespaces={ 'p': self.config.cap_ns } )
         return finder( xml_tree )
         
         
