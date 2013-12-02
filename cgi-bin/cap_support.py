@@ -1,15 +1,19 @@
-#     cap_support.py -- python support objects for CAPCollector (post_cap.py)
-#     version 0.9.2 - 29 November 2013
+#    cap_support.py -- python support objects for CAPCollector (post_cap.py)
+#    version 0.9.2 - 1 December 2013
 #     
-#     Copyright (c) 2013, Carnegie Mellon University
-#     All rights reserved.
+#    Copyright (c) 2013, Carnegie Mellon University
+#    All rights reserved.
 # 
 #    See LICENSE.txt for license terms (Modified BSD) 
 #
-#     REQUIRES PYTHON MODULES pytz, iso8601, lxml, pam, xmldsig
-#     (pam module is from the web2py framework: https://code.google.com/p/web2py/source/browse/gluon/contrib/pam.py)
-#     (xmldsig has some installation peculiarities and dependencies, see https://github.com/AntagonistHQ/xmldsig)
-#     (xmldsig requires libxml2, libsxlt and libxmlsec)
+#    REQUIRES PYTHON MODULES pytz, iso8601, lxml, pyxmlsecurity (xmlsec), copy
+#
+#    COMMAND-LINE ENTRIES FOR CREATING INDIVIDUAL USERS' PRIVATE KEYS AND CERTIFICATES USING OPENSSL:
+#    1) openssl genrsa -out [username].key 1024
+#    2) openssl req -new -x509 -key [username].key -out [username].cert
+#    The .key and .cert files must be stored in the creds_file_path per the config module
+#    and must be readable by the server.  The .key file is sensitive and should be kept strictly private
+
 
 from datetime import datetime, timedelta 
 import pytz
@@ -18,23 +22,34 @@ from lxml import etree
 import uuid
 import os
 import dateutil.parser
-import pam
+import xmlsec
+import copy
 
-cap_ns = "urn:oasis:names:tc:emergency:cap:1.2"
-
-class Authenticator():
-    
-    @staticmethod
-    def isAuthentic(uid, password ):
-        return pam.authenticate(uid,password)
- 
-    
 class Signer():
     
-    @staticmethod
-    def signCAP(uid, xml_string):
-        return xml_string  # stub for now
-
+    def __init__(self, config, uid):
+        self.creds_path = config.creds_file_path
+        self.version = config.version
+        self.key_path = self.creds_path + "/" + uid + ".key"
+        self.cert_path = self.creds_path + "/" + uid + ".cert"
+        self.uid = uid
+        
+    # try to sign the message xml etree with the identified user's key and cert, else return unsigned etree
+    def signCAP(self, xml_tree):       
+        try:
+            signed_xml_tree = copy.deepcopy(xml_tree)
+            xmlsec.add_enveloped_signature(signed_xml_tree,pos=-1)
+            xmlsec.sign(signed_xml_tree, self.key_path, self.cert_path)
+            return signed_xml_tree
+        except:
+            return xml_tree
+        
+    def verifyCAP(self, xml_string):
+        xml_tree = etree.fromstring( xml_string )
+        return xmlsec.verify(xml_tree, self.cert_path)
+    
+        
+         
     
 class Filer():
     
@@ -148,7 +163,7 @@ class Filer():
     # use lxml.XPath to extract elements from CAP XML tree
     def get_cap_element(self, element_name, xml_tree ):
         element = "//p:" + element_name
-        finder = etree.XPath( element, namespaces={ 'p': cap_ns } )
+        finder = etree.XPath( element, namespaces={ 'p': config.cap_ns } )
         return finder( xml_tree )
         
         

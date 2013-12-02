@@ -1,5 +1,5 @@
 #     config.py -- configuration class for CAPCollector
-#     version 0.9.2 - 29 Nov 2013
+#     version 0.9.2 - 1 December 2013
 #     
 #     Copyright (c) 2013, Carnegie Mellon University
 #     All rights reserved.
@@ -20,7 +20,14 @@ class Config():
         
         self.expired_file_path = "/Users/acb/git/CAPTools/CAPCreator/inactive"
         
+        self.creds_file_path = "/Users/acb/git/CAPTools/CAPCreator/creds"
+        
         self.cap_ns = "urn:oasis:names:tc:emergency:cap:1.2"
         
         self.version = "CAPCollector v0.9"
+        
+        self.cap_schema = "cap1.2.xsd"
     
+        self.cap_ns = "urn:oasis:names:tc:emergency:cap:1.2"
+        
+        self.sig_ns = "http://www.w3.org/2000/09/xmldsig#"

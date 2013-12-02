@@ -1,21 +1,27 @@
 #! /usr/bin/python
 #     post_cap.py -- python CGI for posting CAP XML (as POST) to CAPCollector
-#     version 0.9.2 - 16 August 2013
+#     version 0.9.2 - 1 December 2013
 #     
 #     Copyright (c) 2013, Carnegie Mellon University
 #     All rights reserved.
 # 
 #     See LICENSE.txt for license terms (Modified BSD) 
 #     
-#    REQUIRED PYTHON PACKAGES IN ENVIRONMENT:  pytz, ISO8601, lxml
+#    REQUIRED PYTHON PACKAGES IN ENVIRONMENT:  pytz, ISO8601, lxml, pam, xml.dom.minidom
+#     (pam module is from the web2py framework: https://code.google.com/p/web2py/source/browse/gluon/contrib/pam.py)
  
 import cgi
 from config import Config
 import sys
 import uuid
 from lxml import etree
+import pam
+import xml.dom.minidom
+import re
 
-from cap_support import Authenticator, Signer, Filer, Forwarder
+import sys
+
+from cap_support import Signer, Filer, Forwarder
 
 
 # load configuration variables
@@ -31,18 +37,20 @@ version = config_obj.version
 form = cgi.FieldStorage()
 uid = form.getvalue('uid')
 password = form.getvalue('password')
-xml_string = form.getvalue('xml')
+xml_string = form.getvalue('xml').replace('>\n',">")
 
 # authenticate submission
-authentic = Authenticator.isAuthentic( uid,password )
+authentic = pam.authenticate(uid,password)
 
-# if it authenticates, validate as well
+# if it authenticates, validate it against the CAP schema
 if (authentic):
-    # parse CAP
     try:
+        # clean up the XML format a bit
+        xml_string = re.sub("> +<", "><", xml_string)
+        xml_string = xml.dom.minidom.parseString(xml_string).toprettyxml()
+        # now parse into etree and validate
         xml_tree = etree.fromstring( xml_string )
-        # and validate against the XML Schema
-        with open("cap1.2.xsd","r") as schema_file:
+        with open(config_obj.cap_schema,"r") as schema_file:
             schema_string = schema_file.read()    
         xml_schema = etree.XMLSchema( etree.fromstring( schema_string ) )
         valid = xml_schema.validate( xml_tree )
@@ -51,14 +59,13 @@ if (authentic):
     except:
         valid = False
         log = ""
-        error = "Validation Error"
-    
+        error = "Validation Error"  
 # otherwise skip validation
 else:
     valid = False
     error = "Authentication Failure"
 
-# and either way, assign a the message a UUID and report the result
+# and either way, assign a the message a UUID and report the result to the client
 msg_id = str( uuid.uuid4() ) 
 print "Content-type: text/plain;charset=utf-8"
 print 
@@ -76,14 +83,14 @@ if (valid and authentic):
     sender = find_sender( xml_tree )[0]
     sender.text = uid + "@" + sender_domain
       
-    # sign the XML
-    signed_xml_string = Signer.signCAP( uid, releasable_xml_string )
+    # sign the XML tree
+    signer = Signer(config_obj, uid);
+    xml_tree = signer.signCAP( xml_tree )
     
-    # re-serialize
-    releasable_xml_string = etree.tostring( xml_tree, pretty_print=True )
-    
-    # store CAP XML
-    #filer = Filer(path_to_data, web_path_to_data, expired_file_path, version)
+    # re-serialize as string
+    signed_xml_string = etree.tostring( xml_tree, pretty_print=False )
+       
+    # store CAP XML string
     filer = Filer(config_obj)
     filer.fileCAP( msg_id, signed_xml_string )
     
