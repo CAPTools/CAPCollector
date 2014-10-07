@@ -1,0 +1,40 @@
+{# Author: arcadiy@google.com (Arkadii Yakovets) #}
+
+{% load i18n %}
+
+<div data-role="footer" data-id="cc_nav" data-position="fixed">
+  <div data-role="navbar">
+    <ul>
+      <li>
+        <a href="#current" data-prefetch="true" data-transition="none"
+          {% if tab == 'current' %}class="ui-btn-active ui-state-persist"{% endif %}>
+          {% trans "Current" %}
+        </a>
+      </li>
+      <li>
+        <a href="#alert" data-prefetch="true" data-transition="none"
+          {% if tab == 'alert' %}class="ui-btn-active ui-state-persist"{% endif %}>
+          {% trans "New" %}
+        </a>
+      </li>
+      <li>
+        <a href="#info" data-prefetch="true" data-transition="none"
+          {% if tab == 'info' %}class="ui-btn-active ui-state-persist"{% endif %}>
+          {% trans "Message" %}
+        </a>
+      </li>
+      <li>
+        <a href="#area" data-prefetch="true" data-transition="none"
+          {% if tab == 'area' %}class="ui-btn-active ui-state-persist"{% endif %}>
+          {% trans "Area" %}
+        </a>
+      </li>
+      <li>
+        <a href="#release" data-prefetch="true" data-transition="none"
+          {% if tab == 'release' %}class="ui-btn-active ui-state-persist"{% endif %}>
+          {% trans "Release" %}
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>

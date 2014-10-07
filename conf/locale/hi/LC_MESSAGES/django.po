@@ -1,0 +1,441 @@
+# Hindi language string file for the CAP Collector application.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-08-07 18:13+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: CAPCollector/settings.py:94
+msgid "English"
+msgstr ""
+
+#: CAPCollector/settings.py:95
+msgid "हिंदी"
+msgstr ""
+
+#: CAPCollector/settings.py:96
+msgid "português"
+msgstr ""
+
+#: templates/index.html:42
+msgid "Current Alerts"
+msgstr ""
+
+#: templates/index.html:109
+msgid "New Alert"
+msgstr ""
+
+#: templates/index.html:127
+msgid "Message Template (Optional)"
+msgstr ""
+
+#: templates/index.html:129
+msgid "None"
+msgstr ""
+
+#: templates/index.html:133
+msgid "Set Type of Message"
+msgstr ""
+
+#: templates/index.html:137
+msgid "Actual"
+msgstr ""
+
+#: templates/index.html:138
+msgid "Exercise"
+msgstr ""
+
+#: templates/index.html:139
+msgid "Test"
+msgstr ""
+
+#: templates/index.html:140
+msgid "Draft"
+msgstr ""
+
+#: templates/index.html:142
+msgid "Type"
+msgstr ""
+
+#: templates/index.html:144
+msgid "Alert"
+msgstr ""
+
+#: templates/index.html:145
+msgid "Update"
+msgstr ""
+
+#: templates/index.html:146
+msgid "Cancel"
+msgstr ""
+
+#: templates/index.html:148
+msgid "Scope"
+msgstr ""
+
+#: templates/index.html:150
+msgid "Public"
+msgstr ""
+
+#: templates/index.html:151
+msgid "Restricted"
+msgstr ""
+
+#: templates/index.html:152
+msgid "Private"
+msgstr ""
+
+#: templates/index.html:158
+msgid "Set Hazard Type and Recommended Protective Action"
+msgstr ""
+
+#: templates/index.html:160
+msgid "Set Hazard Type"
+msgstr ""
+
+#: templates/index.html:162
+msgid "--Hazard Class--"
+msgstr ""
+
+#: templates/index.html:163
+msgid "Geophysical"
+msgstr ""
+
+#: templates/index.html:164
+msgid "Weather"
+msgstr ""
+
+#: templates/index.html:165
+msgid "Public Safety"
+msgstr ""
+
+#: templates/index.html:166
+msgid "Security"
+msgstr ""
+
+#: templates/index.html:167
+msgid "Rescue"
+msgstr ""
+
+#: templates/index.html:168
+msgid "Fire"
+msgstr ""
+
+#: templates/index.html:169
+msgid "Health"
+msgstr ""
+
+#: templates/index.html:170
+msgid "Environmental"
+msgstr ""
+
+#: templates/index.html:171
+msgid "Transportation"
+msgstr ""
+
+#: templates/index.html:172
+msgid "Infrastructure/Utilities"
+msgstr ""
+
+#: templates/index.html:173
+msgid "Weapon of Mass Destruction"
+msgstr ""
+
+#: templates/index.html:174
+msgid "Not Otherwise Categorized"
+msgstr ""
+
+#: templates/index.html:176
+msgid "Response Type"
+msgstr ""
+
+#: templates/index.html:178
+msgid "--Recommended Action--"
+msgstr ""
+
+#: templates/index.html:179
+msgid "Take Shelter"
+msgstr ""
+
+#: templates/index.html:180
+msgid "Evacuate"
+msgstr ""
+
+#: templates/index.html:181
+msgid "Make Preparations"
+msgstr ""
+
+#: templates/index.html:182
+msgid "Execute Pre-Planned Action"
+msgstr ""
+
+#: templates/index.html:183
+msgid "Avoid the Area"
+msgstr ""
+
+#: templates/index.html:184
+msgid "Monitor Conditions"
+msgstr ""
+
+#: templates/index.html:185
+msgid "Resume Normal Activities"
+msgstr ""
+
+#: templates/index.html:186
+msgid "Take No Action"
+msgstr ""
+
+#: templates/index.html:187
+msgid "Evaluate Situation [not for Public alerts]"
+msgstr ""
+
+#: templates/index.html:193
+msgid "Set Message Priority"
+msgstr ""
+
+#: templates/index.html:195
+msgid "Urgency"
+msgstr ""
+
+#: templates/index.html:197
+msgid "-Urgency-"
+msgstr ""
+
+#: templates/index.html:198
+msgid "Immediate"
+msgstr ""
+
+#: templates/index.html:199
+msgid "Expected"
+msgstr ""
+
+#: templates/index.html:200
+msgid "Future"
+msgstr ""
+
+#: templates/index.html:201
+msgid "Already Occurred"
+msgstr ""
+
+#: templates/index.html:202 templates/index.html.py:211
+#: templates/index.html:220
+msgid "Unknown"
+msgstr ""
+
+#: templates/index.html:204
+msgid "Severity"
+msgstr ""
+
+#: templates/index.html:206
+msgid "-Severity-"
+msgstr ""
+
+#: templates/index.html:207
+msgid "Extreme"
+msgstr ""
+
+#: templates/index.html:208
+msgid "Severe"
+msgstr ""
+
+#: templates/index.html:209
+msgid "Moderate"
+msgstr ""
+
+#: templates/index.html:210
+msgid "Minor"
+msgstr ""
+
+#: templates/index.html:213
+msgid "Certainty"
+msgstr ""
+
+#: templates/index.html:215
+msgid "-Certainty-"
+msgstr ""
+
+#: templates/index.html:216
+msgid "Observed Event"
+msgstr ""
+
+#: templates/index.html:217
+msgid "Likely"
+msgstr ""
+
+#: templates/index.html:218
+msgid "Possible"
+msgstr ""
+
+#: templates/index.html:219
+msgid "Unlikely"
+msgstr ""
+
+#: templates/index.html:226
+msgid "Set Alert Expiration"
+msgstr ""
+
+#: templates/index.html:228
+msgid "Time to Expiration"
+msgstr ""
+
+#: templates/index.html:230
+msgid "- Effective Period (from now) -"
+msgstr ""
+
+#: templates/index.html:231
+msgid "15 Minutes"
+msgstr ""
+
+#: templates/index.html:232
+msgid "30 Minutes"
+msgstr ""
+
+#: templates/index.html:233
+msgid "45 Minutes"
+msgstr ""
+
+#: templates/index.html:234
+msgid "1 Hour"
+msgstr ""
+
+#: templates/index.html:235
+msgid "90 Minutes"
+msgstr ""
+
+#: templates/index.html:236
+msgid "2 Hours"
+msgstr ""
+
+#: templates/index.html:237
+msgid "3 Hours"
+msgstr ""
+
+#: templates/index.html:238
+msgid "4 Hours"
+msgstr ""
+
+#: templates/index.html:239
+msgid "5 Hours"
+msgstr ""
+
+#: templates/index.html:240
+msgid "6 Hours"
+msgstr ""
+
+#: templates/index.html:249
+msgid "NEXT: Add Alert Details"
+msgstr ""
+
+#: templates/index.html:257 templates/index.html.py:330
+#: templates/index.html:386 templates/index.html.py:424
+msgid "Current"
+msgstr ""
+
+#: templates/index.html:258 templates/index.html.py:331
+#: templates/index.html:387 templates/index.html.py:425
+msgid "New"
+msgstr ""
+
+#: templates/index.html:259 templates/index.html.py:332
+#: templates/index.html:388 templates/index.html.py:426
+msgid "Message"
+msgstr ""
+
+#: templates/index.html:260 templates/index.html.py:333
+#: templates/index.html:389 templates/index.html.py:427
+msgid "Area"
+msgstr ""
+
+#: templates/index.html:261 templates/index.html.py:334
+#: templates/index.html:390 templates/index.html.py:428
+msgid "Release"
+msgstr ""
+
+#: templates/index.html:273
+msgid "Alert Details"
+msgstr ""
+
+#: templates/index.html:280
+msgid "Who is Issuing This Alert"
+msgstr ""
+
+#: templates/index.html:285
+msgid "Short-Text Headline (REQUIRED)"
+msgstr ""
+
+#: templates/index.html:286
+msgid "Required - 140 characters maximum"
+msgstr ""
+
+#: templates/index.html:295
+msgid "What Should Affected People Do"
+msgstr ""
+
+#: templates/index.html:300
+msgid "Who is Media Contact"
+msgstr ""
+
+#: templates/index.html:323
+msgid "NEXT: Target Area"
+msgstr ""
+
+#: templates/index.html:346
+msgid "Alert Area"
+msgstr ""
+
+#: templates/index.html:352
+msgid "Select Area Template (Optional)"
+msgstr ""
+
+#: templates/index.html:355
+msgid "Describe the Alert Area (REQUIRED)"
+msgstr ""
+
+#: templates/index.html:366
+msgid "Drag"
+msgstr ""
+
+#: templates/index.html:368
+msgid "Circle"
+msgstr ""
+
+#: templates/index.html:370
+msgid "Shape"
+msgstr ""
+
+#: templates/index.html:371
+msgid "Clear Last"
+msgstr ""
+
+#: templates/index.html:372
+msgid "Clear All"
+msgstr ""
+
+#: templates/index.html:379
+msgid "NEXT: Review &amp; Release"
+msgstr ""
+
+#: templates/index.html:402
+msgid "Review &amp; Release"
+msgstr ""
+
+#: templates/index.html:407
+msgid "Review Message Content"
+msgstr ""
+
+#: templates/index.html:411
+msgid "Authorize Release"
+msgstr ""
+
+#: templates/index.html:414
+msgid "Release Alert"
+msgstr ""

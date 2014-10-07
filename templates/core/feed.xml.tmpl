@@ -1,0 +1,37 @@
+{# Author: arcadiy@google.com (Arkadii Yakovets) #}
+
+{% load i18n %}
+
+<?xml version = "1.0" encoding = "UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"
+      xmlns:cap="urn:oasis:names:tc:emergency:cap:1.2">
+  <title>{% trans "Current Alerts" %}</title>
+  <link href="{{ feed_url }}" rel="self" />
+  <id>{{ feed_url }}</id>
+  <updated>{{ timestamp }}</updated>
+  <generator>{{ version }}</generator>
+  {% for entry in entries %}
+    <entry>
+      <author><name>{{ entry.name }}</name></author>
+      <title>{{ entry.title }}</title>
+      <updated>{{ entry.updated }}</updated>
+      <link href="{{ entry.link }}" rel="alternate" />
+      <id>uuid:{{ entry.alert_id }}</id>
+      <cap:urgency>{{ entry.urgency }}</cap:urgency>
+      <cap:severity>{{ entry.severity }}</cap:severity>
+      <cap:certainty>{{ entry.certainty }}</cap:certainty>
+      <cap:category>{{ entry.category }}</cap:category>
+      <cap:responseType>{{ entry.response_type }}</cap:responseType>
+      <cap:expires>{{ entry.expires_string }}</cap:expires>
+      <cap:areaDesc>{{ entry.area_desc }}</cap:areaDesc>
+
+      {% for poly in entry.polys %}
+        <cap:polygon>{{ poly }}</cap:polygon>
+      {% endfor %}
+
+      {% for circle in entry.circles %}
+        <cap:circle>{{ circle }}</cap:circle>
+      {% endfor %}
+    </entry>
+  {% endfor %}
+</feed>

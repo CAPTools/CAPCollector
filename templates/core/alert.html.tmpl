@@ -1,0 +1,36 @@
+{# Author: arcadiy@google.com (Arkadii Yakovets) #}
+
+{% extends "core/base.html.tmpl" %}
+
+{% load humanize %}
+{% load i18n %}
+{% load l10n %}
+{% load tz %}
+
+{% block title %}{{ alert.title }}{% endblock title %}
+
+{% block content %}
+  <h1>{{ alert.title }}</h1>
+  <div><strong>{% trans "Issued" %}:</strong>{{ alert.updated|timezone:time_zone|localize }} ({{ alert.updated|naturaltime }})</div>
+  <div><strong>{% trans "Expires" %}:</strong> {{ alert.expires|timezone:time_zone|localize }} ({{ alert.expires|naturaltime }})</div>
+  <div><strong>{% trans "Areas affected" %}:</strong> {{ alert.area_desc }}</div>
+  {% if alert.description %}
+    <div><strong>{% trans "Description" %}:</strong>{{ alert.description|truncatechars:140 }}</div>
+  {% endif %}
+  {% if alert.instruction %}
+    <div><strong>{% trans "Instruction" %}:</strong>{{ alert.instruction }}</div>
+  {% endif %}
+  <div>{{ alert.author }}</div>
+  {# TODO(arcadiy): Render shapes on map based on polys/circles. #}
+  <div>
+    {% for poly in alert.polys %}
+      cap:polygon: {{ poly }}
+    {% endfor %}
+  </div>
+  <div>
+    {% for circle in alert.circles %}
+      cap:circle: {{ circle }}
+    {% endfor %}
+  </div>
+  <a href="{% url "feed" "html" %}">{% trans "Go back" %}</a>
+{% endblock content %}

@@ -1,5 +1,5 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
-<!-- 
+<!--
 This is an extended version of the CAP 1.2 specification that
 adds additional validation rules.
 
@@ -12,7 +12,7 @@ Changes:
 - Added pattern restriction to altitude
 - Added pattern restriction to ceiling
 
-Original schema is Copyright OASIS Open 2010 All Rights Reserved 
+Original schema is Copyright OASIS Open 2010 All Rights Reserved
 Extended version by Steve Hakusa <shakusa@google.com> 2/11/2011
 -->
 <schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:oasis:names:tc:emergency:cap:1.2"

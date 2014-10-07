@@ -1,0 +1,36 @@
+{# Author: arcadiy@google.com (Arkadii Yakovets) #}
+
+{% load i18n %}
+
+<div data-role="header" class="jqm-header" data-position="fixed">
+  <span class="page_label">
+    {% if tab == 'current' %}
+      {% trans "Current Alerts" %}
+    {% elif tab == 'alert' %}
+      {% trans "Alert Details" %}
+    {% elif tab == 'info' %}
+      {% trans "Alert Details" %}
+    {% elif tab == 'area' %}
+      {% trans "Alert Area" %}
+    {% elif tab == 'release' %}
+      {% trans "Review & Release" %}
+    {% endif %}
+  </span>&nbsp;&nbsp;&nbsp;
+  <span class="tm"></span>
+  <div style="float:right;height:5px; margin-right:20px">
+    <select name="select-language"
+            id="select-language"
+            data-mini="true"
+            data-inline="true"
+            style="float:left"
+            onchange="setLanguage(this.value, '{{ csrf_token }}');view2model();">
+      {% get_language_info_list for LANGUAGES as languages %}
+      {% for language in languages %}
+        <option value="{{ language.code }}"
+          {% if language.code == LANGUAGE_CODE %} selected="selected"{% endif %}>
+          {{ language.name_local }}
+        </option>
+      {% endfor %}
+    </select>
+  </div>
+</div>

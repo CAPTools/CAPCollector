@@ -1,0 +1,17 @@
+"""Django settings for CAPCollector project dev environment."""
+
+__author__ = "arcadiy@google.com (Arkadii Yakovets)"
+
+DEBUG = True
+TEMPLATE_DEBUG = True
+
+# Set your site name here.
+SITE_DOMAIN = "172.19.17.187"
+SITE_SCHEME = "http"
+SITE_PORT = "8000"  # Optional.
+SITE_URL = SITE_SCHEME + "://" + SITE_DOMAIN
+
+ALLOWED_HOSTS = ["*"]
+
+if SITE_PORT:
+  SITE_URL = SITE_URL + ":" + SITE_PORT

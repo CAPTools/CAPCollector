@@ -1,0 +1,23 @@
+{# Author: arcadiy@google.com (Arkadii Yakovets) #}
+
+{% load i18n %}
+{% load tz %}
+
+<!doctype html>
+<html>
+  <head>
+    <link rel="stylesheet" href="/client/css/core.css" />
+    <meta charset="UTF-8">
+    <title>
+      {% block title %}
+        {% trans "Current Alerts" %}
+      {% endblock title %}
+    </title>
+  </head>
+  <body>
+  <div class="content">
+    {% get_current_timezone as time_zone %}
+    {% block content %}{% endblock content %}
+  </div>
+  </body>
+</html>
