@@ -1,0 +1,18 @@
+<alert xmlns="urn:oasis:names:tc:emergency:cap:1.2">
+  <status>Actual</status>
+  <msgType>Update</msgType>
+  <scope>Public</scope>
+  <note>Example of a message template (from message/test_msg1.xml)</note>
+  <info>
+    <language>en-us</language>
+    <category>Env</category>
+    <event/>
+    <responseType>AllClear</responseType>
+    <urgency>Expected</urgency>
+    <severity>Severe</severity>
+    <certainty>Possible</certainty>
+    <description>This is a description</description>
+    <instruction>This is an instruction</instruction>
+   </info>
+</alert>
+

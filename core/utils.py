@@ -101,7 +101,7 @@ def GenerateFeed(feed_type="xml"):
 
 
 def ParseAlert(xml_string, feed_type, file_name):
-  """Parses alert XML.
+  """Parses alert XML (accepts both complete and partial CAP messages).
 
   Args:
     xml_string: (string) Alert XML string.
@@ -150,15 +150,19 @@ def ParseAlert(xml_string, feed_type, file_name):
     link = "%s%s" % (settings.SITE_URL,
                      reverse("alert", args=[file_name.rstrip(".xml"),
                                             feed_type]))
+    expires = parser.parse(expires_string) if expires_string else None
+    updated_string = GetFirstText(GetCapElement("sent", xml_tree))
+    updated = parser.parse(updated_string) if updated_string else None
+
     alert_dict = {
         "title": title,
         "link": link,
         "name": name,
-        "expires": parser.parse(expires_string),
+        "expires": expires,
         "alert_id": GetFirstText(GetCapElement("identifier", xml_tree)),
         "category": GetFirstText(GetCapElement("category", xml_tree)),
         "response_type": GetFirstText(GetCapElement("responseType", xml_tree)),
-        "updated": parser.parse(GetFirstText(GetCapElement("sent", xml_tree))),
+        "updated": updated,
         "description": GetFirstText(GetCapElement("description", xml_tree)),
         "instruction": GetFirstText(GetCapElement("instruction", xml_tree)),
         "urgency": GetFirstText(GetCapElement("urgency", xml_tree)),

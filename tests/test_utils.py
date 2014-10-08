@@ -32,6 +32,14 @@ class UtilsTests(unittest.TestCase):
     return xml_string
 
   @property
+  def partial_alert_content(self):
+    file_path = os.path.join(settings.TEMPLATES_TESTDATA_DIR,
+                             "message/test_msg1.xml")
+    with open(file_path, "r") as golden_file:
+      xml_string = golden_file.read()
+    return xml_string
+
+  @property
   def draft_alert_content(self):
     file_path = os.path.join(settings.GOLDEN_ALERTS_DATA_DIR,
                              self.DRAFT_ALERT_UUID + ".xml")
@@ -74,6 +82,27 @@ class UtilsTests(unittest.TestCase):
     """Tests if invalid XML alert parsed correctly."""
     self.assertDictEqual(utils.ParseAlert(self.invalid_alert_content,
                                           "xml", "no_filename"), {})
+
+  def test_parse_partial_alert(self):
+    """Tests if partial XML alert parsed correctly."""
+    file_name = "partial_template"
+    golden_alert_dict = {
+        "response_type": "AllClear",
+        "severity": "Severe",
+        "instruction": "This is an instruction",
+        "description": "This is a description",
+        "category": "Env",
+        "certainty": "Possible",
+        "urgency": "Expected",
+        "title": "Alert Message",  # Default.
+        "link": "%s%s" % (settings.SITE_URL,
+                          reverse("alert", args=[file_name, "xml"])),
+    }
+    alert_dict = utils.ParseAlert(self.partial_alert_content, "xml", file_name)
+    for key in alert_dict:
+      if not alert_dict[key]:
+        continue  # We need values present in both template and alert files.
+      self.assertEqual(alert_dict[key], golden_alert_dict[key])
 
   def test_sign_alert_signed(self):
     """Tests alert signature creation."""

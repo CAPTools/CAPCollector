@@ -41,14 +41,16 @@ class SmokeTests(unittest.TestCase):
 
 class End2EndTests(CAPCollectorLiveServer):
 
+  contact = "web@driver.com"
+  sender_name = "Mr. Web Driver"
+  instruction = "Instructions: what should affected people do."
+
   def test_end2end_alert_creation(self):
     """Emulates alert creation process using webdriver.
 
        Afrer webdriver part is done it checks whether alert file has created
        in active alerts directory and deletes alert file after that.
     """
-
-    self.webdriver.get(self.live_server_url)
 
     golden_dict = {
         "category": "Geo",
@@ -60,10 +62,7 @@ class End2EndTests(CAPCollectorLiveServer):
         "area_desc": "This and that area"
     }
 
-    contact = "web@driver.com"
-    sender_name = "Mr. Web Driver"
-    instruction = "Instructions: what should affected people do."
-
+    self.webdriver.get(self.live_server_url)
     # Alert tab.
     self.GoToAlertTab()
 
@@ -85,9 +84,9 @@ class End2EndTests(CAPCollectorLiveServer):
     # Message tab.
     self.GoToMessageTab()
     self.SetHeadline(golden_dict["title"])
-    self.SetAlertSenderName(sender_name)
-    self.SetInstruction(instruction)
-    self.SetContact(contact)
+    self.SetAlertSenderName(self.sender_name)
+    self.SetInstruction(self.instruction)
+    self.SetContact(self.contact)
 
     # Area tab.
     self.GoToAreaTab()
@@ -104,6 +103,7 @@ class End2EndTests(CAPCollectorLiveServer):
     alert_file_path = os.path.join(
         settings.ACTIVE_ALERTS_DATA_DIR, uuid + ".xml")
     self.assertTrue(os.path.exists(alert_file_path))
+    self.test_alert_file_paths.append(alert_file_path)
 
     # Ensure that feed contains new alert.
     response = self.client.get("/feed.xml")
@@ -126,6 +126,73 @@ class End2EndTests(CAPCollectorLiveServer):
     self.assertEqual(alert_dict["category"], "Geo")
     self.assertEqual(alert_dict["certainty"], "Likely")
 
-    # Delete test alert.
-    os.unlink(alert_file_path)
-    self.assertFalse(os.path.exists(alert_file_path))
+  def test_end2end_alert_from_template(self):
+    """Emulates alert from template creation process using webdriver.
+
+       Afrer webdriver part is done it checks whether alert file has created
+       in active alerts directory and deletes alert file after that.
+    """
+
+    self.webdriver.get(self.live_server_url)
+
+    # Alert tab.
+    self.GoToAlertTab()
+    self.SetMessageTemplate(1)
+
+    # Message tab.
+    self.GoToMessageTab()
+    self.SetAlertSenderName(self.sender_name)
+    self.SetContact(self.contact)
+
+    # Area tab.
+    self.GoToAreaTab()
+    self.SetAreaTemplate(1)
+
+    # Release tab.
+    self.GoToReleaseTab()
+    self.SetUsername(self.TEST_USER_LOGIN)
+    self.SetPassword(self.TEST_USER_PASSWORD)
+    self.ReleaseAlert()
+
+    uuid = UUID_RE.findall(self.GetUuid())[0]
+    alert_file_path = os.path.join(
+        settings.ACTIVE_ALERTS_DATA_DIR, uuid + ".xml")
+    self.assertTrue(os.path.exists(alert_file_path))
+    self.test_alert_file_paths.append(alert_file_path)
+
+    # Ensure that feed contains new alert.
+    response = self.client.get("/feed.xml")
+    self.assertContains(response, uuid)
+
+    # Check alert XML against initial values.
+    file_name = uuid + ".xml"
+    file_path = os.path.join(settings.ACTIVE_ALERTS_DATA_DIR, file_name)
+    with open(file_path, "r") as alert_file:
+      alert_xml_string = alert_file.read()
+
+    message_template_path = os.path.join(settings.TEMPLATES_DIR,
+                                         "message/test_msg1.xml")
+    with open(message_template_path, "r") as template_file:
+      message_template_xml_string = template_file.read()
+
+    area_template_path = os.path.join(settings.TEMPLATES_DIR,
+                                      "area/test_area1.xml")
+    with open(area_template_path, "r") as template_file:
+      area_template_xml_string = template_file.read()
+
+    alert_dict = utils.ParseAlert(alert_xml_string, "xml", file_name)
+    message_dict = utils.ParseAlert(message_template_xml_string, "xml",
+                                    file_name)
+    area_dict = utils.ParseAlert(area_template_xml_string, "xml", file_name)
+
+    # Message template assertions.
+    for key in message_dict:
+      if not message_dict[key]:
+        continue  # We need values present in both template and alert files.
+      self.assertEqual(alert_dict[key], message_dict[key])
+
+    # Area template assertions.
+    for key in area_dict:
+      if not area_dict[key]:
+        continue  # We need values present in both template and alert files.
+      self.assertEqual(alert_dict[key], area_dict[key])
