@@ -51,6 +51,8 @@ class End2EndTests(CAPCollectorLiveServer):
        Afrer webdriver part is done it checks whether alert file has created
        in active alerts directory and deletes alert file after that.
     """
+    self.webdriver.get(self.live_server_url)
+    self.Login()
 
     golden_dict = {
         "category": "Geo",
@@ -134,6 +136,7 @@ class End2EndTests(CAPCollectorLiveServer):
     """
 
     self.webdriver.get(self.live_server_url)
+    self.Login()
 
     # Alert tab.
     self.GoToAlertTab()

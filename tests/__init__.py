@@ -6,6 +6,7 @@ import os
 import re
 
 from django.conf import settings
+from django.contrib.auth.models import Group
 from django.contrib.auth.models import User
 from django.test import Client
 from django.test import LiveServerTestCase
@@ -84,13 +85,19 @@ class CAPCollectorLiveServer(LiveServerTestCase):
   USERNAME_ELEMENT_XPATH = "//*[@id='text-uid']"
   PASSWORD_ELEMENT_XPATH = "//*[@id='text-pwd']"
   UUID_ELEMENT_XPATH = "//*[@id='response_uuid']"
+  AUTH_USERNAME_ELEMENT_NAME = "username"
+  AUTH_PASSWORD_ELEMENT_NAME = "password"
+  AUTH_BUTTON_XPATH = "/html/body/form/div/input[3]"
 
   test_alert_file_paths = []
 
   def setUp(self):
-    User.objects.create_user(email=self.TEST_USER_EMAIL,
-                             username=self.TEST_USER_LOGIN,
-                             password=self.TEST_USER_PASSWORD)
+    test_user = User.objects.create_user(email=self.TEST_USER_EMAIL,
+                                         username=self.TEST_USER_LOGIN,
+                                         password=self.TEST_USER_PASSWORD)
+    creators_group = Group.objects.create(
+        name=settings.ALERT_CREATORS_GROUP_NAME)
+    test_user.groups.add(creators_group)
 
   @classmethod
   def setUpClass(cls):
@@ -218,6 +225,14 @@ class CAPCollectorLiveServer(LiveServerTestCase):
   def uuid_element(self):
     return self.WaitUntilVisible(self.UUID_ELEMENT_XPATH)
 
+  @property
+  def auth_username_element(self):
+    return self.webdriver.find_element_by_name(self.AUTH_USERNAME_ELEMENT_NAME)
+
+  @property
+  def auth_password_element(self):
+    return self.webdriver.find_element_by_name(self.AUTH_PASSWORD_ELEMENT_NAME)
+
   def GoToAlertTab(self):
     self.issue_new_alert_button.click()
 
@@ -317,3 +332,8 @@ class CAPCollectorLiveServer(LiveServerTestCase):
 
   def SetPassword(self, password):
     self.password_element.send_keys(password)
+
+  def Login(self):
+    self.auth_username_element.send_keys(self.TEST_USER_LOGIN)
+    self.auth_password_element.send_keys(self.TEST_USER_PASSWORD)
+    self.webdriver.find_element_by_xpath(self.AUTH_BUTTON_XPATH).click()

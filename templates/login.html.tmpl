@@ -1,0 +1,25 @@
+{% load i18n %}
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>CAPCreator Login</title>
+</head>
+
+<body>
+  {% if form.errors %}
+    <div>{% trans "Your username and password didn't match. Please try again." %}</div>
+  {% endif %}
+
+  <form method="post" action="{% url 'django.contrib.auth.views.login' %}">
+    {% csrf_token %}
+    <div>
+      {{ form.username.label_tag }} {{ form.username }}
+      {{ form.password.label_tag }} {{ form.password }}
+      <input type="submit" value="Login" />
+    </div>
+
+    <input type="hidden" name="next" value="{{ next }}" />
+  </form>
+</body>

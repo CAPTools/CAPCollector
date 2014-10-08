@@ -55,6 +55,12 @@ CREDENTIALS_DIR = os.path.join(BASE_DIR, "credentials")
 # Schema files directory.
 SCHEMA_DIR = os.path.join(BASE_DIR, "schema")
 
+# Group name for persons allowed to create new alerts.
+# A User entry must exist for a given person to access the application.
+# Users who will post new alerts must additionally be in this group.
+# See https://docs.djangoproject.com/en/dev/topics/auth/ for managing Users.
+ALERT_CREATORS_GROUP_NAME = "creators"
+
 
 ###### Django framework settings (only modify for advanced configuration) ######
 
@@ -148,6 +154,12 @@ STATIC_URL = "/client/"
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "client"),
 )
+
+# The URL where requests are redirected for login.
+LOGIN_URL = "/login/"
+
+# The URL where requests are redirected after login.
+LOGIN_REDIRECT_URL = "/"
 
 # Import development environment settings if needed.
 if os.environ.get("CAPTOOLS_DEV"):

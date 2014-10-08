@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-07 18:13+0000\n"
+"POT-Creation-Date: 2014-08-28 20:24-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -14,429 +14,488 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: CAPCollector/settings.py:94
-msgid "English"
-msgstr ""
+#: core/utils.py:148
+#, fuzzy
+msgid "Alert Message"
+msgstr "Mensagem"
 
-#: CAPCollector/settings.py:95
-msgid "हिंदी"
-msgstr ""
-
-#: CAPCollector/settings.py:96
-msgid "português"
-msgstr ""
-
-#: templates/index.html:42
-msgid "Current Alerts"
-msgstr "Current Alerts Portuguese"
-
-#: templates/index.html:109
-msgid "New Alert"
+#: templates/index.html.tmpl:49
+#, fuzzy
+msgid "Issue a New Alert"
 msgstr "Novo Alerta"
 
-#: templates/index.html:127
+#: templates/index.html.tmpl:52
+msgid "Close"
+msgstr ""
+
+#: templates/index.html.tmpl:55
+msgid "Update This Alert"
+msgstr ""
+
+#: templates/index.html.tmpl:57
+msgid "Cancel This Alert"
+msgstr ""
+
+#: templates/index.html.tmpl:66
+msgid "About CAPCreator"
+msgstr ""
+
+#: templates/index.html.tmpl:100
 msgid "Message Template (Optional)"
 msgstr "Template Mensagem (opcional)"
 
-#: templates/index.html:129
+#: templates/index.html.tmpl:102
 msgid "None"
 msgstr "Nenhum"
 
-#: templates/index.html:133
+#: templates/index.html.tmpl:106
 msgid "Set Type of Message"
 msgstr "Defina o Tipo de Mensagem"
 
-#: templates/index.html:137
+#: templates/index.html.tmpl:110
 msgid "Actual"
 msgstr "Actual"
 
-#: templates/index.html:138
+#: templates/index.html.tmpl:111
 msgid "Exercise"
 msgstr ""
 
-#: templates/index.html:139
+#: templates/index.html.tmpl:112
 msgid "Test"
 msgstr ""
 
-#: templates/index.html:140
+#: templates/index.html.tmpl:113
 msgid "Draft"
 msgstr ""
 
-#: templates/index.html:142
+#: templates/index.html.tmpl:115
 msgid "Type"
 msgstr ""
 
-#: templates/index.html:144
+#: templates/index.html.tmpl:117
 msgid "Alert"
 msgstr "Alerta"
 
-#: templates/index.html:145
+#: templates/index.html.tmpl:118
 msgid "Update"
 msgstr ""
 
-#: templates/index.html:146
+#: templates/index.html.tmpl:119
 msgid "Cancel"
 msgstr ""
 
-#: templates/index.html:148
+#: templates/index.html.tmpl:121
 msgid "Scope"
 msgstr ""
 
-#: templates/index.html:150
+#: templates/index.html.tmpl:123
 msgid "Public"
 msgstr "Público"
 
-#: templates/index.html:151
+#: templates/index.html.tmpl:124
 msgid "Restricted"
 msgstr ""
 
-#: templates/index.html:152
+#: templates/index.html.tmpl:125
 msgid "Private"
 msgstr ""
 
-#: templates/index.html:158
+#: templates/index.html.tmpl:131
 msgid "Set Hazard Type and Recommended Protective Action"
 msgstr "Definir Hazard Tipo e ação recomendada Protective"
 
-#: templates/index.html:160
+#: templates/index.html.tmpl:133
 msgid "Set Hazard Type"
 msgstr ""
 
-#: templates/index.html:162
+#: templates/index.html.tmpl:135
 msgid "--Hazard Class--"
 msgstr "--Classe de Risco--"
 
-#: templates/index.html:163
+#: templates/index.html.tmpl:136
 msgid "Geophysical"
 msgstr ""
 
-#: templates/index.html:164
+#: templates/index.html.tmpl:137
 msgid "Weather"
 msgstr ""
 
-#: templates/index.html:165
+#: templates/index.html.tmpl:138
+#, fuzzy
 msgid "Public Safety"
-msgstr ""
+msgstr "Público"
 
-#: templates/index.html:166
+#: templates/index.html.tmpl:139
+#, fuzzy
 msgid "Security"
-msgstr ""
+msgstr "Gravidade"
 
-#: templates/index.html:167
+#: templates/index.html.tmpl:140
 msgid "Rescue"
 msgstr ""
 
-#: templates/index.html:168
+#: templates/index.html.tmpl:141
 msgid "Fire"
 msgstr ""
 
-#: templates/index.html:169
+#: templates/index.html.tmpl:142
 msgid "Health"
 msgstr ""
 
-#: templates/index.html:170
+#: templates/index.html.tmpl:143
 msgid "Environmental"
 msgstr ""
 
-#: templates/index.html:171
+#: templates/index.html.tmpl:144
 msgid "Transportation"
 msgstr ""
 
-#: templates/index.html:172
+#: templates/index.html.tmpl:145
 msgid "Infrastructure/Utilities"
 msgstr ""
 
-#: templates/index.html:173
+#: templates/index.html.tmpl:146
 msgid "Weapon of Mass Destruction"
 msgstr ""
 
-#: templates/index.html:174
+#: templates/index.html.tmpl:147
 msgid "Not Otherwise Categorized"
 msgstr ""
 
-#: templates/index.html:176
+#: templates/index.html.tmpl:149
 msgid "Response Type"
 msgstr ""
 
-#: templates/index.html:178
+#: templates/index.html.tmpl:151
 msgid "--Recommended Action--"
 msgstr "--Ação recomendada--"
 
-#: templates/index.html:179
+#: templates/index.html.tmpl:152
 msgid "Take Shelter"
 msgstr ""
 
-#: templates/index.html:180
+#: templates/index.html.tmpl:153
 msgid "Evacuate"
 msgstr ""
 
-#: templates/index.html:181
+#: templates/index.html.tmpl:154
 msgid "Make Preparations"
 msgstr ""
 
-#: templates/index.html:182
+#: templates/index.html.tmpl:155
 msgid "Execute Pre-Planned Action"
 msgstr ""
 
-#: templates/index.html:183
+#: templates/index.html.tmpl:156
 msgid "Avoid the Area"
 msgstr ""
 
-#: templates/index.html:184
+#: templates/index.html.tmpl:157
 msgid "Monitor Conditions"
 msgstr ""
 
-#: templates/index.html:185
+#: templates/index.html.tmpl:158
 msgid "Resume Normal Activities"
 msgstr ""
 
-#: templates/index.html:186
+#: templates/index.html.tmpl:159
 msgid "Take No Action"
 msgstr ""
 
-#: templates/index.html:187
+#: templates/index.html.tmpl:160
 msgid "Evaluate Situation [not for Public alerts]"
 msgstr ""
 
-#: templates/index.html:193
+#: templates/index.html.tmpl:166
 msgid "Set Message Priority"
 msgstr "Definir prioridade da mensagem"
 
-#: templates/index.html:195
+#: templates/index.html.tmpl:168
 msgid "Urgency"
 msgstr "Urgência"
 
-#: templates/index.html:197
+#: templates/index.html.tmpl:170
 msgid "-Urgency-"
 msgstr "-Urgência-"
 
-#: templates/index.html:198
+#: templates/index.html.tmpl:171
 msgid "Immediate"
 msgstr ""
 
-#: templates/index.html:199
+#: templates/index.html.tmpl:172
 msgid "Expected"
 msgstr ""
 
-#: templates/index.html:200
+#: templates/index.html.tmpl:173
 msgid "Future"
 msgstr ""
 
-#: templates/index.html:201
+#: templates/index.html.tmpl:174
 msgid "Already Occurred"
 msgstr ""
 
-#: templates/index.html:202 templates/index.html.py:211
-#: templates/index.html:220
+#: templates/index.html.tmpl:175 templates/index.html.tmpl.py:184
+#: templates/index.html.tmpl:193
 msgid "Unknown"
 msgstr ""
 
-#: templates/index.html:204
+#: templates/index.html.tmpl:177
 msgid "Severity"
 msgstr "Gravidade"
 
-#: templates/index.html:206
+#: templates/index.html.tmpl:179
 msgid "-Severity-"
 msgstr "-Gravidade-"
 
-#: templates/index.html:207
+#: templates/index.html.tmpl:180
 msgid "Extreme"
 msgstr ""
 
-#: templates/index.html:208
+#: templates/index.html.tmpl:181
+#, fuzzy
 msgid "Severe"
-msgstr ""
+msgstr "Gravidade"
 
-#: templates/index.html:209
+#: templates/index.html.tmpl:182
 msgid "Moderate"
 msgstr ""
 
-#: templates/index.html:210
+#: templates/index.html.tmpl:183
 msgid "Minor"
 msgstr ""
 
-#: templates/index.html:213
+#: templates/index.html.tmpl:186
 msgid "Certainty"
 msgstr "Certeza"
 
-#: templates/index.html:215
+#: templates/index.html.tmpl:188
 msgid "-Certainty-"
 msgstr "-Certeza-"
 
-#: templates/index.html:216
+#: templates/index.html.tmpl:189
 msgid "Observed Event"
 msgstr ""
 
-#: templates/index.html:217
+#: templates/index.html.tmpl:190
 msgid "Likely"
 msgstr ""
 
-#: templates/index.html:218
+#: templates/index.html.tmpl:191
 msgid "Possible"
 msgstr ""
 
-#: templates/index.html:219
+#: templates/index.html.tmpl:192
 msgid "Unlikely"
 msgstr ""
 
-#: templates/index.html:226
+#: templates/index.html.tmpl:199
 msgid "Set Alert Expiration"
 msgstr "Definir alerta de expiração"
 
-#: templates/index.html:228
+#: templates/index.html.tmpl:201
+#, fuzzy
 msgid "Time to Expiration"
-msgstr ""
+msgstr "Definir alerta de expiração"
 
-#: templates/index.html:230
+#: templates/index.html.tmpl:204
 msgid "- Effective Period (from now) -"
 msgstr "- Vigência (a partir de agora) -"
 
-#: templates/index.html:231
+#: templates/index.html.tmpl:205
 msgid "15 Minutes"
 msgstr ""
 
-#: templates/index.html:232
+#: templates/index.html.tmpl:206
 msgid "30 Minutes"
 msgstr ""
 
-#: templates/index.html:233
+#: templates/index.html.tmpl:207
 msgid "45 Minutes"
 msgstr ""
 
-#: templates/index.html:234
+#: templates/index.html.tmpl:208
 msgid "1 Hour"
 msgstr ""
 
-#: templates/index.html:235
+#: templates/index.html.tmpl:209
 msgid "90 Minutes"
 msgstr ""
 
-#: templates/index.html:236
+#: templates/index.html.tmpl:210
 msgid "2 Hours"
 msgstr ""
 
-#: templates/index.html:237
+#: templates/index.html.tmpl:211
 msgid "3 Hours"
 msgstr ""
 
-#: templates/index.html:238
+#: templates/index.html.tmpl:212
 msgid "4 Hours"
 msgstr ""
 
-#: templates/index.html:239
+#: templates/index.html.tmpl:213
 msgid "5 Hours"
 msgstr ""
 
-#: templates/index.html:240
+#: templates/index.html.tmpl:214
 msgid "6 Hours"
 msgstr ""
 
-#: templates/index.html:249
+#: templates/index.html.tmpl:222
 msgid "NEXT: Add Alert Details"
 msgstr "Próximo: Adicionar detalhes Alerta"
 
-#: templates/index.html:257 templates/index.html.py:330
-#: templates/index.html:386 templates/index.html.py:424
-msgid "Current"
-msgstr "Atual"
-
-#: templates/index.html:258 templates/index.html.py:331
-#: templates/index.html:387 templates/index.html.py:425
-msgid "New"
-msgstr "Nova"
-
-#: templates/index.html:259 templates/index.html.py:332
-#: templates/index.html:388 templates/index.html.py:426
-msgid "Message"
-msgstr "Mensagem"
-
-#: templates/index.html:260 templates/index.html.py:333
-#: templates/index.html:389 templates/index.html.py:427
-msgid "Area"
-msgstr "área"
-
-#: templates/index.html:261 templates/index.html.py:334
-#: templates/index.html:390 templates/index.html.py:428
-msgid "Release"
-msgstr "Lançamento"
-
-#: templates/index.html:273
-msgid "Alert Details"
-msgstr ""
-
-#: templates/index.html:280
+#: templates/index.html.tmpl:237
 msgid "Who is Issuing This Alert"
 msgstr ""
 
-#: templates/index.html:285
+#: templates/index.html.tmpl:242
 msgid "Short-Text Headline (REQUIRED)"
 msgstr ""
 
-#: templates/index.html:286
+#: templates/index.html.tmpl:242
+msgid "characters left)"
+msgstr ""
+
+#: templates/index.html.tmpl:243
 msgid "Required - 140 characters maximum"
 msgstr ""
 
-#: templates/index.html:295
+#: templates/index.html.tmpl:247
+msgid "Describe the Event or Hazard"
+msgstr ""
+
+#: templates/index.html.tmpl:252
 msgid "What Should Affected People Do"
 msgstr ""
 
-#: templates/index.html:300
+#: templates/index.html.tmpl:257
 msgid "Who is Media Contact"
 msgstr ""
 
-#: templates/index.html:323
+#: templates/index.html.tmpl:258
+msgid "Include telephone and/or email"
+msgstr ""
+
+#: templates/index.html.tmpl:265
 msgid "NEXT: Target Area"
 msgstr ""
 
-#: templates/index.html:346
-msgid "Alert Area"
-msgstr ""
-
-#: templates/index.html:352
+#: templates/index.html.tmpl:281
 #, fuzzy
 msgid "Select Area Template (Optional)"
 msgstr "Message Template (Optional) Portuguese"
 
-#: templates/index.html:355
+#: templates/index.html.tmpl:284
 msgid "Describe the Alert Area (REQUIRED)"
 msgstr ""
 
-#: templates/index.html:366
+#: templates/index.html.tmpl:295
 msgid "Drag"
 msgstr ""
 
-#: templates/index.html:368
+#: templates/index.html.tmpl:297
 msgid "Circle"
 msgstr ""
 
-#: templates/index.html:370
+#: templates/index.html.tmpl:299
 msgid "Shape"
 msgstr ""
 
-#: templates/index.html:371
+#: templates/index.html.tmpl:300
 msgid "Clear Last"
 msgstr ""
 
-#: templates/index.html:372
+#: templates/index.html.tmpl:301
 msgid "Clear All"
 msgstr ""
 
-#: templates/index.html:379
+#: templates/index.html.tmpl:308
 msgid "NEXT: Review &amp; Release"
 msgstr ""
 
-#: templates/index.html:402
-msgid "Review &amp; Release"
-msgstr ""
-
-#: templates/index.html:407
+#: templates/index.html.tmpl:323
 msgid "Review Message Content"
 msgstr ""
 
-#: templates/index.html:411
+#: templates/index.html.tmpl:326
 msgid "Authorize Release"
 msgstr ""
 
-#: templates/index.html:414
+#: templates/index.html.tmpl:329
+#, fuzzy
 msgid "Release Alert"
+msgstr "Lançamento"
+
+#: templates/login.html.tmpl:12
+msgid "Your username and password didn't match. Please try again."
 msgstr ""
+
+#: templates/core/alert.html.tmpl:14 templates/core/feed.html.tmpl:21
+msgid "Issued"
+msgstr ""
+
+#: templates/core/alert.html.tmpl:15 templates/core/feed.html.tmpl:22
+msgid "Expires"
+msgstr ""
+
+#: templates/core/alert.html.tmpl:16 templates/core/feed.html.tmpl:24
+msgid "Areas affected"
+msgstr ""
+
+#: templates/core/alert.html.tmpl:18 templates/core/feed.html.tmpl:26
+msgid "Description"
+msgstr ""
+
+#: templates/core/alert.html.tmpl:21
+msgid "Instruction"
+msgstr ""
+
+#: templates/core/alert.html.tmpl:35
+msgid "Go back"
+msgstr ""
+
+#: templates/core/base.html.tmpl:13 templates/core/feed.html.tmpl:11
+#: templates/core/feed.xml.tmpl:8 templates/include/header.inc.tmpl:8
+msgid "Current Alerts"
+msgstr "Current Alerts Portuguese"
+
+#: templates/core/feed.html.tmpl:14
+msgid "Last updated"
+msgstr ""
+
+#: templates/include/footer.inc.tmpl:11
+msgid "Current"
+msgstr "Atual"
+
+#: templates/include/footer.inc.tmpl:17
+msgid "New"
+msgstr "Nova"
+
+#: templates/include/footer.inc.tmpl:23
+#, fuzzy
+msgid "Message"
+msgstr "Mensagem"
+
+#: templates/include/footer.inc.tmpl:29
+msgid "Area"
+msgstr "área"
+
+#: templates/include/footer.inc.tmpl:35
+msgid "Release"
+msgstr "Lançamento"
+
+#: templates/include/header.inc.tmpl:10 templates/include/header.inc.tmpl:12
+#, fuzzy
+msgid "Alert Details"
+msgstr "Próximo: Adicionar detalhes Alerta"
+
+#: templates/include/header.inc.tmpl:14
+#, fuzzy
+msgid "Alert Area"
+msgstr "Mensagem"
+
+#: templates/include/header.inc.tmpl:16
+#, fuzzy
+msgid "Review & Release"
+msgstr "Lançamento"

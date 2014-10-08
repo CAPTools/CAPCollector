@@ -7,6 +7,7 @@ from django.conf.urls import url
 
 
 urlpatterns = [
+    url(r"^$", views.IndexView.as_view()),
     url(r"^feed.(?P<feed_type>(html|xml))$", views.FeedView.as_view(),
         name="feed"),
     url(r"^feed/(?P<alert_id>.*).(?P<feed_type>(html|xml))$",
