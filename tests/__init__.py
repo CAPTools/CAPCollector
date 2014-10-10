@@ -4,14 +4,15 @@ __author__ = "arcadiy@google.com (Arkadii Yakovets)"
 
 import os
 import re
+import unittest
 
 from django.conf import settings
 from django.contrib.auth.models import Group
 from django.contrib.auth.models import User
 from django.test import Client
 from django.test import LiveServerTestCase
+from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.ui import WebDriverWait
 
@@ -20,12 +21,30 @@ UUID_RE = re.compile(
     r"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}")
 
 
-class CAPCollectorLiveServer(LiveServerTestCase):
-  """Base class for live server tests."""
-
+class TestBase(unittest.TestCase):
+  """Base class for other tests."""
   TEST_USER_EMAIL = "mr.web@driver.com"
   TEST_USER_LOGIN = "web_driver"
   TEST_USER_PASSWORD = "test_password"
+
+  def setUp(self):
+    self.test_user = User.objects.create_user(email=self.TEST_USER_EMAIL,
+                                              username=self.TEST_USER_LOGIN,
+                                              password=self.TEST_USER_PASSWORD)
+    self.creators_group = Group.objects.create(
+        name=settings.ALERT_CREATORS_GROUP_NAME)
+    self.test_user.groups.add(self.creators_group)
+
+  def tearDown(self):
+    self.creators_group.delete()
+    self.test_user.delete()
+
+
+class CAPCollectorLiveServer(TestBase, LiveServerTestCase):
+  """Base class for live server tests."""
+  LATEST_ALERT_XPATH = "//*[@id='current_alerts_span']/a"
+  UPDATE_ALERT_BUTTON_XPATH = "//*[@id='update_button']"
+  CANCEL_ALERT_BUTTON_XPATH = "//*[@id='cancel_button']"
 
   ISSUE_NEW_ALERT_BUTTON_XPATH = "//*[@id='current']/div[2]/a[1]/span"
   ADD_ALERT_DETAILS_BUTTON_XPATH = "//*[@id='alert']/div[2]/a/span"
@@ -69,6 +88,11 @@ class CAPCollectorLiveServer(LiveServerTestCase):
       key: "//*[@id='select-certainty']/option[%s]" % (index + 2)
       for index, key in enumerate(CERTAINTY_KEYS)}
 
+  EXPIRATION_SELECT_ELEMENT = "//*[@id='select-expires-min']"
+  EXPIRATION_XPATHS = {
+      120: "//*[@id='select-expires-min']/option[7]",
+  }
+
   # Message tab.
   ALERT_SENDER_ELEMENT_NAME = "text-senderName"
   HEADLINE_ELEMENT_NAME = "text-headline"
@@ -88,16 +112,6 @@ class CAPCollectorLiveServer(LiveServerTestCase):
   AUTH_USERNAME_ELEMENT_NAME = "username"
   AUTH_PASSWORD_ELEMENT_NAME = "password"
   AUTH_BUTTON_XPATH = "/html/body/form/div/input[3]"
-
-  test_alert_file_paths = []
-
-  def setUp(self):
-    test_user = User.objects.create_user(email=self.TEST_USER_EMAIL,
-                                         username=self.TEST_USER_LOGIN,
-                                         password=self.TEST_USER_PASSWORD)
-    creators_group = Group.objects.create(
-        name=settings.ALERT_CREATORS_GROUP_NAME)
-    test_user.groups.add(creators_group)
 
   @classmethod
   def setUpClass(cls):
@@ -119,8 +133,10 @@ class CAPCollectorLiveServer(LiveServerTestCase):
     os.rename("%s.bak" % settings.TEMPLATES_DIR, settings.TEMPLATES_DIR)
 
     # Delete created alerts.
-    for file_path in cls.test_alert_file_paths:
-      os.unlink(file_path)
+    for path in (settings.ACTIVE_ALERTS_DATA_DIR,
+                 settings.INACTIVE_ALERTS_DATA_DIR):
+      for file_path in os.listdir(path):
+        os.unlink(os.path.join(path, file_path))
 
     super(CAPCollectorLiveServer, cls).tearDownClass()
 
@@ -129,19 +145,29 @@ class CAPCollectorLiveServer(LiveServerTestCase):
         ec.visibility_of_element_located((by, xpath)))
 
   @property
+  def latest_alert_link(self):
+    return self.WaitUntilVisible(self.LATEST_ALERT_XPATH)
+
+  @property
+  def update_alert_button(self):
+    return self.WaitUntilVisible(self.UPDATE_ALERT_BUTTON_XPATH)
+
+  @property
+  def cancel_alert_button(self):
+    return self.WaitUntilVisible(self.CANCEL_ALERT_BUTTON_XPATH)
+
+  @property
   def issue_new_alert_button(self):
     return self.webdriver.find_element_by_xpath(
         self.ISSUE_NEW_ALERT_BUTTON_XPATH)
 
   @property
   def add_alert_details_button(self):
-    return self.webdriver.find_element_by_xpath(
-        self.ADD_ALERT_DETAILS_BUTTON_XPATH)
+    return self.WaitUntilVisible(self.ADD_ALERT_DETAILS_BUTTON_XPATH)
 
   @property
   def target_area_button(self):
-    return self.webdriver.find_element_by_xpath(
-        self.TARGET_AREA_BUTTON_XPATH)
+    return self.WaitUntilVisible(self.TARGET_AREA_BUTTON_XPATH)
 
   @property
   def release_button(self):
@@ -161,8 +187,7 @@ class CAPCollectorLiveServer(LiveServerTestCase):
 
   @property
   def category_select(self):
-    return self.webdriver.find_element_by_xpath(
-        self.CATEGORY_SELECT_ELEMENT)
+    return self.WaitUntilVisible(self.CATEGORY_SELECT_ELEMENT)
 
   @property
   def response_type_menu(self):
@@ -186,12 +211,16 @@ class CAPCollectorLiveServer(LiveServerTestCase):
     return self.webdriver.find_element_by_xpath(self.CERTAINTY_SELECT_ELEMENT)
 
   @property
+  def expiration_select(self):
+    return self.webdriver.find_element_by_xpath(self.EXPIRATION_SELECT_ELEMENT)
+
+  @property
   def sender_element(self):
-    return self.webdriver.find_element_by_name(self.ALERT_SENDER_ELEMENT_NAME)
+    return self.WaitUntilVisible(self.ALERT_SENDER_ELEMENT_NAME, by=By.NAME)
 
   @property
   def headline_element(self):
-    return self.webdriver.find_element_by_name(self.HEADLINE_ELEMENT_NAME)
+    return self.WaitUntilVisible(self.HEADLINE_ELEMENT_NAME, by=By.NAME)
 
   @property
   def description_element(self):
@@ -233,6 +262,9 @@ class CAPCollectorLiveServer(LiveServerTestCase):
   def auth_password_element(self):
     return self.webdriver.find_element_by_name(self.AUTH_PASSWORD_ELEMENT_NAME)
 
+  def GoToAlertsTab(self):
+    self.webdriver.get(self.live_server_url)
+
   def GoToAlertTab(self):
     self.issue_new_alert_button.click()
 
@@ -244,6 +276,15 @@ class CAPCollectorLiveServer(LiveServerTestCase):
 
   def GoToReleaseTab(self):
     self.release_button.click()
+
+  def OpenLatestAlert(self):
+    self.latest_alert_link.click()
+
+  def ClickUpdateAlertButton(self):
+    self.update_alert_button.click()
+
+  def ClickCancelAlertButton(self):
+    self.cancel_alert_button.click()
 
   def ReleaseAlert(self):
     self.release_alert_button.click()
@@ -285,6 +326,14 @@ class CAPCollectorLiveServer(LiveServerTestCase):
   def SetSeverity(self, severity):
     severity_xpath = self.SEVERITY_XPATHS.get(severity.lower())
     self.webdriver.find_element_by_xpath(severity_xpath).click()
+
+  def GetExcipration(self):
+    return self.expiration_select.get_attribute("value")
+
+  def SetExpiration(self, expiration):
+    expiration_xpath = self.EXPIRATION_XPATHS.get(expiration)
+    if expiration_xpath:
+      self.webdriver.find_element_by_xpath(expiration_xpath).click()
 
   def GetSeverity(self):
     return self.severity_select.get_attribute("value")

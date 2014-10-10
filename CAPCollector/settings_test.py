@@ -16,5 +16,8 @@ TEMPLATES_TESTDATA_DIR = os.path.join(BASE_DIR, "testdata/templates")
 CREDENTIALS_DIR = os.path.join(BASE_DIR, "testdata/credentials")
 
 SITE_SCHEME = "http"
-SITE_DOMAIN = "myagency.gov"
-SITE_URL = SITE_SCHEME + "://" + SITE_DOMAIN
+SITE_DOMAIN = "localhost"
+SITE_PORT = "8081"
+SITE_URL = SITE_SCHEME + "://" + SITE_DOMAIN + ":" + SITE_PORT
+
+ALLOWED_HOSTS = [SITE_DOMAIN]

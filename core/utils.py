@@ -101,7 +101,14 @@ def GenerateFeed(feed_type="xml"):
 
 
 def ParseAlert(xml_string, feed_type, file_name):
-  """Parses alert XML (accepts both complete and partial CAP messages).
+  """Parses select fields from the CAP XML file at file_name.
+
+  Primary use is intended for populating a feed <entry>.
+
+  Note:
+  - This code assumes the input alert XML has only one <info>.
+  - The parsed XML does not contain all fields in the CAP specification.
+  - The code accepts both complete and partial CAP messages.
 
   Args:
     xml_string: (string) Alert XML string.
@@ -159,6 +166,8 @@ def ParseAlert(xml_string, feed_type, file_name):
         "link": link,
         "name": name,
         "expires": expires,
+        "msg_type": GetFirstText(GetCapElement("msgType", xml_tree)),
+        "references": GetFirstText(GetCapElement("references", xml_tree)),
         "alert_id": GetFirstText(GetCapElement("identifier", xml_tree)),
         "category": GetFirstText(GetCapElement("category", xml_tree)),
         "response_type": GetFirstText(GetCapElement("responseType", xml_tree)),

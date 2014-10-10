@@ -66,6 +66,7 @@ class UtilsTests(unittest.TestCase):
         "severity": "Extreme",
         "instruction": "Instruction here.",
         "description": "And description",
+        "msg_type": "Alert",
         "category": "Fire",
         "name": "sender@some-agency.gov: sender",
         "title": "Some hedline.",
@@ -75,7 +76,7 @@ class UtilsTests(unittest.TestCase):
         "urgency": "Immediate"
     }
     alert_dict = utils.ParseAlert(self.valid_alert_content, "xml", file_name)
-    for key in alert_dict:
+    for key in golden_alert_dict:
       self.assertEqual(alert_dict[key], golden_alert_dict[key])
 
   def test_parse_invalid_alert(self):
@@ -91,6 +92,7 @@ class UtilsTests(unittest.TestCase):
         "severity": "Severe",
         "instruction": "This is an instruction",
         "description": "This is a description",
+        "msg_type": "Update",
         "category": "Env",
         "certainty": "Possible",
         "urgency": "Expected",

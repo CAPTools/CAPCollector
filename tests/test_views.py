@@ -3,20 +3,25 @@
 __author__ = "arcadiy@google.com (Arkadii Yakovets)"
 
 import os
-import unittest
 
 from core import utils
 from django.conf import settings
 from django.test import Client
-
 from tests import CAPCollectorLiveServer
+from tests import TestBase
 from tests import UUID_RE
 
 
-class SmokeTests(unittest.TestCase):
+class SmokeTests(TestBase):
+  """Basic views tests."""
 
   def setUp(self):
+    super(SmokeTests, self).setUp()
     self.client = Client()
+
+  def login(self):
+    self.client.post("/login/", {"username": self.TEST_USER_LOGIN,
+                                 "password": self.TEST_USER_PASSWORD})
 
   def test_feed_xml(self):
     """Tests that XML feed opens with no erorrs."""
@@ -25,6 +30,7 @@ class SmokeTests(unittest.TestCase):
 
   def test_malformed_alert_post(self):
     """Tests if error occurs on malformed alert request attempt."""
+    self.login()
     # No xml field.
     response = self.client.post("/post/", {"uid": "john", "password": "smith"})
     self.assertEqual(response.status_code, 400)
@@ -40,48 +46,55 @@ class SmokeTests(unittest.TestCase):
 
 
 class End2EndTests(CAPCollectorLiveServer):
+  """End to end views tests."""
 
   contact = "web@driver.com"
   sender_name = "Mr. Web Driver"
   instruction = "Instructions: what should affected people do."
 
-  def test_end2end_alert_creation(self):
-    """Emulates alert creation process using webdriver.
+  def CheckValues(self, uuid, initial_dict, is_update=False):
+    """Asserts that initial and parsed data is equal.
 
-       Afrer webdriver part is done it checks whether alert file has created
-       in active alerts directory and deletes alert file after that.
+    Args:
+      uuid: (string) Alert UUID, assumed to be the filename of the alert XML.
+      initial_dict: (dict) Initial alert data dictionary.
+      is_update: (bool) Whether to check new or updated alert values.
+    Returns:
+      Parsed alerts dictionary.
     """
-    self.webdriver.get(self.live_server_url)
-    self.Login()
 
-    golden_dict = {
-        "category": "Geo",
-        "response_type": "Avoid",
-        "urgency": "Expected",
-        "severity": "Moderate",
-        "certainty": "Likely",
-        "title": "Some really informative alert headline",
-        "area_desc": "This and that area"
-    }
+    file_name = uuid + ".xml"
+    file_path = os.path.join(settings.ACTIVE_ALERTS_DATA_DIR, file_name)
+    with open(file_path, "r") as alert_file:
+      xml_string = alert_file.read()
 
-    self.webdriver.get(self.live_server_url)
-    # Alert tab.
-    self.GoToAlertTab()
+    alert_dict = utils.ParseAlert(xml_string, "xml", file_name)
+    for key in initial_dict:
+      if is_update and key in ("area_desc",):
+        continue
+      self.assertEqual(alert_dict[key], initial_dict[key])
+    return alert_dict
+
+  def CreateAlert(self, golden_dict, expiration=None, skip_login=False,
+                  update=False):
+    """Creates alert based on passed dictionary. Supports log in when needed."""
+
+    if not skip_login:
+      self.webdriver.get(self.live_server_url)
+      self.GoToAlertsTab()
+      self.Login()
+
+    if not update:
+      # Alert tab.
+      self.GoToAlertTab()
 
     self.SetCategory(golden_dict["category"])
-    self.assertEqual(golden_dict["category"], self.GetCategory())
-
     self.SetResponseType(golden_dict["response_type"])
-    self.assertEqual(golden_dict["response_type"], self.GetResponseType())
-
     self.SetUrgency(golden_dict["urgency"])
-    self.assertEqual(golden_dict["urgency"], self.GetUrgency())
-
     self.SetSeverity(golden_dict["severity"])
-    self.assertEqual(golden_dict["severity"], self.GetSeverity())
-
     self.SetCertainty(golden_dict["certainty"])
-    self.assertEqual(golden_dict["certainty"], self.GetCertainty())
+    if expiration:
+      self.SetExpiration(expiration)
 
     # Message tab.
     self.GoToMessageTab()
@@ -100,42 +113,157 @@ class End2EndTests(CAPCollectorLiveServer):
     self.SetPassword(self.TEST_USER_PASSWORD)
     self.ReleaseAlert()
 
-    uuid = UUID_RE.findall(self.GetUuid())[0]
+    return UUID_RE.findall(self.GetUuid())[0]
+
+  def test_end2end_alert_create(self):
+    """Emulates alert creation process using webdriver.
+
+       Afrer webdriver part is done it checks whether alert file has created
+       in active alerts directory and deletes alert file after that.
+    """
+    golden_dict = {
+        "category": "Geo",
+        "response_type": "Avoid",
+        "urgency": "Expected",
+        "severity": "Moderate",
+        "certainty": "Likely",
+        "title": "Some really informative alert headline",
+        "area_desc": "This and that area"
+    }
+
+    expiration_minutes = 120
+    uuid = self.CreateAlert(golden_dict, expiration=expiration_minutes)
+
     golden_dict["alert_id"] = uuid
     alert_file_path = os.path.join(
         settings.ACTIVE_ALERTS_DATA_DIR, uuid + ".xml")
     self.assertTrue(os.path.exists(alert_file_path))
-    self.test_alert_file_paths.append(alert_file_path)
 
     # Ensure that feed contains new alert.
     response = self.client.get("/feed.xml")
     self.assertContains(response, uuid)
+    alert_dict = self.CheckValues(uuid, golden_dict)
+    alert_updated_at = alert_dict["updated"]
+    alert_expires_at = alert_dict["expires"]
+    self.assertEqual((alert_expires_at - alert_updated_at).seconds / 60,
+                     expiration_minutes)
 
-    # Check alert XML against initial values.
-    file_name = uuid + ".xml"
-    file_path = os.path.join(settings.ACTIVE_ALERTS_DATA_DIR, file_name)
-    with open(file_path, "r") as alert_file:
-      xml_string = alert_file.read()
+  def test_end2end_alert_update(self):
+    """Emulates existing alert update process using webdriver."""
+    initial_dict = {
+        "category": "Geo",
+        "response_type": "Avoid",
+        "urgency": "Expected",
+        "severity": "Moderate",
+        "certainty": "Likely",
+        "title": "Alert that will be updated",
+        "area_desc": "This and that area",
+    }
 
-    alert_dict = utils.ParseAlert(xml_string, "xml", file_name)
-    for key in golden_dict:
-      self.assertEqual(alert_dict[key], golden_dict[key])
+    update_dict = {
+        "category": "Geo",
+        "response_type": "Evacuate",
+        "urgency": "Immediate",
+        "severity": "Extreme",
+        "certainty": "Observed",
+        "title": "Previous alert update",
+        "area_desc": "Some new area",
+    }
 
-    self.assertEqual(alert_dict["circles"], [])  # No circles.
-    self.assertEqual(alert_dict["polys"], [])  # No polys.
-    self.assertEqual(alert_dict["response_type"], "Avoid")
-    self.assertEqual(alert_dict["severity"], "Moderate")
-    self.assertEqual(alert_dict["category"], "Geo")
-    self.assertEqual(alert_dict["certainty"], "Likely")
+    # Create initial alert.
+    uuid = self.CreateAlert(initial_dict)
+    initial_dict["alert_id"] = uuid
+    alert_file_path = os.path.join(
+        settings.ACTIVE_ALERTS_DATA_DIR, uuid + ".xml")
+    self.assertTrue(os.path.exists(alert_file_path))
 
-  def test_end2end_alert_from_template(self):
+    # Ensure that feed contains new alert.
+    response = self.client.get("/feed.xml")
+    self.assertContains(response, uuid)
+    initial_alert_dict = self.CheckValues(uuid, initial_dict)
+    updated_at = initial_alert_dict["updated"].isoformat()
+    initial_alert_reference = "%s@%s,%s,%s" % (self.TEST_USER_LOGIN,
+                                               settings.SITE_DOMAIN,
+                                               uuid, updated_at)
+    # Create alert update.
+    self.GoToAlertsTab()
+    self.OpenLatestAlert()
+    self.ClickUpdateAlertButton()
+    uuid = self.CreateAlert(update_dict, skip_login=True, update=True)
+    alert_file_path = os.path.join(
+        settings.ACTIVE_ALERTS_DATA_DIR, uuid + ".xml")
+    self.assertTrue(os.path.exists(alert_file_path))
+
+    updated_alert_dict = self.CheckValues(uuid, update_dict, is_update=True)
+    self.assertEqual(updated_alert_dict["msg_type"], "Update")
+    updated_at = updated_alert_dict["updated"]
+    expires_at = updated_alert_dict["expires"]
+    self.assertEqual((expires_at - updated_at).seconds / 60, 60)
+    updated_alert_references = updated_alert_dict["references"]
+    self.assertEqual(initial_alert_reference, updated_alert_references)
+
+  def test_end2end_alert_cancel(self):
+    """Emulates existing alert cancellation process using webdriver."""
+    initial_dict = {
+        "category": "Geo",
+        "response_type": "Avoid",
+        "urgency": "Expected",
+        "severity": "Moderate",
+        "certainty": "Likely",
+        "title": "Alert that will be cancelled",
+        "area_desc": "This and that area"
+    }
+
+    # Create initial alert.
+    uuid = self.CreateAlert(initial_dict)
+    initial_dict["alert_id"] = uuid
+    alert_file_path = os.path.join(
+        settings.ACTIVE_ALERTS_DATA_DIR, uuid + ".xml")
+    self.assertTrue(os.path.exists(alert_file_path))
+
+    # Ensure that feed contains new alert.
+    response = self.client.get("/feed.xml")
+    self.assertContains(response, uuid)
+    initial_alert_dict = self.CheckValues(uuid, initial_dict)
+    updated_at = initial_alert_dict["updated"].isoformat()
+    initial_alert_reference = "%s@%s,%s,%s" % (self.TEST_USER_LOGIN,
+                                               settings.SITE_DOMAIN,
+                                               uuid, updated_at)
+    # Create alert update.
+    self.GoToAlertsTab()
+    self.OpenLatestAlert()
+    self.ClickCancelAlertButton()
+    self.GoToMessageTab()
+    self.GoToAreaTab()
+    self.GoToReleaseTab()
+    self.SetUsername(self.TEST_USER_LOGIN)
+    self.SetPassword(self.TEST_USER_PASSWORD)
+    self.ReleaseAlert()
+    uuid = UUID_RE.findall(self.GetUuid())[0]
+
+    initial_dict["alert_id"] = uuid
+    alert_file_path = os.path.join(
+        settings.ACTIVE_ALERTS_DATA_DIR, uuid + ".xml")
+    self.assertTrue(os.path.exists(alert_file_path))
+
+    # TODO(arcadiy): make sure the workflow is correct.
+    del initial_dict["title"]  # Currently title is omitted.
+    canceled_alert_dict = self.CheckValues(uuid, initial_dict)
+    self.assertEqual(canceled_alert_dict["msg_type"], "Cancel")
+    updated_at = canceled_alert_dict["updated"]
+    expires_at = canceled_alert_dict["expires"]
+    self.assertEqual((expires_at - updated_at).seconds / 60, 60)
+    canceled_alert_references = canceled_alert_dict["references"]
+    self.assertEqual(initial_alert_reference, canceled_alert_references)
+
+  def test_end2end_alert_create_from_template(self):
     """Emulates alert from template creation process using webdriver.
 
        Afrer webdriver part is done it checks whether alert file has created
        in active alerts directory and deletes alert file after that.
     """
 
-    self.webdriver.get(self.live_server_url)
+    self.GoToAlertsTab()
     self.Login()
 
     # Alert tab.
@@ -161,7 +289,6 @@ class End2EndTests(CAPCollectorLiveServer):
     alert_file_path = os.path.join(
         settings.ACTIVE_ALERTS_DATA_DIR, uuid + ".xml")
     self.assertTrue(os.path.exists(alert_file_path))
-    self.test_alert_file_paths.append(alert_file_path)
 
     # Ensure that feed contains new alert.
     response = self.client.get("/feed.xml")
