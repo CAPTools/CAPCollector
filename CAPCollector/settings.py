@@ -26,6 +26,8 @@ LANGUAGE_CODE = "en"
 
 # Add new languages here.
 # See https://docs.djangoproject.com/en/dev/ref/settings/#languages.
+# TODO(arcadiy): figure out a way to support CAP info language format (RFC 3066)
+# Django seems to treat fr-CA as just fr
 LANGUAGES = (
     ("en", "English"),
     ("hi", "हिंदी"),
@@ -44,10 +46,6 @@ VERSION = "CAPCollector v1.0"
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 DATA_DIR = os.path.join(BASE_DIR, "alerts")
-
-# Relative path to your active/inactive alerts directories.
-ACTIVE_ALERTS_DATA_DIR = os.path.join(BASE_DIR, "alerts/active")
-INACTIVE_ALERTS_DATA_DIR = os.path.join(BASE_DIR, "alerts/inactive")
 
 # Your keys and certificates.
 CREDENTIALS_DIR = os.path.join(BASE_DIR, "credentials")
@@ -79,7 +77,7 @@ TEMPLATE_DEBUG = False
 # List of locations of the template source files searched by Django loaders.
 # See https://docs.djangoproject.com/en/dev/ref/settings/#template-dirs
 TEMPLATE_DIRS = (
-    os.path.join(BASE_DIR, "templates")
+    os.path.join(BASE_DIR, "templates"),
 )
 
 # A tuple of strings designating all applications that are enabled in this
@@ -149,10 +147,15 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/dev/ref/settings/#static-url
 STATIC_URL = "/client/"
 
+# The absolute path to the directory where collectstatic will collect static
+# files for deployment.
+# https://docs.djangoproject.com/en/dev/ref/settings/#static-root
+STATIC_ROOT = os.path.join(BASE_DIR, "client")
+
 # This setting defines the additional staticfiles locations.
 # https://docs.djangoproject.com/en/dev/ref/settings/#staticfiles-dirs
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "client"),
+    os.path.join(BASE_DIR, "static"),
 )
 
 # The URL where requests are redirected for login.
@@ -161,10 +164,13 @@ LOGIN_URL = "/login/"
 # The URL where requests are redirected after login.
 LOGIN_REDIRECT_URL = "/"
 
+# Helper variable indicating test environment.
+TESTING = "test" in sys.argv
+
 # Import development environment settings if needed.
 if os.environ.get("CAPTOOLS_DEV"):
   from settings_dev import *
-elif "test" in sys.argv:
+elif TESTING:
   from settings_test import *
 
 

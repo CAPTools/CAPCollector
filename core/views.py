@@ -3,9 +3,9 @@
 __author__ = "Arkadii Yakovets (arcadiy@google.com)"
 
 import json
-import os
 
 from bs4 import BeautifulSoup
+from core import models
 from core import utils
 from django.conf import settings
 from django.contrib.auth import authenticate
@@ -27,22 +27,19 @@ class FeedView(View):
     feed_type = kwargs["feed_type"]
 
     if "alert_id" in kwargs:
-      filename = "%s.xml" % kwargs["alert_id"]
-      alert_file_path = os.path.join(settings.ACTIVE_ALERTS_DATA_DIR, filename)
       try:
-        with open(alert_file_path, "r") as alert_file:
-          alert_content = alert_file.read()
-      except IOError:
+        alert = models.Alert.objects.get(uuid=kwargs["alert_id"])
+      except models.Alert.DoesNotExist:
         raise Http404
 
       if feed_type == "html":
         context = {
-            "alert": utils.ParseAlert(alert_content, feed_type, filename)
+            "alert": utils.ParseAlert(alert.content, feed_type, alert.uuid)
         }
         response = render_to_string("core/alert.html.tmpl", context)
         return HttpResponse(BeautifulSoup(response, feed_type).prettify())
 
-      return HttpResponse(alert_content, content_type="text/xml")
+      return HttpResponse(alert.content, content_type="text/xml")
 
     return HttpResponse(utils.GenerateFeed(feed_type),
                         content_type="text/%s" % feed_type)

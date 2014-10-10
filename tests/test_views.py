@@ -4,6 +4,7 @@ __author__ = "arcadiy@google.com (Arkadii Yakovets)"
 
 import os
 
+from core import models
 from core import utils
 from django.conf import settings
 from django.test import Client
@@ -44,6 +45,16 @@ class SmokeTests(TestBase):
                                            "xml": "<some_xml>"})
     self.assertEqual(response.status_code, 400)
 
+  def test_alert_xml_does_not_exist(self):
+    """Tests proper handling for invalid alert IDs."""
+    response = self.client.get("/feed/1111-12-12.xml")
+    self.assertEqual(response.status_code, 404)
+
+  def test_alert_html_does_not_exist(self):
+    """Tests proper handling for invalid alert IDs."""
+    response = self.client.get("/feed/1111-12-12.html")
+    self.assertEqual(response.status_code, 404)
+
 
 class End2EndTests(CAPCollectorLiveServer):
   """End to end views tests."""
@@ -63,12 +74,9 @@ class End2EndTests(CAPCollectorLiveServer):
       Parsed alerts dictionary.
     """
 
-    file_name = uuid + ".xml"
-    file_path = os.path.join(settings.ACTIVE_ALERTS_DATA_DIR, file_name)
-    with open(file_path, "r") as alert_file:
-      xml_string = alert_file.read()
+    alert = models.Alert.objects.get(uuid=uuid)
 
-    alert_dict = utils.ParseAlert(xml_string, "xml", file_name)
+    alert_dict = utils.ParseAlert(alert.content, "xml", uuid)
     for key in initial_dict:
       if is_update and key in ("area_desc",):
         continue
@@ -78,7 +86,6 @@ class End2EndTests(CAPCollectorLiveServer):
   def CreateAlert(self, golden_dict, expiration=None, skip_login=False,
                   update=False):
     """Creates alert based on passed dictionary. Supports log in when needed."""
-
     if not skip_login:
       self.webdriver.get(self.live_server_url)
       self.GoToAlertsTab()
@@ -98,6 +105,8 @@ class End2EndTests(CAPCollectorLiveServer):
 
     # Message tab.
     self.GoToMessageTab()
+    if "language" in golden_dict:
+      self.SetLanguage(golden_dict["language"])
     self.SetHeadline(golden_dict["title"])
     self.SetAlertSenderName(self.sender_name)
     self.SetInstruction(self.instruction)
@@ -128,6 +137,7 @@ class End2EndTests(CAPCollectorLiveServer):
         "severity": "Moderate",
         "certainty": "Likely",
         "title": "Some really informative alert headline",
+        "language": "pt",
         "area_desc": "This and that area"
     }
 
@@ -135,17 +145,15 @@ class End2EndTests(CAPCollectorLiveServer):
     uuid = self.CreateAlert(golden_dict, expiration=expiration_minutes)
 
     golden_dict["alert_id"] = uuid
-    alert_file_path = os.path.join(
-        settings.ACTIVE_ALERTS_DATA_DIR, uuid + ".xml")
-    self.assertTrue(os.path.exists(alert_file_path))
+    self.assertTrue(models.Alert.objects.filter(uuid=uuid).exists())
 
     # Ensure that feed contains new alert.
     response = self.client.get("/feed.xml")
     self.assertContains(response, uuid)
     alert_dict = self.CheckValues(uuid, golden_dict)
-    alert_updated_at = alert_dict["updated"]
+    alert_sent_at = alert_dict["sent"]
     alert_expires_at = alert_dict["expires"]
-    self.assertEqual((alert_expires_at - alert_updated_at).seconds / 60,
+    self.assertEqual((alert_expires_at - alert_sent_at).seconds / 60,
                      expiration_minutes)
 
   def test_end2end_alert_update(self):
@@ -173,32 +181,28 @@ class End2EndTests(CAPCollectorLiveServer):
     # Create initial alert.
     uuid = self.CreateAlert(initial_dict)
     initial_dict["alert_id"] = uuid
-    alert_file_path = os.path.join(
-        settings.ACTIVE_ALERTS_DATA_DIR, uuid + ".xml")
-    self.assertTrue(os.path.exists(alert_file_path))
+    self.assertTrue(models.Alert.objects.filter(uuid=uuid).exists())
 
     # Ensure that feed contains new alert.
     response = self.client.get("/feed.xml")
     self.assertContains(response, uuid)
     initial_alert_dict = self.CheckValues(uuid, initial_dict)
-    updated_at = initial_alert_dict["updated"].isoformat()
+    sent_at = initial_alert_dict["sent"].isoformat()
     initial_alert_reference = "%s@%s,%s,%s" % (self.TEST_USER_LOGIN,
                                                settings.SITE_DOMAIN,
-                                               uuid, updated_at)
+                                               uuid, sent_at)
     # Create alert update.
     self.GoToAlertsTab()
     self.OpenLatestAlert()
     self.ClickUpdateAlertButton()
     uuid = self.CreateAlert(update_dict, skip_login=True, update=True)
-    alert_file_path = os.path.join(
-        settings.ACTIVE_ALERTS_DATA_DIR, uuid + ".xml")
-    self.assertTrue(os.path.exists(alert_file_path))
+    self.assertTrue(models.Alert.objects.filter(uuid=uuid).exists())
 
     updated_alert_dict = self.CheckValues(uuid, update_dict, is_update=True)
     self.assertEqual(updated_alert_dict["msg_type"], "Update")
-    updated_at = updated_alert_dict["updated"]
+    sent_at = updated_alert_dict["sent"]
     expires_at = updated_alert_dict["expires"]
-    self.assertEqual((expires_at - updated_at).seconds / 60, 60)
+    self.assertEqual((expires_at - sent_at).seconds / 60, 60)
     updated_alert_references = updated_alert_dict["references"]
     self.assertEqual(initial_alert_reference, updated_alert_references)
 
@@ -217,18 +221,16 @@ class End2EndTests(CAPCollectorLiveServer):
     # Create initial alert.
     uuid = self.CreateAlert(initial_dict)
     initial_dict["alert_id"] = uuid
-    alert_file_path = os.path.join(
-        settings.ACTIVE_ALERTS_DATA_DIR, uuid + ".xml")
-    self.assertTrue(os.path.exists(alert_file_path))
+    self.assertTrue(models.Alert.objects.filter(uuid=uuid).exists())
 
     # Ensure that feed contains new alert.
     response = self.client.get("/feed.xml")
     self.assertContains(response, uuid)
     initial_alert_dict = self.CheckValues(uuid, initial_dict)
-    updated_at = initial_alert_dict["updated"].isoformat()
+    sent_at = initial_alert_dict["sent"].isoformat()
     initial_alert_reference = "%s@%s,%s,%s" % (self.TEST_USER_LOGIN,
                                                settings.SITE_DOMAIN,
-                                               uuid, updated_at)
+                                               uuid, sent_at)
     # Create alert update.
     self.GoToAlertsTab()
     self.OpenLatestAlert()
@@ -242,17 +244,15 @@ class End2EndTests(CAPCollectorLiveServer):
     uuid = UUID_RE.findall(self.GetUuid())[0]
 
     initial_dict["alert_id"] = uuid
-    alert_file_path = os.path.join(
-        settings.ACTIVE_ALERTS_DATA_DIR, uuid + ".xml")
-    self.assertTrue(os.path.exists(alert_file_path))
+    self.assertTrue(models.Alert.objects.filter(uuid=uuid).exists())
 
     # TODO(arcadiy): make sure the workflow is correct.
     del initial_dict["title"]  # Currently title is omitted.
     canceled_alert_dict = self.CheckValues(uuid, initial_dict)
     self.assertEqual(canceled_alert_dict["msg_type"], "Cancel")
-    updated_at = canceled_alert_dict["updated"]
+    sent_at = canceled_alert_dict["sent"]
     expires_at = canceled_alert_dict["expires"]
-    self.assertEqual((expires_at - updated_at).seconds / 60, 60)
+    self.assertEqual((expires_at - sent_at).seconds / 60, 60)
     canceled_alert_references = canceled_alert_dict["references"]
     self.assertEqual(initial_alert_reference, canceled_alert_references)
 
@@ -286,20 +286,14 @@ class End2EndTests(CAPCollectorLiveServer):
     self.ReleaseAlert()
 
     uuid = UUID_RE.findall(self.GetUuid())[0]
-    alert_file_path = os.path.join(
-        settings.ACTIVE_ALERTS_DATA_DIR, uuid + ".xml")
-    self.assertTrue(os.path.exists(alert_file_path))
+    self.assertTrue(models.Alert.objects.filter(uuid=uuid).exists())
 
     # Ensure that feed contains new alert.
     response = self.client.get("/feed.xml")
     self.assertContains(response, uuid)
 
     # Check alert XML against initial values.
-    file_name = uuid + ".xml"
-    file_path = os.path.join(settings.ACTIVE_ALERTS_DATA_DIR, file_name)
-    with open(file_path, "r") as alert_file:
-      alert_xml_string = alert_file.read()
-
+    alert = models.Alert.objects.get(uuid=uuid)
     message_template_path = os.path.join(settings.TEMPLATES_DIR,
                                          "message/test_msg1.xml")
     with open(message_template_path, "r") as template_file:
@@ -310,10 +304,9 @@ class End2EndTests(CAPCollectorLiveServer):
     with open(area_template_path, "r") as template_file:
       area_template_xml_string = template_file.read()
 
-    alert_dict = utils.ParseAlert(alert_xml_string, "xml", file_name)
-    message_dict = utils.ParseAlert(message_template_xml_string, "xml",
-                                    file_name)
-    area_dict = utils.ParseAlert(area_template_xml_string, "xml", file_name)
+    alert_dict = utils.ParseAlert(alert.content, "xml", uuid)
+    message_dict = utils.ParseAlert(message_template_xml_string, "xml", uuid)
+    area_dict = utils.ParseAlert(area_template_xml_string, "xml", uuid)
 
     # Message template assertions.
     for key in message_dict:
@@ -326,3 +319,15 @@ class End2EndTests(CAPCollectorLiveServer):
       if not area_dict[key]:
         continue  # We need values present in both template and alert files.
       self.assertEqual(alert_dict[key], area_dict[key])
+
+  def test_ui_language_change(self):
+    """Emulates UI language change process using webdriver."""
+
+    self.GoToAlertsTab()
+    self.Login()
+
+    self.GoToAlertTab()
+    self.GoToMessageTab()
+    language = settings.LANGUAGES[1]  # Hindi.
+    self.SetUserLanguage(language[0])
+    self.assertEquals(self.GetLanguage(), language[1])

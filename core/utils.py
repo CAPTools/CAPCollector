@@ -37,6 +37,7 @@ import uuid
 import xml
 
 from bs4 import BeautifulSoup
+from core import models
 from dateutil import parser
 from django.conf import settings
 from django.core.urlresolvers import reverse
@@ -67,26 +68,9 @@ def GenerateFeed(feed_type="xml"):
   entries = []
 
   # For each unexpired message, get the necessary values and add it to the feed.
-  filenames = sorted(os.listdir(settings.ACTIVE_ALERTS_DATA_DIR), reverse=True,
-                     key=lambda path: os.path.getctime(
-                         os.path.join(settings.ACTIVE_ALERTS_DATA_DIR, path)))
-  for filename in filenames:
-    if filename.startswith("."):
-      continue
-
-    file_path = os.path.join(settings.ACTIVE_ALERTS_DATA_DIR, filename)
-    with open(file_path, "r") as alert_file:
-      xml_string = alert_file.read()
-
-    alert_dict = ParseAlert(xml_string, feed_type, filename)
-
-    # Move expired msg to expired directory.
-    if GetCurrentDate() > alert_dict["expires"]:
-      os.rename(file_path, os.path.join(settings.INACTIVE_ALERTS_DATA_DIR,
-                                        filename))
-      continue  # And go on to the next message.
-
-    entries.append(alert_dict)
+  for alert in models.Alert.objects.filter(
+      expires_at__gt=GetCurrentDate()).order_by("-created_at"):
+    entries.append(ParseAlert(alert.content, feed_type, alert.uuid))
 
   feed_dict = {
       "entries": entries,
@@ -100,7 +84,7 @@ def GenerateFeed(feed_type="xml"):
       render_to_string(feed_template, feed_dict), feed_type).prettify()
 
 
-def ParseAlert(xml_string, feed_type, file_name):
+def ParseAlert(xml_string, feed_type, alert_uuid):
   """Parses select fields from the CAP XML file at file_name.
 
   Primary use is intended for populating a feed <entry>.
@@ -113,7 +97,7 @@ def ParseAlert(xml_string, feed_type, file_name):
   Args:
     xml_string: (string) Alert XML string.
     feed_type: (string) Alert feed representation (XML or HTML).
-    file_name: (string) Alert file name.
+    alert_uuid: (string) Alert UUID.
 
   Returns:
     Dictionary.
@@ -155,11 +139,10 @@ def ParseAlert(xml_string, feed_type, file_name):
       title = ugettext("Alert Message")  # Force a default.
 
     link = "%s%s" % (settings.SITE_URL,
-                     reverse("alert", args=[file_name.rstrip(".xml"),
-                                            feed_type]))
+                     reverse("alert", args=[alert_uuid, feed_type]))
     expires = parser.parse(expires_string) if expires_string else None
-    updated_string = GetFirstText(GetCapElement("sent", xml_tree))
-    updated = parser.parse(updated_string) if updated_string else None
+    sent_string = GetFirstText(GetCapElement("sent", xml_tree))
+    sent = parser.parse(sent_string) if sent_string else None
 
     alert_dict = {
         "title": title,
@@ -171,12 +154,13 @@ def ParseAlert(xml_string, feed_type, file_name):
         "alert_id": GetFirstText(GetCapElement("identifier", xml_tree)),
         "category": GetFirstText(GetCapElement("category", xml_tree)),
         "response_type": GetFirstText(GetCapElement("responseType", xml_tree)),
-        "updated": updated,
+        "sent": sent,
         "description": GetFirstText(GetCapElement("description", xml_tree)),
         "instruction": GetFirstText(GetCapElement("instruction", xml_tree)),
         "urgency": GetFirstText(GetCapElement("urgency", xml_tree)),
         "severity": GetFirstText(GetCapElement("severity", xml_tree)),
         "certainty": GetFirstText(GetCapElement("certainty", xml_tree)),
+        "language": GetFirstText(GetCapElement("language", xml_tree)),
         "area_desc": GetFirstText(GetCapElement("areaDesc", xml_tree)),
         "circles": GetAllText(GetCapElement("circle", xml_tree)),
         "polys": GetAllText(GetCapElement("polygon", xml_tree)),
@@ -247,24 +231,36 @@ def CreateAlert(xml_string, username):
 
   if valid:
     msg_id = str(uuid.uuid4())
+
     # Assign <identifier> and <sender> values.
     find_identifier = etree.XPath("//p:identifier",
                                   namespaces={"p": settings.CAP_NS})
     identifier = find_identifier(xml_tree)[0]
     identifier.text = msg_id
+
     find_sender = etree.XPath("//p:sender",
                               namespaces={"p": settings.CAP_NS})
     sender = find_sender(xml_tree)[0]
     sender.text = username + "@" + settings.SITE_DOMAIN
+
+    find_sent = etree.XPath("//p:sent",
+                            namespaces={"p": settings.CAP_NS})
+    sent = find_sent(xml_tree)[0]
+
+    find_expires = etree.XPath("//p:expires",
+                               namespaces={"p": settings.CAP_NS})
+    expires = find_expires(xml_tree)[0]
 
     # Sign the XML tree.
     xml_tree = SignAlert(xml_tree, username)
 
     # Re-serialize as string.
     signed_xml_string = etree.tostring(xml_tree, pretty_print=False)
-
-    file_path = os.path.join(settings.ACTIVE_ALERTS_DATA_DIR, msg_id + ".xml")
-    with open(file_path, "w") as alert_file:
-      alert_file.write(signed_xml_string + "\n")
+    alert_obj = models.Alert()
+    alert_obj.uuid = msg_id
+    alert_obj.created_at = sent.text
+    alert_obj.expires_at = expires.text
+    alert_obj.content = signed_xml_string
+    alert_obj.save()
 
   return (msg_id, valid, error)

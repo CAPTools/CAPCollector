@@ -23,6 +23,7 @@ UUID_RE = re.compile(
 
 class TestBase(unittest.TestCase):
   """Base class for other tests."""
+
   TEST_USER_EMAIL = "mr.web@driver.com"
   TEST_USER_LOGIN = "web_driver"
   TEST_USER_PASSWORD = "test_password"
@@ -94,6 +95,12 @@ class CAPCollectorLiveServer(TestBase, LiveServerTestCase):
   }
 
   # Message tab.
+  ALERT_LANGUAGE_ELEMENT = ("//*[@id='info']/div[2]/div[1]/div/div/span/"
+                            "span[1]/span")
+  ALERT_LANGUAGE_XPATHS = {
+      language_tuple[0]: "//*[@id='select-language']/option[%s]" % (index + 1)
+      for index, language_tuple in enumerate(settings.LANGUAGES)
+  }
   ALERT_SENDER_ELEMENT_NAME = "text-senderName"
   HEADLINE_ELEMENT_NAME = "text-headline"
   DESCRIPTION_ELEMENT_NAME = "textarea-description"
@@ -113,6 +120,12 @@ class CAPCollectorLiveServer(TestBase, LiveServerTestCase):
   AUTH_PASSWORD_ELEMENT_NAME = "password"
   AUTH_BUTTON_XPATH = "/html/body/form/div/input[3]"
 
+  USER_LANGUAGE_ELEMENT = "//*[@id='info']/div[1]/div/div/div"
+  USER_LANGUAGE_XPATHS = {
+      language_tuple[0]: "//*[@id='ui-language']/option[%s]" % (index + 1)
+      for index, language_tuple in enumerate(settings.LANGUAGES)
+  }
+
   @classmethod
   def setUpClass(cls):
     cls.client = Client()
@@ -127,16 +140,9 @@ class CAPCollectorLiveServer(TestBase, LiveServerTestCase):
   @classmethod
   def tearDownClass(cls):
     cls.webdriver.quit()
-
     # Move real templates back.
     os.unlink(settings.TEMPLATES_DIR)
     os.rename("%s.bak" % settings.TEMPLATES_DIR, settings.TEMPLATES_DIR)
-
-    # Delete created alerts.
-    for path in (settings.ACTIVE_ALERTS_DATA_DIR,
-                 settings.INACTIVE_ALERTS_DATA_DIR):
-      for file_path in os.listdir(path):
-        os.unlink(os.path.join(path, file_path))
 
     super(CAPCollectorLiveServer, cls).tearDownClass()
 
@@ -215,6 +221,10 @@ class CAPCollectorLiveServer(TestBase, LiveServerTestCase):
     return self.webdriver.find_element_by_xpath(self.EXPIRATION_SELECT_ELEMENT)
 
   @property
+  def language_select(self):
+    return self.WaitUntilVisible(self.ALERT_LANGUAGE_ELEMENT)
+
+  @property
   def sender_element(self):
     return self.WaitUntilVisible(self.ALERT_SENDER_ELEMENT_NAME, by=By.NAME)
 
@@ -261,6 +271,10 @@ class CAPCollectorLiveServer(TestBase, LiveServerTestCase):
   @property
   def auth_password_element(self):
     return self.webdriver.find_element_by_name(self.AUTH_PASSWORD_ELEMENT_NAME)
+
+  @property
+  def user_language_select(self):
+    return self.WaitUntilVisible(self.USER_LANGUAGE_ELEMENT)
 
   def GoToAlertsTab(self):
     self.webdriver.get(self.live_server_url)
@@ -358,6 +372,14 @@ class CAPCollectorLiveServer(TestBase, LiveServerTestCase):
   def GetUuid(self):
     return self.uuid_element.text
 
+  def GetLanguage(self):
+    return self.language_select.text
+
+  def SetLanguage(self, language):
+    language_xpath = self.ALERT_LANGUAGE_XPATHS.get(language.lower())
+    menu_item = self.WaitUntilVisible(language_xpath)
+    menu_item.click()
+
   def SetAlertSenderName(self, sender_name):
     self.sender_element.send_keys(sender_name)
 
@@ -386,3 +408,8 @@ class CAPCollectorLiveServer(TestBase, LiveServerTestCase):
     self.auth_username_element.send_keys(self.TEST_USER_LOGIN)
     self.auth_password_element.send_keys(self.TEST_USER_PASSWORD)
     self.webdriver.find_element_by_xpath(self.AUTH_BUTTON_XPATH).click()
+
+  def SetUserLanguage(self, language):
+    self.user_language_select.click()
+    language_xpath = self.ALERT_LANGUAGE_XPATHS.get(language)
+    self.webdriver.find_element_by_xpath(language_xpath).click()

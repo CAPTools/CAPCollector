@@ -4,7 +4,7 @@
   <scope>Public</scope>
   <note>Example of a message template (from message/test_msg1.xml)</note>
   <info>
-    <language>en-us</language>
+    <language>hi</language>
     <category>Env</category>
     <event/>
     <responseType>AllClear</responseType>

@@ -4,10 +4,12 @@ __author__ = "arcadiy@google.com (Arkadii Yakovets)"
 
 import datetime
 import os
-import unittest
+from xml.etree import cElementTree as xml_etree
 
+from core import models
 from core import utils
 from dateutil import parser
+from django import test
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from lxml import etree
@@ -17,19 +19,18 @@ from tests import UUID_RE
 import xmlsec
 
 
-class UtilsTests(unittest.TestCase):
+class UtilsTests(test.TestCase):
   """Utils unit tests."""
+
+  fixtures = ["alerts.json"]
+
   TEST_USER_NAME = "test_user"
   DRAFT_ALERT_UUID = "a453f4bb-3249-45f6-8ddc-360da19fcc03"
   VALID_ALERT_UUID = "3ff7a28e-44b7-4ca5-aa5f-06dc42e474c1"
 
   @property
   def valid_alert_content(self):
-    file_path = os.path.join(settings.GOLDEN_ALERTS_DATA_DIR,
-                             self.VALID_ALERT_UUID + ".xml")
-    with open(file_path, "r") as golden_file:
-      xml_string = golden_file.read()
-    return xml_string
+    return models.Alert.objects.get(uuid=self.VALID_ALERT_UUID).content
 
   @property
   def partial_alert_content(self):
@@ -41,11 +42,7 @@ class UtilsTests(unittest.TestCase):
 
   @property
   def draft_alert_content(self):
-    file_path = os.path.join(settings.GOLDEN_ALERTS_DATA_DIR,
-                             self.DRAFT_ALERT_UUID + ".xml")
-    with open(file_path, "r") as draft_file:
-      xml_string = draft_file.read()
-    return xml_string
+    return models.Alert.objects.get(uuid=self.DRAFT_ALERT_UUID).content
 
   @property
   def invalid_alert_content(self):
@@ -53,10 +50,9 @@ class UtilsTests(unittest.TestCase):
 
   def test_parse_valid_alert(self):
     """Tests if valid XML alert parsed correctly."""
-    file_name = self.VALID_ALERT_UUID + ".xml"
     golden_alert_dict = {
         "circles": [],
-        "updated": parser.parse("2014-08-16T00:32:11+00:00"),
+        "sent": parser.parse("2014-08-16T00:32:11+00:00"),
         "expires": parser.parse("2014-08-16T01:32:11+00:00"),
         "alert_id": self.VALID_ALERT_UUID,
         "link": "%s%s" % (settings.SITE_URL,
@@ -75,7 +71,8 @@ class UtilsTests(unittest.TestCase):
         "polys": [],
         "urgency": "Immediate"
     }
-    alert_dict = utils.ParseAlert(self.valid_alert_content, "xml", file_name)
+    alert_dict = utils.ParseAlert(self.valid_alert_content, "xml",
+                                  self.VALID_ALERT_UUID)
     for key in golden_alert_dict:
       self.assertEqual(alert_dict[key], golden_alert_dict[key])
 
@@ -101,7 +98,7 @@ class UtilsTests(unittest.TestCase):
                           reverse("alert", args=[file_name, "xml"])),
     }
     alert_dict = utils.ParseAlert(self.partial_alert_content, "xml", file_name)
-    for key in alert_dict:
+    for key in golden_alert_dict:
       if not alert_dict[key]:
         continue  # We need values present in both template and alert files.
       self.assertEqual(alert_dict[key], golden_alert_dict[key])
@@ -128,19 +125,13 @@ class UtilsTests(unittest.TestCase):
     self.assertTrue(is_valid)
     self.assertEquals(error, None)
 
-    file_name = uuid + ".xml"
-    file_path = os.path.join(settings.ACTIVE_ALERTS_DATA_DIR, file_name)
-    with open(file_path, "r") as alert_file:
-      xml_string = alert_file.read()
-    alert_dict = utils.ParseAlert(xml_string, "xml", file_name)
-    draft_dict = utils.ParseAlert(self.draft_alert_content, "xml", file_name)
+    alert = models.Alert.objects.get(uuid=uuid)
+    alert_dict = utils.ParseAlert(alert.content, "xml", alert.uuid)
+    draft_dict = utils.ParseAlert(self.draft_alert_content, "xml", alert.uuid)
     # Remove alert IDs due to their random nature.
     del alert_dict["alert_id"]
     del draft_dict["alert_id"]
     self.assertDictEqual(alert_dict, draft_dict)
-    # Delete test alert.
-    os.unlink(file_path)
-    self.assertFalse(os.path.exists(file_path))
 
   def test_create_alert_failed(self):
     """Tests alert creation failed for invalid XML tree."""
@@ -159,12 +150,7 @@ class UtilsTests(unittest.TestCase):
     """
     uuid, _, _ = utils.CreateAlert(self.draft_alert_content,
                                    self.TEST_USER_NAME)
-    self.assertTrue(uuid in utils.GenerateFeed())
-
-    # Delete test alert.
-    file_path = os.path.join(settings.ACTIVE_ALERTS_DATA_DIR, uuid + ".xml")
-    os.unlink(file_path)
-    self.assertFalse(os.path.exists(file_path))
+    self.assertFalse(uuid in utils.GenerateFeed())
 
   @mock.patch("core.utils.GetCurrentDate",
               lambda: datetime.datetime(2014, 8, 10, 23, 55, 13, 0, pytz.utc))
@@ -177,7 +163,23 @@ class UtilsTests(unittest.TestCase):
                                    self.TEST_USER_NAME)
     self.assertFalse(uuid in utils.GenerateFeed())
 
-    # Delete test alert.
-    file_path = os.path.join(settings.INACTIVE_ALERTS_DATA_DIR, uuid + ".xml")
-    os.unlink(file_path)
-    self.assertFalse(os.path.exists(file_path))
+  @mock.patch("core.utils.GetCurrentDate",
+              lambda: datetime.datetime(2014, 8, 10, 23, 55, 11, 0, pytz.utc))
+  def test_generate_feed_alerts_db_query(self):
+    """Tests XML feed alerts order."""
+    feed = xml_etree.fromstring(utils.GenerateFeed())  # Deals with Unicode.
+    entries = []
+    for entry in feed.findall(".//{http://www.w3.org/2005/Atom}entry"):
+      entries.append(entry)
+
+    self.assertEqual(len(entries), 2)  # Check the feed length.
+
+    # Make sure alerts order is correct - most recent go first.
+    last_alert = entries[0]
+    previous_alert = entries[1]
+    last_alert_created_at = last_alert.find(
+        "{http://www.w3.org/2005/Atom}sent").text.strip()
+    previous_alert_created_at = previous_alert.find(
+        "{http://www.w3.org/2005/Atom}sent").text.strip()
+    self.assertTrue(last_alert_created_at > previous_alert_created_at)
+

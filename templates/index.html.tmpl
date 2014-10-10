@@ -233,7 +233,22 @@
   {% include "include/header.inc.tmpl" with tab='info' %}
 
   <div data-role="content" class="jqm-content">
-    <div >
+    <div>
+      <label class="field_label">{% trans "Language" %}:</label>
+        <select name="select-language"
+                id="select-language"
+                data-mini="true"
+                data-inline="true"
+                onchange="view2model()">
+        {% get_language_info_list for LANGUAGES as languages %}
+        {% for language in languages %}
+          <option value="{{ language.code }}">
+            {{ language.name_local }}
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+    <div>
       <label class="field_label">{% trans "Who is Issuing This Alert" %}:</label>
       <input type="text" name="text-senderName" id="text-senderName" data-mini="true" placeholder="" value="" onchange="view2model()">
     </div>
