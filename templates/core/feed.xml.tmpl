@@ -8,13 +8,13 @@
   <title>{% trans "Current Alerts" %}</title>
   <link href="{{ feed_url }}" rel="self" />
   <id>{{ feed_url }}</id>
-  <updated>{{ timestamp }}</updated>
+  <updated>{{ updated }}</updated>
   <generator>{{ version }}</generator>
   {% for entry in entries %}
     <entry>
       <author><name>{{ entry.name }}</name></author>
       <title>{{ entry.title }}</title>
-      <sent>{{ entry.sent }}</sent>
+      <updated>{{ entry.sent }}</updated>
       <link href="{{ entry.link }}" rel="alternate" />
       <id>uuid:{{ entry.alert_id }}</id>
       <cap:urgency>{{ entry.urgency }}</cap:urgency>
@@ -22,7 +22,7 @@
       <cap:certainty>{{ entry.certainty }}</cap:certainty>
       <cap:category>{{ entry.category }}</cap:category>
       <cap:responseType>{{ entry.response_type }}</cap:responseType>
-      <cap:expires>{{ entry.expires_string }}</cap:expires>
+      <cap:expires>{{ entry.expires }}</cap:expires>
       <cap:areaDesc>{{ entry.area_desc }}</cap:areaDesc>
 
       {% for poly in entry.polys %}

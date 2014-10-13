@@ -29,6 +29,10 @@ $PIP install beautifulsoup4
 # django - CAP collector is written on top of the Django framework.
 $PIP install django
 
+# gunicorn - Python WSGI HTTP Server for Unix. To serve as the prod webserver.
+# https://docs.djangoproject.com/en/dev/howto/deployment/wsgi/gunicorn/
+$PIP install gunicorn
+
 # lxml - Required for parsing XML.
 $PIP install lxml
 
@@ -47,15 +51,7 @@ $PIP install selenium
 
 # Generate Django secret key.
 SECRET_KEY=$(cat /dev/urandom | tr -dc 'a-z0-9!@#$%^&*()_+' | fold -w 50 | head -n 1)
-echo 'SECRET_KEY="$SECRET_KEY"' > ./sensitive.py
-
-# Create path for active alerts. Active alerts are served from this path in the
-# file system.
-mkdir -p alerts/active
-
-# Create path for inactive alerts.  Active alerts are moved here once they
-# expire and are kept forever.
-mkdir alerts/inactive
+echo "SECRET_KEY='$SECRET_KEY'" > ./sensitive.py
 
 # Link client part of the application.
 ln -s ../../javascript/cap_creator client
@@ -68,12 +64,20 @@ wget http://code.jquery.com/jquery-1.10.2.min.map -O ./client/js/jquery-1.10.2.m
 
 # Download JQuery Mobile JS library, which improves things like touch support.
 wget http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.js -O ./client/js/jquery.mobile-1.3.0.min.js
+wget http://code.jquery.com/mobile/1.3.0/images/icons-36-white.png -O ./client/css/images/icons-36-white.png
 
 # Download Moment JS library, for parsing, validating and displaying dates.
 wget http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.7.0/moment.min.js -O ./client/js/moment.min.js
 
 # Download OpenLayers JS library, for displaying a dynamic map to create areas.
-wget http://openlayers.org/api/2.11/OpenLayers.js -O ./client/js/OpenLayers.js
+wget https://github.com/openlayers/openlayers/blob/master/lib/OpenLayers.js -O ./client/js/OpenLayers.js
+wget https://github.com/openlayers/openlayers/blob/master/img/east-mini.png -O ./client/img/east-mini.png
+wget https://github.com/openlayers/openlayers/blob/master/img/north-mini.png -O ./client/img/north-mini.png
+wget https://github.com/openlayers/openlayers/blob/master/img/south-mini.png -O ./client/img/south-mini.png
+wget https://github.com/openlayers/openlayers/blob/master/img/west-mini.png -O ./client/img/west-mini.png
+wget https://github.com/openlayers/openlayers/blob/master/img/zoom-minus-mini.png -O ./client/img/zoom-minus-mini.png
+wget https://github.com/openlayers/openlayers/blob/master/img/zoom-plus-mini.png -O ./client/img/zoom-plus-mini.png
+wget https://github.com/openlayers/openlayers/blob/master/img/zoom-world-mini.png -O ./client/img/zoom-world-mini.png
 
 # Download JQuery mobile CSS file.
 wget http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.css -O ./client/css/jquery.mobile-1.3.0.min.css

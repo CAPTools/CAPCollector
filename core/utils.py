@@ -42,6 +42,7 @@ from dateutil import parser
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.template.loader import render_to_string
+from django.utils import timezone
 from django.utils.translation import ugettext
 from lxml import etree
 import pytz
@@ -64,6 +65,9 @@ def GenerateFeed(feed_type="xml"):
   """
 
   # Build feed header.
+  now = timezone.now().isoformat()
+  time_str, tz_str = now.split("+")
+  feed_updated = "%s+%s" % (time_str.split(".")[0], tz_str)
   feed_url = settings.SITE_URL + reverse("feed", args=[feed_type])
   entries = []
 
@@ -75,6 +79,7 @@ def GenerateFeed(feed_type="xml"):
   feed_dict = {
       "entries": entries,
       "feed_url": feed_url,
+      "updated": feed_updated,
       "version": settings.VERSION,
   }
 
@@ -125,7 +130,7 @@ def ParseAlert(xml_string, feed_type, alert_uuid):
   alert_dict = {}
   try:
     xml_tree = etree.fromstring(xml_string)
-    expires_string = GetFirstText(GetCapElement("expires", xml_tree))
+    expires_str = GetFirstText(GetCapElement("expires", xml_tree))
 
     # Extract the other needed values from the CAP XML.
     sender = GetFirstText(GetCapElement("sender", xml_tree))
@@ -140,9 +145,9 @@ def ParseAlert(xml_string, feed_type, alert_uuid):
 
     link = "%s%s" % (settings.SITE_URL,
                      reverse("alert", args=[alert_uuid, feed_type]))
-    expires = parser.parse(expires_string) if expires_string else None
-    sent_string = GetFirstText(GetCapElement("sent", xml_tree))
-    sent = parser.parse(sent_string) if sent_string else None
+    expires = parser.parse(expires_str).isoformat() if expires_str else None
+    sent_str = GetFirstText(GetCapElement("sent", xml_tree))
+    sent = parser.parse(sent_str).isoformat() if sent_str else None
 
     alert_dict = {
         "title": title,

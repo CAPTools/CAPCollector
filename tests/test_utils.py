@@ -4,11 +4,11 @@ __author__ = "arcadiy@google.com (Arkadii Yakovets)"
 
 import datetime
 import os
+import re
 from xml.etree import cElementTree as xml_etree
 
 from core import models
 from core import utils
-from dateutil import parser
 from django import test
 from django.conf import settings
 from django.core.urlresolvers import reverse
@@ -27,6 +27,8 @@ class UtilsTests(test.TestCase):
   TEST_USER_NAME = "test_user"
   DRAFT_ALERT_UUID = "a453f4bb-3249-45f6-8ddc-360da19fcc03"
   VALID_ALERT_UUID = "3ff7a28e-44b7-4ca5-aa5f-06dc42e474c1"
+  FEED_DATE_FORMAT_RE = re.compile(
+      r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+-]\d{2}:\d{2}")
 
   @property
   def valid_alert_content(self):
@@ -52,8 +54,8 @@ class UtilsTests(test.TestCase):
     """Tests if valid XML alert parsed correctly."""
     golden_alert_dict = {
         "circles": [],
-        "sent": parser.parse("2014-08-16T00:32:11+00:00"),
-        "expires": parser.parse("2014-08-16T01:32:11+00:00"),
+        "sent": "2014-08-16T00:32:11+00:00",
+        "expires": "2014-08-16T01:32:11+00:00",
         "alert_id": self.VALID_ALERT_UUID,
         "link": "%s%s" % (settings.SITE_URL,
                           reverse("alert", args=[self.VALID_ALERT_UUID,
@@ -178,8 +180,14 @@ class UtilsTests(test.TestCase):
     last_alert = entries[0]
     previous_alert = entries[1]
     last_alert_created_at = last_alert.find(
-        "{http://www.w3.org/2005/Atom}sent").text.strip()
+        "{http://www.w3.org/2005/Atom}updated").text.strip()
     previous_alert_created_at = previous_alert.find(
-        "{http://www.w3.org/2005/Atom}sent").text.strip()
+        "{http://www.w3.org/2005/Atom}updated").text.strip()
     self.assertTrue(last_alert_created_at > previous_alert_created_at)
 
+  def test_feed_updated_date_format(self):
+    """Tests XML feed <updated> field format."""
+    feed = xml_etree.fromstring(utils.GenerateFeed())
+    updated = feed.find("{http://www.w3.org/2005/Atom}updated").text.strip()
+    self.assertEqual(len(self.FEED_DATE_FORMAT_RE.findall(updated)), 1)
+    self.assertEqual(self.FEED_DATE_FORMAT_RE.findall(updated)[0], updated)
