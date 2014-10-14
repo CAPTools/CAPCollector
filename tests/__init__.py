@@ -106,6 +106,7 @@ class CAPCollectorLiveServer(TestBase, LiveServerTestCase):
   DESCRIPTION_ELEMENT_NAME = "textarea-description"
   INSTRUCTION_ELEMENT_NAME = "textarea-instruction"
   CONTACT_ELEMENT_NAME = "text-contact"
+  WEB_ELEMENT_NAME = "text-web"
 
   # Area tab.
   AREA_TEMPLATE_ELEMENT = "//*[@id='select-area-template']"
@@ -243,6 +244,10 @@ class CAPCollectorLiveServer(TestBase, LiveServerTestCase):
   @property
   def contact_element(self):
     return self.webdriver.find_element_by_name(self.CONTACT_ELEMENT_NAME)
+
+  @property
+  def web_element(self):
+    return self.webdriver.find_element_by_name(self.WEB_ELEMENT_NAME)
 
   @property
   def area_template_select(self):
@@ -394,6 +399,9 @@ class CAPCollectorLiveServer(TestBase, LiveServerTestCase):
 
   def SetContact(self, contact):
     self.contact_element.send_keys(contact)
+
+  def SetWeb(self, url):
+    self.web_element.send_keys(url)
 
   def SetArea(self, area):
     self.area_element.send_keys(area)

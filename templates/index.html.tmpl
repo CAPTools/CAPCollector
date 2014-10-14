@@ -28,6 +28,16 @@
   <script src="https://maps.google.com/maps/api/js?v=3.7&amp;sensor=false"></script>
 
   <script src="client/js/config.js"></script>
+  <script>
+    // Define default viewport for map.
+    var mapDefaultViewport = {
+      centerLat: {{ map_default_viewport.center_lat }},
+      centerLon: {{ map_default_viewport.center_lon }},
+      zoomLevel: {{ map_default_viewport.zoom_level }}
+    };
+    // Now create a global config object for the whole.
+    var config = new CAPCreatorConfiguration(mapDefaultViewport);
+  </script>
   <script src="client/js/caplib.js"></script>
   <script src="client/js/cap_map.js"></script>
   <script src="client/js/widgets.js"></script>
@@ -312,6 +322,11 @@
     <div class="form_row_div">
       <label class="field_label" >{% trans "Who is Media Contact" %}:</label>
       <input type="text" name="text-contact" id="text-contact" data-mini="true" placeholder="{% trans "Include telephone and/or email" %}" value="" onchange="view2model()">
+    </div>
+
+    <div class="form_row_div">
+      <label class="field_label" >{% trans "Alternate Alert Website" %}:</label>
+      <input type="text" name="text-web" id="text-web" data-mini="true" placeholder="{% trans "URL for a separate HTML version of this alert" %}" value="" onchange="view2model()">
     </div>
 
     <div id="parameter_div" class="form_row_div"></div>

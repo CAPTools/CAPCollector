@@ -34,6 +34,13 @@ LANGUAGES = (
     ("pt", "Português"),
 )
 
+# Set map default viewport here.
+MAP_DEFAULT_VIEWPORT = {
+    "center_lat": 37.422,
+    "center_lon": -122.084,
+    "zoom_level": 12,
+}
+
 ###### Default settings (only modify for advanced configuration) ######
 
 SITE_URL = SITE_SCHEME + "://" + SITE_DOMAIN

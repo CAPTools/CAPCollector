@@ -52,6 +52,11 @@ class IndexView(TemplateView):
   def dispatch(self, *args, **kwargs):
     return super(IndexView, self).dispatch(*args, **kwargs)
 
+  def get_context_data(self, **kwargs):
+    context = super(IndexView, self).get_context_data(**kwargs)
+    context['map_default_viewport'] = settings.MAP_DEFAULT_VIEWPORT
+    return context
+
 
 class PostView(View):
   """Handles new alert creation."""

@@ -122,13 +122,13 @@ class UtilsTests(test.TestCase):
 
   def test_create_alert_created(self):
     """Tests alert created successfully."""
-    uuid, is_valid, error = utils.CreateAlert(self.draft_alert_content,
-                                              self.TEST_USER_NAME)
-    self.assertTrue(UUID_RE.match(uuid))
+    alert_uuid, is_valid, error = utils.CreateAlert(self.draft_alert_content,
+                                                    self.TEST_USER_NAME)
+    self.assertTrue(UUID_RE.match(alert_uuid))
     self.assertTrue(is_valid)
     self.assertEquals(error, None)
 
-    alert = models.Alert.objects.get(uuid=uuid)
+    alert = models.Alert.objects.get(uuid=alert_uuid)
     alert_dict = utils.ParseAlert(alert.content, "xml", alert.uuid)
     draft_dict = utils.ParseAlert(self.draft_alert_content, "xml", alert.uuid)
     # Remove alert IDs due to their random nature.

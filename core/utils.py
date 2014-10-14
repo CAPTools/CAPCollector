@@ -152,6 +152,7 @@ def ParseAlert(xml_string, feed_type, alert_uuid):
     alert_dict = {
         "title": title,
         "link": link,
+        "web": GetFirstText(GetCapElement("web", xml_tree)),
         "name": name,
         "sender": sender,
         "expires": expires,
@@ -237,12 +238,19 @@ def CreateAlert(xml_string, username):
 
   if valid:
     msg_id = str(uuid.uuid4())
-
     # Assign <identifier> and <sender> values.
     find_identifier = etree.XPath("//p:identifier",
                                   namespaces={"p": settings.CAP_NS})
     identifier = find_identifier(xml_tree)[0]
     identifier.text = msg_id
+
+    # Set default <web> field if one was not filled by user.
+    find_web = etree.XPath("//p:info/p:web",
+                           namespaces={"p": settings.CAP_NS})
+    web = find_web(xml_tree)[0]
+    if web.text == "pending":
+      web.text = "%s%s" % (settings.SITE_URL,
+                           reverse("alert", args=[msg_id, "html"]))
 
     find_sender = etree.XPath("//p:sender",
                               namespaces={"p": settings.CAP_NS})

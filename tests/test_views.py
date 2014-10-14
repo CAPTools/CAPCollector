@@ -7,6 +7,7 @@ import os
 from core import models
 from core import utils
 from django.conf import settings
+from django.core.urlresolvers import reverse
 from django.test import Client
 from tests import CAPCollectorLiveServer
 from tests import TestBase
@@ -54,6 +55,12 @@ class SmokeTests(TestBase):
     """Tests proper handling for invalid alert IDs."""
     response = self.client.get("/feed/1111-12-12.html")
     self.assertEqual(response.status_code, 404)
+
+  def test_index_page_context(self):
+    self.login()
+    response = self.client.get("/")
+    self.assertEquals(response.context['map_default_viewport'],
+                      settings.MAP_DEFAULT_VIEWPORT)
 
 
 class End2EndTests(CAPCollectorLiveServer):
@@ -111,6 +118,8 @@ class End2EndTests(CAPCollectorLiveServer):
     self.SetAlertSenderName(self.sender_name)
     self.SetInstruction(self.instruction)
     self.SetContact(self.contact)
+    if "web" in golden_dict:
+      self.SetWeb(golden_dict["web"])
 
     # Area tab.
     self.GoToAreaTab()
@@ -136,6 +145,7 @@ class End2EndTests(CAPCollectorLiveServer):
         "urgency": "Expected",
         "severity": "Moderate",
         "certainty": "Likely",
+        "web": "http://my.custom.uri",
         "title": "Some really informative alert headline",
         "language": "pt",
         "area_desc": "This and that area"
@@ -285,15 +295,15 @@ class End2EndTests(CAPCollectorLiveServer):
     self.SetPassword(self.TEST_USER_PASSWORD)
     self.ReleaseAlert()
 
-    uuid = UUID_RE.findall(self.GetUuid())[0]
-    self.assertTrue(models.Alert.objects.filter(uuid=uuid).exists())
+    alert_uuid = UUID_RE.findall(self.GetUuid())[0]
+    self.assertTrue(models.Alert.objects.filter(uuid=alert_uuid).exists())
 
     # Ensure that feed contains new alert.
     response = self.client.get("/feed.xml")
-    self.assertContains(response, uuid)
+    self.assertContains(response, alert_uuid)
 
     # Check alert XML against initial values.
-    alert = models.Alert.objects.get(uuid=uuid)
+    alert = models.Alert.objects.get(uuid=alert_uuid)
     message_template_path = os.path.join(settings.TEMPLATES_DIR,
                                          "message/test_msg1.xml")
     with open(message_template_path, "r") as template_file:
@@ -304,9 +314,10 @@ class End2EndTests(CAPCollectorLiveServer):
     with open(area_template_path, "r") as template_file:
       area_template_xml_string = template_file.read()
 
-    alert_dict = utils.ParseAlert(alert.content, "xml", uuid)
-    message_dict = utils.ParseAlert(message_template_xml_string, "xml", uuid)
-    area_dict = utils.ParseAlert(area_template_xml_string, "xml", uuid)
+    alert_dict = utils.ParseAlert(alert.content, "xml", alert_uuid)
+    message_dict = utils.ParseAlert(message_template_xml_string, "xml",
+                                    alert_uuid)
+    area_dict = utils.ParseAlert(area_template_xml_string, "xml", alert_uuid)
 
     # Message template assertions.
     for key in message_dict:
@@ -319,6 +330,11 @@ class End2EndTests(CAPCollectorLiveServer):
       if not area_dict[key]:
         continue  # We need values present in both template and alert files.
       self.assertEqual(alert_dict[key], area_dict[key])
+
+    # Check web field is set to default.
+    alert_default_web = "%s%s" % (settings.SITE_URL,
+                                  reverse("alert", args=[alert_uuid, "html"]))
+    self.assertEqual(alert_dict["web"], alert_default_web)
 
   def test_ui_language_change(self):
     """Emulates UI language change process using webdriver."""
