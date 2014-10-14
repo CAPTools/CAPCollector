@@ -6,7 +6,7 @@
 <html>
 <!--
   CAPCreator -- Common Alerting Protocol 1.2 composition tool
-  version 0.9.2 - 2 December 2013
+  version 0.9.3 - 12 June 2014
 
   Copyright (c) 2013, Carnegie Mellon University
   All rights reserved.
@@ -128,9 +128,41 @@
     </div>
 
     <div class="form_row_div">
-    <label class="field_label">{% trans "Set Hazard Type and Recommended Protective Action" %}:</label>
-    <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true" >
-      <label for="select-categories" class="ui-hidden-accessible">{% trans "Set Hazard Type" %}</label>
+      <label class="field_label">{% trans "Set either Warning, Emergency or Instruction Type" %}:</label>
+      <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true" >
+      <label for="select-eventcode" class="ui-hidden-accessible">{% trans "Set Hazard Type" %}</label>
+      <select name="select-eventcode" id="select-eventcode" data-mini="true" data-native-menu="false" onchange="view2model()">
+        <option value="None">{% trans "--Warning Type--" %}</option>
+        <option value="AVW">{% trans "Avalanche Warnings" %}</option>
+        <option value="CDW">{% trans "Civil Danger Warning" %}</option>
+        <option value="EQW">{% trans "Earthquake Warning" %}</option>
+        <option value="FRW">{% trans "Fire Warning" %}</option>
+        <option value="HMW">{% trans "Hazardous Material Warning" %}</option>
+        <option value="LEW">{% trans "Law Enforcement Warning" %}</option>
+        <option value="NUW">{% trans "Nuclear Power Plant Warning" %}</option>
+        <option value="RHW">{% trans "Radiological Hazard Warning" %}</option>
+        <option value="VOW">{% trans "Volcano Warning" %}</option>
+       </select>
+       <label for="select-emrgncycode" class="ui-hidden-accessible">{% trans "Set Emergency Type" %}</label>
+       <select name="select-emrgncycode" id="select-emrgncycode" data-mini="true" data-native-menu="false" onchange="view2model()">
+         <option value="None">{% trans "--Emergency Type--" %}</option>
+         <option value="AVA">{% trans "Avalanche Watch/Utilities" %}</option>
+         <option value="CAE">{% trans "Child Abduction Emergency" %}</option>
+         <option value="CEM">{% trans "Civil Emergency Message" %}</option>
+         <option value="LAE">{% trans "Local Area Emergency" %}</option>
+         <option value="TOE">{% trans "911 Telephone Outage Emergency" %}</option>
+       </select>
+       <label for="select-instrcode" class="ui-hidden-accessible">{% trans "Set Instruction Type" %}</label>
+       <select name="select-instrcode" id="select-instrcode" data-mini="true" data-native-menu="false" onchange="view2model()">
+         <option value="None">{% trans "--Instruction Type--" %}</option>
+         <option value="EVI">{% trans "Evacuation Immediate" %}</option>
+         <option value="SPW">{% trans "Shelter in Place Warning" %}</option>
+       </select>
+     </div>
+     <div class="form_row_div">
+       <label class="field_label">{% trans "Set Hazard Type and Recommended Protective Action" %}:</label>
+       <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true" >
+     <label for="select-categories" class="ui-hidden-accessible">{% trans "Set Hazard Type" %}</label>
       <select name="select-categories" id="select-categories" data-mini="true" data-native-menu="false" onchange="view2model()">
         <option value="Other">{% trans "--Hazard Class--" %}</option>
         <option value="Geo">{% trans "Geophysical" %}</option>
@@ -212,10 +244,19 @@
         <option value="240">{% trans "4 Hours" %}</option>
         <option value="300">{% trans "5 Hours" %}</option>
         <option value="360">{% trans "6 Hours" %}</option>
+        <option value="More">{% trans "More" %}...</option>
       </select>
     </fieldset>
     </div>
-    <input type="hidden" id="hidden-references" name="hidden-references" value="" />
+    <!--    <input type="text" id="hidden-references" name="hidden-references" value="" />  -->
+     <div >
+       <label class="field_label">{% trans "Set Manual Effective Expiration(Activated if choice is More)" %}:</label>
+       <input type="text" id="text-expires" name="text-expires" placeholder="{% trans "enter in minutes" %}" value="" />
+    </div>
+    <div>
+      <label class="field_label">{% trans "Reference(Activated if MsgType is Update or Cancel)" %}:</label>
+      <input type="text" id="hidden-references" name="hidden-references" placeholder="{% trans "sender,identifier,sent" %}" value="" />
+    </div>
     <br>
 
     <a href="#info" data-role="button" data-mini="true" class="ui-mini" data-icon="arrow-r"
