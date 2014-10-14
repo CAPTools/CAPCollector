@@ -6,7 +6,6 @@ import os
 
 from core import models
 from core import utils
-from dateutil import parser
 from django.conf import settings
 from django.test import Client
 from tests import CAPCollectorLiveServer
@@ -152,8 +151,8 @@ class End2EndTests(CAPCollectorLiveServer):
     response = self.client.get("/feed.xml")
     self.assertContains(response, uuid)
     alert_dict = self.CheckValues(uuid, golden_dict)
-    alert_sent_at = parser.parse(alert_dict["sent"])
-    alert_expires_at = parser.parse(alert_dict["expires"])
+    alert_sent_at = alert_dict["sent"]
+    alert_expires_at = alert_dict["expires"]
     self.assertEqual((alert_expires_at - alert_sent_at).seconds / 60,
                      expiration_minutes)
 
@@ -191,7 +190,7 @@ class End2EndTests(CAPCollectorLiveServer):
     sent_at = initial_alert_dict["sent"]
     initial_alert_reference = "%s@%s,%s,%s" % (self.TEST_USER_LOGIN,
                                                settings.SITE_DOMAIN,
-                                               uuid, sent_at)
+                                               uuid, sent_at.isoformat())
     # Create alert update.
     self.GoToAlertsTab()
     self.OpenLatestAlert()
@@ -201,8 +200,8 @@ class End2EndTests(CAPCollectorLiveServer):
 
     updated_alert_dict = self.CheckValues(uuid, update_dict, is_update=True)
     self.assertEqual(updated_alert_dict["msg_type"], "Update")
-    sent_at = parser.parse(updated_alert_dict["sent"])
-    expires_at = parser.parse(updated_alert_dict["expires"])
+    sent_at = updated_alert_dict["sent"]
+    expires_at = updated_alert_dict["expires"]
     self.assertEqual((expires_at - sent_at).seconds / 60, 60)
     updated_alert_references = updated_alert_dict["references"]
     self.assertEqual(initial_alert_reference, updated_alert_references)
@@ -231,7 +230,7 @@ class End2EndTests(CAPCollectorLiveServer):
     sent_at = initial_alert_dict["sent"]
     initial_alert_reference = "%s@%s,%s,%s" % (self.TEST_USER_LOGIN,
                                                settings.SITE_DOMAIN,
-                                               uuid, sent_at)
+                                               uuid, sent_at.isoformat())
     # Create alert update.
     self.GoToAlertsTab()
     self.OpenLatestAlert()
@@ -251,8 +250,8 @@ class End2EndTests(CAPCollectorLiveServer):
     del initial_dict["title"]  # Currently title is omitted.
     canceled_alert_dict = self.CheckValues(uuid, initial_dict)
     self.assertEqual(canceled_alert_dict["msg_type"], "Cancel")
-    sent_at = parser.parse(canceled_alert_dict["sent"])
-    expires_at = parser.parse(canceled_alert_dict["expires"])
+    sent_at = canceled_alert_dict["sent"]
+    expires_at = canceled_alert_dict["expires"]
     self.assertEqual((expires_at - sent_at).seconds / 60, 60)
     canceled_alert_references = canceled_alert_dict["references"]
     self.assertEqual(initial_alert_reference, canceled_alert_references)

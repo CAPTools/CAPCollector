@@ -10,23 +10,27 @@
 {% block content %}
   <h2>{% trans "Current Alerts" %}</h2>
   {% if entries %}
-    <div>
-      {% trans "Last updated" %} ({{ time_zone }}): {{ entries.0.updated }}
-  </div>
+    <div class="metadata subtitle">
+      {% trans "Last updated" %} ({{ time_zone }}): {{ entries.0.sent }}
+    </div>
+
+    <ul class="alert-list">
+      {% for entry in entries %}
+        <li>
+          <div class="alert-title"><a href="{{ entry.link }}">{{ entry.title }}</a></div>
+          <div class="metadata">
+            <div>
+              {% blocktrans with sent=entry.sent|naturaltime %}Posted {{ sent }}{% endblocktrans %} ·
+              {% blocktrans with expires=entry.expires|naturaltime %}Expires in {{ expires }}{% endblocktrans %}
+            </div>
+          </div>
+          {# TODO(arcadiy): Render shapes on map based on polys/circles insetead of area_desc. #}
+          {% if entry.description %}
+            <div class="normal">{{ entry.description }}</div>
+          {% endif %}
+          <div class="normal">{% trans "Locations" %}: {{ entry.area_desc }}</div>
+        </li>
+      {% endfor %}
+    </ul>
   {% endif %}
-  <ul>
-  {% for entry in entries %}
-    <li>
-      <div><a href="{{ entry.link }}">{{ entry.title }}</a></div>
-      <div><strong>{% trans "Issued" %}:</strong>{{ entry.updated|timezone:time_zone|localize }} ({{ entry.updated|naturaltime }})</div>
-      <div><strong>{% trans "Expires" %}:</strong> {{ entry.expires|timezone:time_zone|localize }} ({{ entry.expires|naturaltime }})</div>
-      {# TODO(arcadiy): Render shapes on map based on polys/circles insetead of area_desc. #}
-      <div><strong>{% trans "Areas affected" %}:</strong> {{ entry.area_desc }}</div>
-      {% if entry.description %}
-        <div><strong>{% trans "Description" %}:</strong>{{ entry.description|truncatechars:140 }}</div>
-      {% endif %}
-      <div>{{ entry.author }}</div>
-    </li>
-  {% endfor %}
-  </ul>
 {% endblock content %}

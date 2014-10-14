@@ -9,6 +9,7 @@ from xml.etree import cElementTree as xml_etree
 
 from core import models
 from core import utils
+from dateutil import parser
 from django import test
 from django.conf import settings
 from django.core.urlresolvers import reverse
@@ -54,8 +55,8 @@ class UtilsTests(test.TestCase):
     """Tests if valid XML alert parsed correctly."""
     golden_alert_dict = {
         "circles": [],
-        "sent": "2014-08-16T00:32:11+00:00",
-        "expires": "2014-08-16T01:32:11+00:00",
+        "sent": parser.parse("2014-08-16T00:32:11+00:00"),
+        "expires": parser.parse("2014-08-16T01:32:11+00:00"),
         "alert_id": self.VALID_ALERT_UUID,
         "link": "%s%s" % (settings.SITE_URL,
                           reverse("alert", args=[self.VALID_ALERT_UUID,

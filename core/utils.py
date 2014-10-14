@@ -145,14 +145,15 @@ def ParseAlert(xml_string, feed_type, alert_uuid):
 
     link = "%s%s" % (settings.SITE_URL,
                      reverse("alert", args=[alert_uuid, feed_type]))
-    expires = parser.parse(expires_str).isoformat() if expires_str else None
+    expires = parser.parse(expires_str) if expires_str else None
     sent_str = GetFirstText(GetCapElement("sent", xml_tree))
-    sent = parser.parse(sent_str).isoformat() if sent_str else None
+    sent = parser.parse(sent_str) if sent_str else None
 
     alert_dict = {
         "title": title,
         "link": link,
         "name": name,
+        "sender": sender,
         "expires": expires,
         "msg_type": GetFirstText(GetCapElement("msgType", xml_tree)),
         "references": GetFirstText(GetCapElement("references", xml_tree)),
