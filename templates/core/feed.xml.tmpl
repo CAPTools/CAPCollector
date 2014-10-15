@@ -14,7 +14,7 @@
     <entry>
       <author><name>{{ entry.name }}</name></author>
       <title>{{ entry.title }}</title>
-      <updated>{{ entry.sent }}</updated>
+      <updated>{{ entry.sent|date:'c' }}</updated>
       <link href="{{ entry.link }}" rel="alternate" />
       <id>uuid:{{ entry.alert_id }}</id>
       <cap:urgency>{{ entry.urgency }}</cap:urgency>
