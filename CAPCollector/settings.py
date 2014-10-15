@@ -52,7 +52,6 @@ CERT_NS = "http://www.w3.org/2000/09/xmldsig#"
 VERSION = "CAPCollector v1.0"
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-DATA_DIR = os.path.join(BASE_DIR, "alerts")
 
 # Your keys and certificates.
 CREDENTIALS_DIR = os.path.join(BASE_DIR, "credentials")
@@ -177,7 +176,7 @@ TESTING = "test" in sys.argv
 # Import development environment settings if needed.
 if os.environ.get("CAPTOOLS_DEV"):
   from settings_dev import *
-elif TESTING:
+if TESTING:
   from settings_test import *
 
 

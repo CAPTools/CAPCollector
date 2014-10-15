@@ -4,13 +4,13 @@ __author__ = "arcadiy@google.com (Arkadii Yakovets)"
 
 import os
 import re
-import unittest
 
 from django.conf import settings
 from django.contrib.auth.models import Group
 from django.contrib.auth.models import User
 from django.test import Client
 from django.test import LiveServerTestCase
+from django.test import TestCase
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as ec
@@ -21,7 +21,7 @@ UUID_RE = re.compile(
     r"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}")
 
 
-class TestBase(unittest.TestCase):
+class TestBase(TestCase):
   """Base class for other tests."""
 
   TEST_USER_EMAIL = "mr.web@driver.com"
@@ -29,20 +29,13 @@ class TestBase(unittest.TestCase):
   TEST_USER_PASSWORD = "test_password"
 
   def setUp(self):
-    self.test_user = User.objects.create_user(email=self.TEST_USER_EMAIL,
-                                              username=self.TEST_USER_LOGIN,
-                                              password=self.TEST_USER_PASSWORD)
-    self.creators_group = Group.objects.create(
-        name=settings.ALERT_CREATORS_GROUP_NAME)
-    self.test_user.groups.add(self.creators_group)
-
-  def tearDown(self):
-    self.creators_group.delete()
-    self.test_user.delete()
+    self.test_user = User.objects.get(username=self.TEST_USER_LOGIN)
 
 
 class CAPCollectorLiveServer(TestBase, LiveServerTestCase):
   """Base class for live server tests."""
+  fixtures = ["test_alerts.json", "test_auth.json", "test_templates.json"]
+
   LATEST_ALERT_XPATH = "//*[@id='current_alerts_span']/a"
   UPDATE_ALERT_BUTTON_XPATH = "//*[@id='update_button']"
   CANCEL_ALERT_BUTTON_XPATH = "//*[@id='cancel_button']"
@@ -131,20 +124,11 @@ class CAPCollectorLiveServer(TestBase, LiveServerTestCase):
   def setUpClass(cls):
     cls.client = Client()
     cls.webdriver = WebDriver()
-
-    # Use testdata templates.
-    os.rename(settings.TEMPLATES_DIR, "%s.bak" % settings.TEMPLATES_DIR)
-    os.symlink(settings.TEMPLATES_TESTDATA_DIR, settings.TEMPLATES_DIR)
-
     super(CAPCollectorLiveServer, cls).setUpClass()
 
   @classmethod
   def tearDownClass(cls):
     cls.webdriver.quit()
-    # Move real templates back.
-    os.unlink(settings.TEMPLATES_DIR)
-    os.rename("%s.bak" % settings.TEMPLATES_DIR, settings.TEMPLATES_DIR)
-
     super(CAPCollectorLiveServer, cls).tearDownClass()
 
   def WaitUntilVisible(self, xpath, by=By.XPATH, timeout=5):

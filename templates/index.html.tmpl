@@ -107,16 +107,22 @@
   {% include "include/header.inc.tmpl" with tab='alert' %}
 
   <div data-role="content" class="jqm-content" >
-
-    <label class="field_label">{% trans "Message Template (Optional)" %}:</label>
-    <select name="select-message-template" id="select-message-template" data-mini="true" data-inline="true" onchange="loadMessageTemplate()">
-      <option value="None">{% trans "None" %}</option>
-    </select>
-
+    <div class="form_row_div">
+      <label class="field_label">{% trans "Message Template (Optional)" %}:</label>
+      <fieldset data-role="controlgroup" data-type="horizontal" >
+        <select name="select-message-template" id="select-message-template" data-mini="true" data-inline="true" onchange="handleMessageTemplateChange('{% url 'template' 'message' %}', '{% url 'admin:core_messagetemplate_add' %}');">
+          <option value="None">{% trans "None" %}</option>
+         {% for template in message_templates %}
+           <option value="{{ template.id }}">{{ template.title }}</option>
+         {% endfor %}
+         <option value="CreateNewMessageTemplate">{% trans "Create a New Message Template" %}</option>
+        </select>
+      </fieldset>
+    </div>
     <div class="form_row_div">
     <label class="field_label">{% trans "Set Type of Message" %}:</label>
     <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
-      <label for="select-status" class="ui-hidden-accessible">Status</label>
+      <label for="select-status" class="ui-hidden-accessible">{% trans "Status" %}</label>
       <select name="select-status" id="select-status" data-mini="true" data-inline="true" onchange="view2model()">
         <option value="Actual">{% trans "Actual" %}</option>
         <option value="Exercise">{% trans "Exercise" %}</option>
@@ -309,15 +315,23 @@
 
 
 <!-- AREA BLOCK -->
-<div data-role="page"  id="area">
+<div data-role="page" id="area">
 
   {% include "include/header.inc.tmpl" with tab='area' %}
 
   <div data-role="content" data-role="content" class="jqm-content">
-    <select name="select-area-template" id="select-area-template" data-mini="true" data-inline="true" onchange="loadAreaTemplate()">
-      <option value="None">{% trans "Select Area Template (Optional)" %}</option>
-    </select>
-
+    <div class="form_row_div">
+      <label class="field_label">{% trans "Area Template (Optional)" %}:</label>
+      <fieldset data-role="controlgroup" data-mini="true" data-type="horizontal" data-inline="true">
+        <select name="select-area-template" id="select-area-template" data-mini="true" data-inline="true" onchange="handleAreaTemplateChange('{% url 'template' 'area' %}', '{% url 'admin:core_areatemplate_add' %}');">
+          <option value="None">{% trans "None" %}</option>
+          {% for template in area_templates %}
+            <option value="{{ template.id }}">{{ template.title }}</option>
+          {% endfor %}
+          <option value="CreateNewAreaTemplate">{% trans "Create a New Area Template" %}</option>
+        </select>
+      </fieldset>
+    </div>
     <label class="field_label">{% trans "Describe the Alert Area (REQUIRED)" %}:</label>
     <textarea name="textarea-areaDesc" id="textarea-areaDesc" data-mini="true" placeholder="" onchange="view2model()"></textarea>
 

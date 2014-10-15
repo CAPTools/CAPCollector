@@ -1,0 +1,92 @@
+[
+{
+  "fields": {
+    "content": "<alert xmlns=\"urn:oasis:names:tc:emergency:cap:1.2\">\r\n  <identifier>pending</identifier>\r\n  <sender>unverified</sender>\r\n  <sent>2014-02-25T23:07:03+00:00</sent>\r\n  <status>Exercise</status>\r\n  <msgType>Alert</msgType>\r\n  <scope>Restricted</scope>\r\n  <info>\r\n    <language>en-us</language>\r\n    <category>Env</category>\r\n    <event>This is a test of myPAWS</event>\r\n    <responseType>Assess</responseType>\r\n    <urgency>Immediate</urgency>\r\n    <severity>Extreme</severity>\r\n    <certainty>Observed</certainty>\r\n    <expires>2014-02-26T02:07:03+00:00</expires>\r\n    <senderName>Martin/DMI</senderName>\r\n    <headline>This is a test of myPAWS</headline>\r\n    <description>Just fooling around</description>\r\n    <instruction>Log and ignore</instruction>\r\n    <contact>Hakan Erdogmus -:)</contact>\r\n    <area>\r\n      <areaDesc>CMU B19</areaDesc>\r\n      <circle>37.41316,-122.05868 0.24472</circle>\r\n    </area>\r\n  </info>\r\n</alert>",
+    "created_at": "2014-09-12T21:14:39.783Z",
+    "last_modified_at": "2014-09-24T18:43:30.040Z",
+    "title": "CMU B19"
+  },
+  "model": "core.areatemplate",
+  "pk": 1
+},
+{
+  "fields": {
+    "content": "<alert xmlns=\"urn:oasis:names:tc:emergency:cap:1.2\">\r\n  <identifier>ca15f4ac-7ee9-4391-a9da-a75f1c3374dd</identifier>\r\n  <sender>none@incident.com</sender>\r\n  <sent>2013-08-20T21:50:52+00:00</sent>\r\n  <status>Actual</status>\r\n  <msgType>Update</msgType>\r\n  <scope>Public</scope>\r\n  <note>Created using CAPCreator0.9</note>\r\n  <references>none@incident.com,7e43a818-ce4f-4a70-81e3-c0e1abe5f6d2,2013-08-20T20:01:50+00:00</references>\r\n  <info>\r\n    <language>en-us</language>\r\n    <category>Env</category>\r\n    <event/>\r\n    <responseType>AllClear</responseType>\r\n    <urgency>Expected</urgency>\r\n    <severity>Severe</severity>\r\n    <certainty>Possible</certainty>\r\n    <expires>2013-08-20T22:50:52+00:00</expires>\r\n    <description>This is the description</description>\r\n    <instruction>This is the instruction</instruction>\r\n    <area>\r\n      <areaDesc>LinkedIn Office</areaDesc>\r\n      <circle>37.37878,-122.08917 0.08809</circle>\r\n      <geocode>\r\n        <valueName>geo_code1</valueName>\r\n        <value>geo_code_value1</value>\r\n      </geocode>\r\n    </area>\r\n  </info>\r\n</alert>",
+    "created_at": "2014-09-17T23:24:49.431Z",
+    "last_modified_at": "2014-09-24T18:43:14.580Z",
+    "title": "LinkedIn Office"
+  },
+  "model": "core.areatemplate",
+  "pk": 2
+},
+{
+  "fields": {
+    "content": "<alert xmlns=\"urn:oasis:names:tc:emergency:cap:1.2\">\r\n  <identifier>ca15f4ac-7ee9-4391-a9da-a75f1c3374dd</identifier>\r\n  <sender>none@incident.com</sender>\r\n  <sent>2013-08-20T21:50:52+00:00</sent>\r\n  <status>Actual</status>\r\n  <msgType>Update</msgType>\r\n  <scope>Public</scope>\r\n  <note>Created using CAPCreator0.9</note>\r\n  <references>none@incident.com,7e43a818-ce4f-4a70-81e3-c0e1abe5f6d2,2013-08-20T20:01:50+00:00</references>\r\n  <info>\r\n    <language>en-us</language>\r\n    <category>Env</category>\r\n    <event/>\r\n    <responseType>AllClear</responseType>\r\n    <urgency>Expected</urgency>\r\n    <severity>Severe</severity>\r\n    <certainty>Possible</certainty>\r\n    <expires>2013-08-20T22:50:52+00:00</expires>\r\n    <description>This is the description</description>\r\n    <instruction>This is the instruction</instruction>\r\n    <area>\r\n  <areaDesc>Walmart</areaDesc>\r\n  <circle>37.37878,-122.08917 0.08809</circle>\r\n    </area>\r\n  </info>\r\n</alert>",
+    "created_at": "2014-09-24T18:43:57.271Z",
+    "last_modified_at": "2014-09-24T18:43:57.271Z",
+    "title": "Walmart"
+  },
+  "model": "core.areatemplate",
+  "pk": 3
+},
+{
+  "fields": {
+    "content": "<alert xmlns=\"urn:oasis:names:tc:emergency:cap:1.2\">\r\n  <identifier>pending</identifier>\r\n  <sender>unverified</sender>\r\n  <sent>2014-02-25T23:07:03+00:00</sent>\r\n  <status>Exercise</status>\r\n  <msgType>Alert</msgType>\r\n  <scope>Restricted</scope>\r\n  <info>\r\n    <language>en-us</language>\r\n    <category>Env</category>\r\n    <event>This is a test of myPAWS</event>\r\n    <responseType>Assess</responseType>\r\n    <urgency>Immediate</urgency>\r\n    <severity>Extreme</severity>\r\n    <certainty>Observed</certainty>\r\n    <expires>2014-02-26T02:07:03+00:00</expires>\r\n    <senderName>Martin/DMI</senderName>\r\n    <headline>This is a test of myPAWS</headline>\r\n    <description>Just fooling around</description>\r\n    <instruction>Log and ignore</instruction>\r\n    <contact>Haka Erdogmus -:)</contact>\r\n    <area>\r\n      <areaDesc>CMU B19</areaDesc>\r\n      <circle>37.41316,-122.05868 0.24472</circle>\r\n    </area>\r\n  </info>\r\n</alert>",
+    "created_at": "2014-09-13T00:17:12.272Z",
+    "last_modified_at": "2014-09-24T18:45:04.858Z",
+    "title": "This is a test of myPAWS"
+  },
+  "model": "core.messagetemplate",
+  "pk": 1
+},
+{
+  "fields": {
+    "content": "<alert xmlns=\"urn:oasis:names:tc:emergency:cap:1.2\">\r\n  <status>Actual</status>\r\n  <msgType>Alert</msgType>\r\n  <scope>Public</scope>\r\n  <note>Example of a message template 1</note>\r\n  <info>\r\n    <language>en-us</language>\r\n    <category>Fire</category>\r\n    <event>FRW</event>\r\n    <responseType>Shelter</responseType>\r\n    <urgency>Expected</urgency>\r\n    <severity>Severe</severity>\r\n    <certainty>Likely</certainty>\r\n    <description>Fire Hazard</description>\r\n    <instruction>Take Shelter</instruction>\r\n   </info>\r\n</alert>",
+    "created_at": "2014-09-24T18:45:44.718Z",
+    "last_modified_at": "2014-09-24T18:50:50.428Z",
+    "title": "Message Template 1"
+  },
+  "model": "core.messagetemplate",
+  "pk": 2
+},
+{
+  "fields": {
+    "content": "<alert xmlns=\"urn:oasis:names:tc:emergency:cap:1.2\">\r\n  <status>Actual</status>\r\n  <msgType>Alert</msgType>\r\n  <scope>Public</scope>\r\n  <note>Example of a message template 2</note>\r\n  <info>\r\n    <language>en-us</language>\r\n    <category>Geo</category>\r\n    <event>AVW</event>\r\n    <responseType>Evacuate</responseType>\r\n    <urgency>Expected</urgency>\r\n    <severity>Severe</severity>\r\n    <certainty>Likely</certainty>\r\n    <description>Geophysical Hazard</description>\r\n    <instruction>Evacuate Immediately</instruction>\r\n   </info>\r\n</alert>",
+    "created_at": "2014-09-24T18:48:44.194Z",
+    "last_modified_at": "2014-09-24T18:50:54.881Z",
+    "title": "Message Template 2"
+  },
+  "model": "core.messagetemplate",
+  "pk": 3
+},
+{
+  "fields": {
+    "content": "<alert xmlns=\"urn:oasis:names:tc:emergency:cap:1.2\">\r\n  <status>Actual</status>\r\n  <msgType>Alert</msgType>\r\n  <scope>Public</scope>\r\n  <note>Message template 3</note>\r\n  <info>\r\n    <language>en-us</language>\r\n    <category>Safety</category>\r\n    <event>CDW</event>\r\n    <responseType>Prepare</responseType>\r\n    <urgency>Immediate</urgency>\r\n    <severity>Severe</severity>\r\n    <certainty>Observed</certainty>\r\n    <description>Public Safety Hazard</description>\r\n    <instruction>Make Preparations for Evacuation</instruction>\r\n   </info>\r\n</alert>",
+    "created_at": "2014-09-24T18:49:22.794Z",
+    "last_modified_at": "2014-09-24T18:50:39.068Z",
+    "title": "Message Template 3"
+  },
+  "model": "core.messagetemplate",
+  "pk": 4
+},
+{
+  "fields": {
+    "content": "<alert xmlns=\"urn:oasis:names:tc:emergency:cap:1.2\">\r\n  <status>Actual</status>\r\n  <msgType>Alert</msgType>\r\n  <scope>Public</scope>\r\n  <note>Message template 4</note>\r\n  <info>\r\n    <language>en-us</language>\r\n    <category>Geo</category>\r\n    <event>EQW</event>\r\n    <responseType>Execute</responseType>\r\n    <urgency>Immediate</urgency>\r\n    <severity>Severe</severity>\r\n    <certainty>Likely</certainty>\r\n    <description>Geophysical Hazard</description>\r\n    <instruction>Execute Pre-planned Action</instruction>\r\n   </info>\r\n</alert>",
+    "created_at": "2014-09-24T18:49:48.395Z",
+    "last_modified_at": "2014-09-24T18:50:35.627Z",
+    "title": "Message Template 4"
+  },
+  "model": "core.messagetemplate",
+  "pk": 5
+},
+{
+  "fields": {
+    "content": "<alert xmlns=\"urn:oasis:names:tc:emergency:cap:1.2\">\r\n  <status>Actual</status>\r\n  <msgType>Alert</msgType>\r\n  <scope>Public</scope>\r\n  <note>Message template 5</note>\r\n  <info>\r\n    <language>en-us</language>\r\n    <category>Rescue</category>\r\n    <event>CAE</event>\r\n    <responseType>Evacuate</responseType>\r\n    <urgency>Expected</urgency>\r\n    <severity>Severe</severity>\r\n    <certainty>Possible</certainty>\r\n    <description>Rescue Type Hazard</description>\r\n    <instruction>Evacuate the Area</instruction>\r\n   </info>\r\n</alert>",
+    "created_at": "2014-09-24T18:50:28.795Z",
+    "last_modified_at": "2014-09-24T18:50:28.795Z",
+    "title": "Message Template 5"
+  },
+  "model": "core.messagetemplate",
+  "pk": 6
+}
+]

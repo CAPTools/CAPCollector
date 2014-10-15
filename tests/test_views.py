@@ -2,8 +2,6 @@
 
 __author__ = "arcadiy@google.com (Arkadii Yakovets)"
 
-import os
-
 from core import models
 from core import utils
 from django.conf import settings
@@ -16,6 +14,8 @@ from tests import UUID_RE
 
 class SmokeTests(TestBase):
   """Basic views tests."""
+
+  fixtures = ["test_alerts.json", "test_auth.json", "test_templates.json"]
 
   def setUp(self):
     super(SmokeTests, self).setUp()
@@ -85,7 +85,7 @@ class End2EndTests(CAPCollectorLiveServer):
 
     alert_dict = utils.ParseAlert(alert.content, "xml", uuid)
     for key in initial_dict:
-      if is_update and key in ("area_desc",):
+      if is_update and key in ("area_desc", "title",):
         continue
       self.assertEqual(alert_dict[key], initial_dict[key])
     return alert_dict
@@ -215,6 +215,8 @@ class End2EndTests(CAPCollectorLiveServer):
     self.assertEqual((expires_at - sent_at).seconds / 60, 60)
     updated_alert_references = updated_alert_dict["references"]
     self.assertEqual(initial_alert_reference, updated_alert_references)
+    self.assertEqual(updated_alert_dict["title"],
+                     initial_alert_dict["title"] + update_dict["title"])
 
   def test_end2end_alert_cancel(self):
     """Emulates existing alert cancellation process using webdriver."""
@@ -304,20 +306,11 @@ class End2EndTests(CAPCollectorLiveServer):
 
     # Check alert XML against initial values.
     alert = models.Alert.objects.get(uuid=alert_uuid)
-    message_template_path = os.path.join(settings.TEMPLATES_DIR,
-                                         "message/test_msg1.xml")
-    with open(message_template_path, "r") as template_file:
-      message_template_xml_string = template_file.read()
-
-    area_template_path = os.path.join(settings.TEMPLATES_DIR,
-                                      "area/test_area1.xml")
-    with open(area_template_path, "r") as template_file:
-      area_template_xml_string = template_file.read()
-
+    message_template_xml = models.MessageTemplate.objects.get(id=1).content
+    area_template_xml = models.AreaTemplate.objects.get(id=1).content
     alert_dict = utils.ParseAlert(alert.content, "xml", alert_uuid)
-    message_dict = utils.ParseAlert(message_template_xml_string, "xml",
-                                    alert_uuid)
-    area_dict = utils.ParseAlert(area_template_xml_string, "xml", alert_uuid)
+    message_dict = utils.ParseAlert(message_template_xml, "xml", alert_uuid)
+    area_dict = utils.ParseAlert(area_template_xml, "xml", alert_uuid)
 
     # Message template assertions.
     for key in message_dict:

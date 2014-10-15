@@ -1,5 +1,0 @@
-{
-  "templates": [
-    { "label": "First Test Area", "link": "client/templates/area/test_area1.xml" }
-  ]
-}

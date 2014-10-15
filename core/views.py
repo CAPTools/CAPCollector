@@ -45,6 +45,31 @@ class FeedView(View):
                         content_type="text/%s" % feed_type)
 
 
+class AlertTemplateView(View):
+  """Area/message templates view."""
+
+  @method_decorator(login_required)
+  def dispatch(self, *args, **kwargs):
+    return super(AlertTemplateView, self).dispatch(*args, **kwargs)
+
+  def get(self, request, *args, **kwargs):
+    template_id = request.GET.get("template_id")
+
+    if "template_type" not in kwargs or not template_id:
+      return HttpResponseBadRequest()
+    template_type = kwargs["template_type"]
+    if template_type == "area":
+      template_model = models.AreaTemplate
+    elif template_type == "message":
+      template_model = models.MessageTemplate
+
+    try:
+      template = template_model.objects.get(id=template_id)
+    except template_model.DoesNotExist:
+      raise Http404
+    return HttpResponse(template.content, content_type="text/xml")
+
+
 class IndexView(TemplateView):
   template_name = "index.html.tmpl"
 
@@ -54,6 +79,10 @@ class IndexView(TemplateView):
 
   def get_context_data(self, **kwargs):
     context = super(IndexView, self).get_context_data(**kwargs)
+    area_templates = models.AreaTemplate.objects.order_by("title")
+    message_templates = models.MessageTemplate.objects.order_by("title")
+    context["area_templates"] = area_templates
+    context["message_templates"] = message_templates
     context['map_default_viewport'] = settings.MAP_DEFAULT_VIEWPORT
     return context
 

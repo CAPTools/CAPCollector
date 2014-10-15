@@ -7,10 +7,6 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
-# Relative path to your active/inactive alerts directories.
-TEMPLATES_DIR = os.path.join(BASE_DIR, "client/templates")
-TEMPLATES_TESTDATA_DIR = os.path.join(BASE_DIR, "testdata/templates")
-
 CREDENTIALS_DIR = os.path.join(BASE_DIR, "testdata/credentials")
 
 SITE_SCHEME = "http"

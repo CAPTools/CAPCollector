@@ -16,3 +16,37 @@ class Alert(models.Model):
 
   def __unicode__(self):
     return self.uuid
+
+
+class AreaTemplate(models.Model):
+  """Area template entity definition."""
+  title = models.CharField(_("Template Title"), max_length=50)
+  created_at = models.DateTimeField(_("Template creation time"),
+                                    auto_now_add=True)
+  last_modified_at = models.DateTimeField(_("Template last modification time"),
+                                          auto_now=True)
+  content = models.TextField(_("Template Content"))
+
+  def __unicode__(self):
+    return self.title
+
+  class Meta:
+    verbose_name = _("Area Template")
+    verbose_name_plural = _("Area Templates")
+
+
+class MessageTemplate(models.Model):
+  """Message template entity definition."""
+  title = models.CharField(_("Template Title"), max_length=50)
+  created_at = models.DateTimeField(_("Template creation time"),
+                                    auto_now_add=True)
+  last_modified_at = models.DateTimeField(_("Template last modification time"),
+                                          auto_now=True)
+  content = models.TextField(_("Template Content"))
+
+  def __unicode__(self):
+    return self.title
+
+  class Meta:
+    verbose_name = _("Message Template")
+    verbose_name_plural = _("Message Templates")

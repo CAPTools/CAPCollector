@@ -7,3 +7,5 @@ from core import models
 from django.contrib import admin
 
 admin.site.register(models.Alert)
+admin.site.register(models.AreaTemplate)
+admin.site.register(models.MessageTemplate)

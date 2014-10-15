@@ -23,7 +23,7 @@ import xmlsec
 class UtilsTests(test.TestCase):
   """Utils unit tests."""
 
-  fixtures = ["alerts.json"]
+  fixtures = ["test_alerts.json", "test_templates.json"]
 
   TEST_USER_NAME = "test_user"
   DRAFT_ALERT_UUID = "a453f4bb-3249-45f6-8ddc-360da19fcc03"
@@ -37,11 +37,7 @@ class UtilsTests(test.TestCase):
 
   @property
   def partial_alert_content(self):
-    file_path = os.path.join(settings.TEMPLATES_TESTDATA_DIR,
-                             "message/test_msg1.xml")
-    with open(file_path, "r") as golden_file:
-      xml_string = golden_file.read()
-    return xml_string
+    return models.MessageTemplate.objects.get(id=1).content
 
   @property
   def draft_alert_content(self):

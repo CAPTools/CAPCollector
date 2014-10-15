@@ -1,5 +1,0 @@
-{
-  "templates": [
-    {"label": "First Test Message", "link": "client/templates/message/test_msg1.xml"}
-  ]
-}

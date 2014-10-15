@@ -13,5 +13,7 @@ urlpatterns = [
     url(r"^feed/(?P<alert_id>.*).(?P<feed_type>(html|xml))$",
         views.FeedView.as_view(), name="alert"),
     url(r"^post/$", views.PostView.as_view(), name="post"),
+    url(r"^template/(?P<template_type>(area|message))/$",
+        views.AlertTemplateView.as_view(), name="template"),
 ]
 
