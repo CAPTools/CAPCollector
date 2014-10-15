@@ -10,8 +10,8 @@ from sensitive import *
 
 ###### Standard configuration.  You need to set these variables.  ######
 
-# Change to https if your site uses https.
-SITE_SCHEME = "http"
+# Change to http at your own risk.
+SITE_SCHEME = "https"
 
 # Change to the URL where users will find this app.
 SITE_DOMAIN = "myagency.gov"
