@@ -31,10 +31,10 @@
 
 import copy
 from datetime import datetime
+import lxml
 import os
 import re
 import uuid
-import xml
 
 from bs4 import BeautifulSoup
 from core import models
@@ -44,7 +44,6 @@ from django.core.urlresolvers import reverse
 from django.template.loader import render_to_string
 from django.utils import timezone
 from django.utils.translation import ugettext
-from lxml import etree
 import pytz
 import xmlsec
 
@@ -112,24 +111,24 @@ def ParseAlert(xml_string, feed_type, alert_uuid):
   def GetFirstText(xml_element):
     """Returns the first text item from an XML element."""
     if xml_element and len(xml_element):
-      return str(xml_element[0].text)
+      return xml_element[0].text
     return ""
 
   def GetAllText(xml_element):
     """Returns an array of text items from multiple elements."""
     if xml_element and len(xml_element):
-      return [str(item.text) for item in xml_element]
+      return [item.text for item in xml_element]
     return []
 
   def GetCapElement(element_name, xml_tree):
     """Extracts elements from CAP XML tree."""
     element = "//p:" + element_name
-    finder = etree.XPath(element, namespaces={"p": settings.CAP_NS})
+    finder = lxml.etree.XPath(element, namespaces={"p": settings.CAP_NS})
     return finder(xml_tree)
 
   alert_dict = {}
   try:
-    xml_tree = etree.fromstring(xml_string)
+    xml_tree = lxml.etree.fromstring(xml_string)
     expires_str = GetFirstText(GetCapElement("expires", xml_tree))
 
     # Extract the other needed values from the CAP XML.
@@ -151,6 +150,7 @@ def ParseAlert(xml_string, feed_type, alert_uuid):
 
     alert_dict = {
         "title": title,
+        "event": GetFirstText(GetCapElement("event", xml_tree)),
         "link": link,
         "web": GetFirstText(GetCapElement("web", xml_tree)),
         "name": name,
@@ -172,7 +172,7 @@ def ParseAlert(xml_string, feed_type, alert_uuid):
         "circles": GetAllText(GetCapElement("circle", xml_tree)),
         "polys": GetAllText(GetCapElement("polygon", xml_tree)),
     }
-  except etree.XMLSyntaxError:  # We don't expect any invalid XML alerts.
+  except lxml.etree.XMLSyntaxError:  # We don't expect any invalid XML alerts.
     pass  # TODO(arcadiy): log the exception after Django logging system setup.
   return alert_dict
 
@@ -223,53 +223,52 @@ def CreateAlert(xml_string, username):
   try:
     # Clean up the XML format a bit.
     xml_string = re.sub("> +<", "><", xml_string)
-    xml_string = xml.dom.minidom.parseString(xml_string).toprettyxml()
     # Now parse into etree and validate.
-    xml_tree = etree.fromstring(xml_string)
+    xml_tree = lxml.etree.fromstring(xml_string)
 
     with open(os.path.join(settings.SCHEMA_DIR,
                            settings.CAP_SCHEMA_FILE), "r") as schema_file:
       schema_string = schema_file.read()
-    xml_schema = etree.XMLSchema(etree.fromstring(schema_string))
+    xml_schema = lxml.etree.XMLSchema(lxml.etree.fromstring(schema_string))
     valid = xml_schema.validate(xml_tree)
     error = xml_schema.error_log.last_error
-  except xml.parsers.expat.ExpatError as e:
+  except lxml.etree.XMLSyntaxError as e:
     error = "Malformed XML: %s" % e
 
   if valid:
     msg_id = str(uuid.uuid4())
     # Assign <identifier> and <sender> values.
-    find_identifier = etree.XPath("//p:identifier",
-                                  namespaces={"p": settings.CAP_NS})
+    find_identifier = lxml.etree.XPath("//p:identifier",
+                                       namespaces={"p": settings.CAP_NS})
     identifier = find_identifier(xml_tree)[0]
     identifier.text = msg_id
 
     # Set default <web> field if one was not filled by user.
-    find_web = etree.XPath("//p:info/p:web",
-                           namespaces={"p": settings.CAP_NS})
+    find_web = lxml.etree.XPath("//p:info/p:web",
+                                namespaces={"p": settings.CAP_NS})
     web = find_web(xml_tree)[0]
     if web.text == "pending":
       web.text = "%s%s" % (settings.SITE_URL,
                            reverse("alert", args=[msg_id, "html"]))
 
-    find_sender = etree.XPath("//p:sender",
-                              namespaces={"p": settings.CAP_NS})
+    find_sender = lxml.etree.XPath("//p:sender",
+                                   namespaces={"p": settings.CAP_NS})
     sender = find_sender(xml_tree)[0]
     sender.text = username + "@" + settings.SITE_DOMAIN
 
-    find_sent = etree.XPath("//p:sent",
-                            namespaces={"p": settings.CAP_NS})
+    find_sent = lxml.etree.XPath("//p:sent",
+                                 namespaces={"p": settings.CAP_NS})
     sent = find_sent(xml_tree)[0]
 
-    find_expires = etree.XPath("//p:expires",
-                               namespaces={"p": settings.CAP_NS})
+    find_expires = lxml.etree.XPath("//p:expires",
+                                    namespaces={"p": settings.CAP_NS})
     expires = find_expires(xml_tree)[0]
 
     # Sign the XML tree.
     xml_tree = SignAlert(xml_tree, username)
 
     # Re-serialize as string.
-    signed_xml_string = etree.tostring(xml_tree, pretty_print=False)
+    signed_xml_string = lxml.etree.tostring(xml_tree, pretty_print=False)
     alert_obj = models.Alert()
     alert_obj.uuid = msg_id
     alert_obj.created_at = sent.text

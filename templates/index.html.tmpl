@@ -24,7 +24,6 @@
   <script src="client/js/jquery-1.10.2.min.js"></script>
   <script src="client/js/jquery.mobile-1.3.0.min.js"></script>
   <script src="client/js/OpenLayers.js"></script>
-  <script src="client/js/moment.min.js"></script>
   <script src="https://maps.google.com/maps/api/js?v=3.7&amp;sensor=false"></script>
 
   <script src="client/js/config.js"></script>
@@ -274,6 +273,11 @@
     <div>
       <label class="field_label">{% trans "Who is Issuing This Alert" %}:</label>
       <input type="text" name="text-senderName" id="text-senderName" data-mini="true" placeholder="" value="" onchange="view2model()">
+    </div>
+
+    <div class="form_row_div">
+      <label class="field_label">{% trans "Event (REQUIRED)" %}:</label>
+      <input type="text" name="text-event" id="text-event" data-mini="true" placeholder="" value="" onchange="view2model()">
     </div>
 
     <div class="form_row_div">

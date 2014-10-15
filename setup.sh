@@ -66,9 +66,6 @@ wget http://code.jquery.com/jquery-1.10.2.min.map -O ./client/js/jquery-1.10.2.m
 wget http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.js -O ./client/js/jquery.mobile-1.3.0.min.js
 wget http://code.jquery.com/mobile/1.3.0/images/icons-36-white.png -O ./client/css/images/icons-36-white.png
 
-# Download Moment JS library, for parsing, validating and displaying dates.
-wget http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.7.0/moment.min.js -O ./client/js/moment.min.js
-
 # Download OpenLayers JS library, for displaying a dynamic map to create areas.
 wget https://github.com/openlayers/openlayers/blob/master/lib/OpenLayers.js -O ./client/js/OpenLayers.js
 wget https://github.com/openlayers/openlayers/blob/master/img/east-mini.png -O ./client/img/east-mini.png

@@ -96,6 +96,7 @@ class CAPCollectorLiveServer(TestBase, LiveServerTestCase):
   }
   ALERT_SENDER_ELEMENT_NAME = "text-senderName"
   HEADLINE_ELEMENT_NAME = "text-headline"
+  EVENT_ELEMENT_NAME = "text-event"
   DESCRIPTION_ELEMENT_NAME = "textarea-description"
   INSTRUCTION_ELEMENT_NAME = "textarea-instruction"
   CONTACT_ELEMENT_NAME = "text-contact"
@@ -216,6 +217,10 @@ class CAPCollectorLiveServer(TestBase, LiveServerTestCase):
   @property
   def headline_element(self):
     return self.WaitUntilVisible(self.HEADLINE_ELEMENT_NAME, by=By.NAME)
+
+  @property
+  def event_element(self):
+    return self.WaitUntilVisible(self.EVENT_ELEMENT_NAME, by=By.NAME)
 
   @property
   def description_element(self):
@@ -374,6 +379,9 @@ class CAPCollectorLiveServer(TestBase, LiveServerTestCase):
 
   def SetHeadline(self, head_line):
     self.headline_element.send_keys(head_line)
+
+  def SetEvent(self, event):
+    self.event_element.send_keys(event)
 
   def SetDescription(self, description):
     self.description_element.send_keys(description)

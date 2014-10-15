@@ -85,7 +85,7 @@ class End2EndTests(CAPCollectorLiveServer):
 
     alert_dict = utils.ParseAlert(alert.content, "xml", uuid)
     for key in initial_dict:
-      if is_update and key in ("area_desc", "title",):
+      if is_update and key in ("area_desc", "title", "event",):
         continue
       self.assertEqual(alert_dict[key], initial_dict[key])
     return alert_dict
@@ -115,6 +115,8 @@ class End2EndTests(CAPCollectorLiveServer):
     if "language" in golden_dict:
       self.SetLanguage(golden_dict["language"])
     self.SetHeadline(golden_dict["title"])
+    if "event" in golden_dict:
+      self.SetEvent(golden_dict["event"])
     self.SetAlertSenderName(self.sender_name)
     self.SetInstruction(self.instruction)
     self.SetContact(self.contact)
@@ -147,6 +149,7 @@ class End2EndTests(CAPCollectorLiveServer):
         "certainty": "Likely",
         "web": "http://my.custom.uri",
         "title": "Some really informative alert headline",
+        "event": "And alert event",
         "language": "pt",
         "area_desc": "This and that area"
     }
