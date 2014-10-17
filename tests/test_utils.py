@@ -68,6 +68,9 @@ class UtilsTests(test.TestCase):
         "event": "Fire fire fire.",
         "area_desc": "This and that area.",
         "certainty": "Observed",
+        "parameters": [{"name": "name1", "value": "val1"},
+                       {"name": "name2", "value": "val2"}],
+        "geocodes": [{"name": "geo_code1", "value": "geo_code_value1"}],
         "polys": [],
         "urgency": "Immediate"
     }

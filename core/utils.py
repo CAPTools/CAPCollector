@@ -120,6 +120,16 @@ def ParseAlert(xml_string, feed_type, alert_uuid):
       return [item.text for item in xml_element]
     return []
 
+  def GetNameValuePairs(xml_elements):
+    """Returns a list of dictionaries for paired elements."""
+    pair_list = []
+    for xml_element in xml_elements:
+      name_element, value_element = xml_element.getchildren()
+      pair_list.append({
+          "name": name_element.text,
+          "value": value_element.text})
+    return pair_list
+
   def GetCapElement(element_name, xml_tree):
     """Extracts elements from CAP XML tree."""
     element = "//p:" + element_name
@@ -168,7 +178,9 @@ def ParseAlert(xml_string, feed_type, alert_uuid):
         "severity": GetFirstText(GetCapElement("severity", xml_tree)),
         "certainty": GetFirstText(GetCapElement("certainty", xml_tree)),
         "language": GetFirstText(GetCapElement("language", xml_tree)),
+        "parameters": GetNameValuePairs(GetCapElement("parameter", xml_tree)),
         "area_desc": GetFirstText(GetCapElement("areaDesc", xml_tree)),
+        "geocodes": GetNameValuePairs(GetCapElement("geocode", xml_tree)),
         "circles": GetAllText(GetCapElement("circle", xml_tree)),
         "polys": GetAllText(GetCapElement("polygon", xml_tree)),
     }

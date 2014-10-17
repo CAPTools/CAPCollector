@@ -11,7 +11,7 @@
 },
 {
   "fields": {
-    "content": "<alert xmlns=\"urn:oasis:names:tc:emergency:cap:1.2\">\r\n  <status>Actual</status>\r\n  <msgType>Update</msgType>\r\n  <scope>Public</scope>\r\n  <note>Example of a message template</note>\r\n  <info>\r\n    <language>hi</language>\r\n    <category>Env</category>\r\n    <event>Test event example</event>\r\n    <responseType>AllClear</responseType>\r\n    <urgency>Expected</urgency>\r\n    <severity>Severe</severity>\r\n    <certainty>Possible</certainty>\r\n    <description>This is a description</description>\r\n    <instruction>This is an instruction</instruction>\r\n   </info>\r\n</alert>",
+    "content": "<alert xmlns=\"urn:oasis:names:tc:emergency:cap:1.2\">\r\n  <status>Actual</status>\r\n  <msgType>Update</msgType>\r\n  <scope>Public</scope>\r\n  <note>Example of a message template</note>\r\n  <info>\r\n    <language>hi</language>\r\n    <category>Env</category>\r\n    <event>Test event example</event>\r\n    <responseType>AllClear</responseType>\r\n    <urgency>Expected</urgency>\r\n    <severity>Severe</severity>\r\n    <certainty>Possible</certainty>\r\n    <description>This is a description</description>\r\n    <instruction>This is an instruction</instruction>\r\n   <parameter>\r\n      <valueName>name1</valueName>\r\n      <value>val1</value>\r\n    </parameter>\r\n    <parameter>\r\n      <valueName>name2</valueName>\r\n      <value>val2</value>\r\n    </parameter>\r\n   </info>\r\n</alert>",
     "created_at": "2014-09-13T00:17:12.272Z",
     "last_modified_at": "2014-09-17T20:42:38.267Z",
     "title": "Example of a message template"
