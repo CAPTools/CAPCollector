@@ -44,7 +44,7 @@ class CAPCollectorLiveServer(TestBase, LiveServerTestCase):
   ADD_ALERT_DETAILS_BUTTON_XPATH = "//*[@id='alert']/div[2]/a/span"
   TARGET_AREA_BUTTON_XPATH = "//*[@id='info']/div[2]/a/span"
   RELEASE_BUTTON_XPATH = "//*[@id='area']/div[2]/a/span"
-  RELEASE_ALERT_BUTTON_XPATH = "//*[@id='release_div']/div/a/span"
+  RELEASE_ALERT_BUTTON_XPATH = "//*[@id='release']/div[2]/a/span/span[1]"
 
   MESSAGE_TEMPLATE_ELEMENT = "//*[@id='select-message-template']"
   MESSAGE_TEMPLATE_ITEMS_XPATH = "//*[@id='select-message-template']/option[%s]"

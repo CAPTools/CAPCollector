@@ -5,41 +5,9 @@ __author__ = "arcadiy@google.com (Arkadii Yakovets)"
 
 import os
 import sys
+
 from sensitive import *
-
-
-###### Standard configuration.  You need to set these variables.  ######
-
-# Change to http at your own risk.
-SITE_SCHEME = "https"
-
-# Change to the URL where users will find this app.
-SITE_DOMAIN = "myagency.gov"
-
-# A string representing the time zone for this installation.
-# https://docs.djangoproject.com/en/dev/ref/settings/#time-zone
-TIME_ZONE = "US/Central"
-
-# Default language.
-# See https://docs.djangoproject.com/en/dev/ref/settings/#language-code.
-LANGUAGE_CODE = "en"
-
-# Add new languages here.
-# See https://docs.djangoproject.com/en/dev/ref/settings/#languages.
-# TODO(arcadiy): figure out a way to support CAP info language format (RFC 3066)
-# Django seems to treat fr-CA as just fr
-LANGUAGES = (
-    ("en", "English"),
-    ("hi", "हिंदी"),
-    ("pt", "Português"),
-)
-
-# Set map default viewport here.
-MAP_DEFAULT_VIEWPORT = {
-    "center_lat": 37.422,
-    "center_lon": -122.084,
-    "zoom_level": 12,
-}
+from settings_prod import *
 
 ###### Default settings (only modify for advanced configuration) ######
 
@@ -98,7 +66,6 @@ INSTALLED_APPS = (
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "core",
-    "tests",
 )
 
 # A tuple of middleware classes to use.
@@ -121,15 +88,6 @@ ROOT_URLCONF = "CAPCollector.urls"
 # servers (e.g. runserver) will use
 # https://docs.djangoproject.com/en/dev/ref/settings/#wsgi-application
 WSGI_APPLICATION = "CAPCollector.wsgi.application"
-
-# A dictionary containing the settings for all databases to be used with Django.
-# https://docs.djangoproject.com/en/dev/ref/settings/#databases
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
-    }
-}
 
 # Paths to translation files.
 # See https://docs.djangoproject.com/en/dev/ref/settings/#locale-paths.
@@ -174,9 +132,11 @@ LOGIN_REDIRECT_URL = "/"
 TESTING = "test" in sys.argv
 
 # Import development environment settings if needed.
-if os.environ.get("CAPTOOLS_DEV"):
+# Export CAP_TOOLS_DEV=1 environment variable to include dev settings.
+# AppEngine development environment includes dev settings automatically.
+if (os.environ.get("CAP_TOOLS_DEV") or
+    os.getenv("SERVER_SOFTWARE", "").startswith("Development")):
   from settings_dev import *
 if TESTING:
   from settings_test import *
-
-
+  INSTALLED_APPS += ("tests",)

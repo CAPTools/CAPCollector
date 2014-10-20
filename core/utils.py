@@ -45,7 +45,14 @@ from django.template.loader import render_to_string
 from django.utils import timezone
 from django.utils.translation import ugettext
 import pytz
-import xmlsec
+
+try:
+  import xmlsec
+  XMLSEC_DEFINED = True
+except ImportError:
+  # This module is not available on AppEngine.
+  # https://code.google.com/p/googleappengine/issues/detail?id=1034
+  XMLSEC_DEFINED = False
 
 
 def GetCurrentDate():
@@ -201,6 +208,9 @@ def SignAlert(xml_tree, username):
     Signed alert XML tree if your has key/certificate pair
     Unchanged XML tree otherwise.
   """
+
+  if not XMLSEC_DEFINED:
+    return xml_tree
 
   key_path = os.path.join(settings.CREDENTIALS_DIR, username + ".key")
   cert_path = os.path.join(settings.CREDENTIALS_DIR, username + ".cert")

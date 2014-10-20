@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-25 12:44-0500\n"
+"POT-Creation-Date: 2014-10-03 13:52-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -62,1034 +62,8 @@ msgstr ""
 msgid "Message Templates"
 msgstr ""
 
-#: core/utils.py:144
+#: core/utils.py:160
 msgid "Alert Message"
-msgstr ""
-
-#: libs/django/contrib/sitemaps/apps.py:8
-msgid "Site Maps"
-msgstr ""
-
-#: libs/django/contrib/staticfiles/apps.py:8
-msgid "Static Files"
-msgstr ""
-
-#: libs/django/contrib/syndication/apps.py:8
-msgid "Syndication"
-msgstr ""
-
-#: libs/django/contrib/webdesign/apps.py:8
-msgid "Web Design"
-msgstr ""
-
-#: libs/django/core/validators.py:21
-msgid "Enter a valid value."
-msgstr ""
-
-#: libs/django/core/validators.py:77 libs/django/forms/fields.py:675
-msgid "Enter a valid URL."
-msgstr ""
-
-#: libs/django/core/validators.py:115
-msgid "Enter a valid integer."
-msgstr ""
-
-#: libs/django/core/validators.py:120
-msgid "Enter a valid email address."
-msgstr ""
-
-#: libs/django/core/validators.py:185
-msgid ""
-"Enter a valid 'slug' consisting of letters, numbers, underscores or hyphens."
-msgstr ""
-
-#: libs/django/core/validators.py:188 libs/django/core/validators.py:207
-msgid "Enter a valid IPv4 address."
-msgstr ""
-
-#: libs/django/core/validators.py:193 libs/django/core/validators.py:208
-msgid "Enter a valid IPv6 address."
-msgstr ""
-
-#: libs/django/core/validators.py:203 libs/django/core/validators.py:206
-msgid "Enter a valid IPv4 or IPv6 address."
-msgstr ""
-
-#: libs/django/core/validators.py:229
-#: libs/django/db/models/fields/__init__.py:1075
-msgid "Enter only digits separated by commas."
-msgstr ""
-
-#: libs/django/core/validators.py:236
-#, python-format
-msgid "Ensure this value is %(limit_value)s (it is %(show_value)s)."
-msgstr ""
-
-#: libs/django/core/validators.py:255
-#, python-format
-msgid "Ensure this value is less than or equal to %(limit_value)s."
-msgstr ""
-
-#: libs/django/core/validators.py:262
-#, python-format
-msgid "Ensure this value is greater than or equal to %(limit_value)s."
-msgstr ""
-
-#: libs/django/core/validators.py:271
-#, python-format
-msgid ""
-"Ensure this value has at least %(limit_value)d character (it has "
-"%(show_value)d)."
-msgid_plural ""
-"Ensure this value has at least %(limit_value)d characters (it has "
-"%(show_value)d)."
-msgstr[0] ""
-msgstr[1] ""
-
-#: libs/django/core/validators.py:282
-#, python-format
-msgid ""
-"Ensure this value has at most %(limit_value)d character (it has "
-"%(show_value)d)."
-msgid_plural ""
-"Ensure this value has at most %(limit_value)d characters (it has "
-"%(show_value)d)."
-msgstr[0] ""
-msgstr[1] ""
-
-#: libs/django/db/models/base.py:972 libs/django/forms/models.py:718
-msgid "and"
-msgstr ""
-
-#: libs/django/db/models/base.py:974
-#, python-format
-msgid "%(model_name)s with this %(field_labels)s already exists."
-msgstr ""
-
-#: libs/django/db/models/fields/__init__.py:104
-#, python-format
-msgid "Value %(value)r is not a valid choice."
-msgstr ""
-
-#: libs/django/db/models/fields/__init__.py:105
-msgid "This field cannot be null."
-msgstr ""
-
-#: libs/django/db/models/fields/__init__.py:106
-msgid "This field cannot be blank."
-msgstr ""
-
-#: libs/django/db/models/fields/__init__.py:107
-#, python-format
-msgid "%(model_name)s with this %(field_label)s already exists."
-msgstr ""
-
-#. Translators: The 'lookup_type' is one of 'date', 'year' or 'month'.
-#. Eg: "Title must be unique for pub_date year"
-#: libs/django/db/models/fields/__init__.py:111
-#, python-format
-msgid ""
-"%(field_label)s must be unique for %(date_field_label)s %(lookup_type)s."
-msgstr ""
-
-#: libs/django/db/models/fields/__init__.py:118
-#, python-format
-msgid "Field of type: %(field_type)s"
-msgstr ""
-
-#: libs/django/db/models/fields/__init__.py:852
-#: libs/django/db/models/fields/__init__.py:1578
-msgid "Integer"
-msgstr ""
-
-#: libs/django/db/models/fields/__init__.py:856
-#: libs/django/db/models/fields/__init__.py:1576
-#, python-format
-msgid "'%(value)s' value must be an integer."
-msgstr ""
-
-#: libs/django/db/models/fields/__init__.py:931
-#, python-format
-msgid "'%(value)s' value must be either True or False."
-msgstr ""
-
-#: libs/django/db/models/fields/__init__.py:933
-msgid "Boolean (Either True or False)"
-msgstr ""
-
-#: libs/django/db/models/fields/__init__.py:1009
-#, python-format
-msgid "String (up to %(max_length)s)"
-msgstr ""
-
-#: libs/django/db/models/fields/__init__.py:1070
-msgid "Comma-separated integers"
-msgstr ""
-
-#: libs/django/db/models/fields/__init__.py:1085
-#, python-format
-msgid ""
-"'%(value)s' value has an invalid date format. It must be in YYYY-MM-DD "
-"format."
-msgstr ""
-
-#: libs/django/db/models/fields/__init__.py:1087
-#: libs/django/db/models/fields/__init__.py:1194
-#, python-format
-msgid ""
-"'%(value)s' value has the correct format (YYYY-MM-DD) but it is an invalid "
-"date."
-msgstr ""
-
-#: libs/django/db/models/fields/__init__.py:1090
-msgid "Date (without time)"
-msgstr ""
-
-#: libs/django/db/models/fields/__init__.py:1192
-#, python-format
-msgid ""
-"'%(value)s' value has an invalid format. It must be in YYYY-MM-DD HH:MM[:ss[."
-"uuuuuu]][TZ] format."
-msgstr ""
-
-#: libs/django/db/models/fields/__init__.py:1196
-#, python-format
-msgid ""
-"'%(value)s' value has the correct format (YYYY-MM-DD HH:MM[:ss[.uuuuuu]]"
-"[TZ]) but it is an invalid date/time."
-msgstr ""
-
-#: libs/django/db/models/fields/__init__.py:1200
-msgid "Date (with time)"
-msgstr ""
-
-#: libs/django/db/models/fields/__init__.py:1302
-#, python-format
-msgid "'%(value)s' value must be a decimal number."
-msgstr ""
-
-#: libs/django/db/models/fields/__init__.py:1304
-msgid "Decimal number"
-msgstr ""
-
-#: libs/django/db/models/fields/__init__.py:1449
-msgid "Email address"
-msgstr ""
-
-#: libs/django/db/models/fields/__init__.py:1475
-msgid "File path"
-msgstr ""
-
-#: libs/django/db/models/fields/__init__.py:1542
-#, python-format
-msgid "'%(value)s' value must be a float."
-msgstr ""
-
-#: libs/django/db/models/fields/__init__.py:1544
-msgid "Floating point number"
-msgstr ""
-
-#: libs/django/db/models/fields/__init__.py:1628
-msgid "Big (8 byte) integer"
-msgstr ""
-
-#: libs/django/db/models/fields/__init__.py:1643
-msgid "IPv4 address"
-msgstr ""
-
-#: libs/django/db/models/fields/__init__.py:1673
-msgid "IP address"
-msgstr ""
-
-#: libs/django/db/models/fields/__init__.py:1752
-#, python-format
-msgid "'%(value)s' value must be either None, True or False."
-msgstr ""
-
-#: libs/django/db/models/fields/__init__.py:1754
-msgid "Boolean (Either True, False or None)"
-msgstr ""
-
-#: libs/django/db/models/fields/__init__.py:1814
-msgid "Positive integer"
-msgstr ""
-
-#: libs/django/db/models/fields/__init__.py:1826
-msgid "Positive small integer"
-msgstr ""
-
-#: libs/django/db/models/fields/__init__.py:1839
-#, python-format
-msgid "Slug (up to %(max_length)s)"
-msgstr ""
-
-#: libs/django/db/models/fields/__init__.py:1868
-msgid "Small integer"
-msgstr ""
-
-#: libs/django/db/models/fields/__init__.py:1875
-msgid "Text"
-msgstr ""
-
-#: libs/django/db/models/fields/__init__.py:1898
-#, python-format
-msgid ""
-"'%(value)s' value has an invalid format. It must be in HH:MM[:ss[.uuuuuu]] "
-"format."
-msgstr ""
-
-#: libs/django/db/models/fields/__init__.py:1900
-#, python-format
-msgid ""
-"'%(value)s' value has the correct format (HH:MM[:ss[.uuuuuu]]) but it is an "
-"invalid time."
-msgstr ""
-
-#: libs/django/db/models/fields/__init__.py:1903
-msgid "Time"
-msgstr ""
-
-#: libs/django/db/models/fields/__init__.py:1985
-msgid "URL"
-msgstr ""
-
-#: libs/django/db/models/fields/__init__.py:2008
-msgid "Raw binary data"
-msgstr ""
-
-#: libs/django/db/models/fields/files.py:225
-msgid "File"
-msgstr ""
-
-#: libs/django/db/models/fields/files.py:375
-msgid "Image"
-msgstr ""
-
-#: libs/django/db/models/fields/related.py:1590
-#, python-format
-msgid "%(model)s instance with pk %(pk)r does not exist."
-msgstr ""
-
-#: libs/django/db/models/fields/related.py:1592
-msgid "Foreign Key (type determined by related field)"
-msgstr ""
-
-#: libs/django/db/models/fields/related.py:1782
-msgid "One-to-one relationship"
-msgstr ""
-
-#: libs/django/db/models/fields/related.py:1852
-msgid "Many-to-many relationship"
-msgstr ""
-
-#: libs/django/forms/fields.py:55
-msgid "This field is required."
-msgstr ""
-
-#: libs/django/forms/fields.py:236
-msgid "Enter a whole number."
-msgstr ""
-
-#: libs/django/forms/fields.py:279 libs/django/forms/fields.py:316
-msgid "Enter a number."
-msgstr ""
-
-#: libs/django/forms/fields.py:318
-#, python-format
-msgid "Ensure that there are no more than %(max)s digit in total."
-msgid_plural "Ensure that there are no more than %(max)s digits in total."
-msgstr[0] ""
-msgstr[1] ""
-
-#: libs/django/forms/fields.py:322
-#, python-format
-msgid "Ensure that there are no more than %(max)s decimal place."
-msgid_plural "Ensure that there are no more than %(max)s decimal places."
-msgstr[0] ""
-msgstr[1] ""
-
-#: libs/django/forms/fields.py:326
-#, python-format
-msgid ""
-"Ensure that there are no more than %(max)s digit before the decimal point."
-msgid_plural ""
-"Ensure that there are no more than %(max)s digits before the decimal point."
-msgstr[0] ""
-msgstr[1] ""
-
-#: libs/django/forms/fields.py:437 libs/django/forms/fields.py:1139
-msgid "Enter a valid date."
-msgstr ""
-
-#: libs/django/forms/fields.py:461 libs/django/forms/fields.py:1140
-msgid "Enter a valid time."
-msgstr ""
-
-#: libs/django/forms/fields.py:483
-msgid "Enter a valid date/time."
-msgstr ""
-
-#: libs/django/forms/fields.py:564
-msgid "No file was submitted. Check the encoding type on the form."
-msgstr ""
-
-#: libs/django/forms/fields.py:565
-msgid "No file was submitted."
-msgstr ""
-
-#: libs/django/forms/fields.py:566
-msgid "The submitted file is empty."
-msgstr ""
-
-#: libs/django/forms/fields.py:568
-#, python-format
-msgid "Ensure this filename has at most %(max)d character (it has %(length)d)."
-msgid_plural ""
-"Ensure this filename has at most %(max)d characters (it has %(length)d)."
-msgstr[0] ""
-msgstr[1] ""
-
-#: libs/django/forms/fields.py:571
-msgid "Please either submit a file or check the clear checkbox, not both."
-msgstr ""
-
-#: libs/django/forms/fields.py:632
-msgid ""
-"Upload a valid image. The file you uploaded was either not an image or a "
-"corrupted image."
-msgstr ""
-
-#: libs/django/forms/fields.py:782 libs/django/forms/fields.py:871
-#: libs/django/forms/models.py:1196
-#, python-format
-msgid "Select a valid choice. %(value)s is not one of the available choices."
-msgstr ""
-
-#: libs/django/forms/fields.py:872 libs/django/forms/fields.py:987
-#: libs/django/forms/models.py:1195
-msgid "Enter a list of values."
-msgstr ""
-
-#: libs/django/forms/fields.py:988
-msgid "Enter a complete value."
-msgstr ""
-
-#. Translators: This is the default suffix added to form field labels
-#: libs/django/forms/forms.py:122
-msgid ":"
-msgstr ""
-
-#: libs/django/forms/forms.py:192
-#, python-format
-msgid "(Hidden field %(name)s) %(error)s"
-msgstr ""
-
-#. Translators: If found as last label character, these punctuation
-#. characters will prevent the default label_suffix to be appended to the label
-#: libs/django/forms/forms.py:620
-msgid ":?.!"
-msgstr ""
-
-#: libs/django/forms/formsets.py:95
-msgid "ManagementForm data is missing or has been tampered with"
-msgstr ""
-
-#: libs/django/forms/formsets.py:332
-#, python-format
-msgid "Please submit %d or fewer forms."
-msgid_plural "Please submit %d or fewer forms."
-msgstr[0] ""
-msgstr[1] ""
-
-#: libs/django/forms/formsets.py:339
-#, python-format
-msgid "Please submit %d or more forms."
-msgid_plural "Please submit %d or more forms."
-msgstr[0] ""
-msgstr[1] ""
-
-#: libs/django/forms/formsets.py:367 libs/django/forms/formsets.py:369
-msgid "Order"
-msgstr ""
-
-#: libs/django/forms/formsets.py:371
-msgid "Delete"
-msgstr ""
-
-#: libs/django/forms/models.py:712
-#, python-format
-msgid "Please correct the duplicate data for %(field)s."
-msgstr ""
-
-#: libs/django/forms/models.py:716
-#, python-format
-msgid "Please correct the duplicate data for %(field)s, which must be unique."
-msgstr ""
-
-#: libs/django/forms/models.py:722
-#, python-format
-msgid ""
-"Please correct the duplicate data for %(field_name)s which must be unique "
-"for the %(lookup)s in %(date_field)s."
-msgstr ""
-
-#: libs/django/forms/models.py:730
-msgid "Please correct the duplicate values below."
-msgstr ""
-
-#: libs/django/forms/models.py:1032
-msgid "The inline foreign key did not match the parent instance primary key."
-msgstr ""
-
-#: libs/django/forms/models.py:1098
-msgid "Select a valid choice. That choice is not one of the available choices."
-msgstr ""
-
-#: libs/django/forms/models.py:1198
-#, python-format
-msgid "\"%(pk)s\" is not a valid value for a primary key."
-msgstr ""
-
-#: libs/django/forms/models.py:1209
-msgid ""
-"Hold down \"Control\", or \"Command\" on a Mac, to select more than one."
-msgstr ""
-
-#: libs/django/forms/utils.py:148
-#, python-format
-msgid ""
-"%(datetime)s couldn't be interpreted in time zone %(current_timezone)s; it "
-"may be ambiguous or it may not exist."
-msgstr ""
-
-#: libs/django/forms/widgets.py:350
-msgid "Currently"
-msgstr ""
-
-#: libs/django/forms/widgets.py:351
-msgid "Change"
-msgstr ""
-
-#: libs/django/forms/widgets.py:352
-msgid "Clear"
-msgstr ""
-
-#: libs/django/forms/widgets.py:546 templates/index.html.tmpl:192
-#: templates/index.html.tmpl.py:201 templates/index.html.tmpl:210
-msgid "Unknown"
-msgstr ""
-
-#: libs/django/forms/widgets.py:547
-msgid "Yes"
-msgstr ""
-
-#: libs/django/forms/widgets.py:548
-msgid "No"
-msgstr ""
-
-#: libs/django/template/defaultfilters.py:855
-msgid "yes,no,maybe"
-msgstr ""
-
-#: libs/django/template/defaultfilters.py:884
-#: libs/django/template/defaultfilters.py:896
-#, python-format
-msgid "%(size)d byte"
-msgid_plural "%(size)d bytes"
-msgstr[0] ""
-msgstr[1] ""
-
-#: libs/django/template/defaultfilters.py:898
-#, python-format
-msgid "%s KB"
-msgstr ""
-
-#: libs/django/template/defaultfilters.py:900
-#, python-format
-msgid "%s MB"
-msgstr ""
-
-#: libs/django/template/defaultfilters.py:902
-#, python-format
-msgid "%s GB"
-msgstr ""
-
-#: libs/django/template/defaultfilters.py:904
-#, python-format
-msgid "%s TB"
-msgstr ""
-
-#: libs/django/template/defaultfilters.py:906
-#, python-format
-msgid "%s PB"
-msgstr ""
-
-#: libs/django/utils/dateformat.py:59
-msgid "p.m."
-msgstr ""
-
-#: libs/django/utils/dateformat.py:60
-msgid "a.m."
-msgstr ""
-
-#: libs/django/utils/dateformat.py:65
-msgid "PM"
-msgstr ""
-
-#: libs/django/utils/dateformat.py:66
-msgid "AM"
-msgstr ""
-
-#: libs/django/utils/dateformat.py:149
-msgid "midnight"
-msgstr ""
-
-#: libs/django/utils/dateformat.py:151
-msgid "noon"
-msgstr ""
-
-#: libs/django/utils/dates.py:6
-msgid "Monday"
-msgstr ""
-
-#: libs/django/utils/dates.py:6
-msgid "Tuesday"
-msgstr ""
-
-#: libs/django/utils/dates.py:6
-msgid "Wednesday"
-msgstr ""
-
-#: libs/django/utils/dates.py:6
-msgid "Thursday"
-msgstr ""
-
-#: libs/django/utils/dates.py:6
-msgid "Friday"
-msgstr ""
-
-#: libs/django/utils/dates.py:7
-msgid "Saturday"
-msgstr ""
-
-#: libs/django/utils/dates.py:7
-msgid "Sunday"
-msgstr ""
-
-#: libs/django/utils/dates.py:10
-msgid "Mon"
-msgstr ""
-
-#: libs/django/utils/dates.py:10
-msgid "Tue"
-msgstr ""
-
-#: libs/django/utils/dates.py:10
-msgid "Wed"
-msgstr ""
-
-#: libs/django/utils/dates.py:10
-msgid "Thu"
-msgstr ""
-
-#: libs/django/utils/dates.py:10
-msgid "Fri"
-msgstr ""
-
-#: libs/django/utils/dates.py:11
-msgid "Sat"
-msgstr ""
-
-#: libs/django/utils/dates.py:11
-msgid "Sun"
-msgstr ""
-
-#: libs/django/utils/dates.py:18
-msgid "January"
-msgstr ""
-
-#: libs/django/utils/dates.py:18
-msgid "February"
-msgstr ""
-
-#: libs/django/utils/dates.py:18
-msgid "March"
-msgstr ""
-
-#: libs/django/utils/dates.py:18
-msgid "April"
-msgstr ""
-
-#: libs/django/utils/dates.py:18
-msgid "May"
-msgstr ""
-
-#: libs/django/utils/dates.py:18
-msgid "June"
-msgstr ""
-
-#: libs/django/utils/dates.py:19
-msgid "July"
-msgstr ""
-
-#: libs/django/utils/dates.py:19
-msgid "August"
-msgstr ""
-
-#: libs/django/utils/dates.py:19
-msgid "September"
-msgstr ""
-
-#: libs/django/utils/dates.py:19
-msgid "October"
-msgstr ""
-
-#: libs/django/utils/dates.py:19
-msgid "November"
-msgstr ""
-
-#: libs/django/utils/dates.py:20
-msgid "December"
-msgstr ""
-
-#: libs/django/utils/dates.py:23
-msgid "jan"
-msgstr ""
-
-#: libs/django/utils/dates.py:23
-msgid "feb"
-msgstr ""
-
-#: libs/django/utils/dates.py:23
-msgid "mar"
-msgstr ""
-
-#: libs/django/utils/dates.py:23
-msgid "apr"
-msgstr ""
-
-#: libs/django/utils/dates.py:23
-msgid "may"
-msgstr ""
-
-#: libs/django/utils/dates.py:23
-msgid "jun"
-msgstr ""
-
-#: libs/django/utils/dates.py:24
-msgid "jul"
-msgstr ""
-
-#: libs/django/utils/dates.py:24
-msgid "aug"
-msgstr ""
-
-#: libs/django/utils/dates.py:24
-msgid "sep"
-msgstr ""
-
-#: libs/django/utils/dates.py:24
-msgid "oct"
-msgstr ""
-
-#: libs/django/utils/dates.py:24
-msgid "nov"
-msgstr ""
-
-#: libs/django/utils/dates.py:24
-msgid "dec"
-msgstr ""
-
-#: libs/django/utils/dates.py:31
-msgctxt "abbrev. month"
-msgid "Jan."
-msgstr ""
-
-#: libs/django/utils/dates.py:32
-msgctxt "abbrev. month"
-msgid "Feb."
-msgstr ""
-
-#: libs/django/utils/dates.py:33
-msgctxt "abbrev. month"
-msgid "March"
-msgstr ""
-
-#: libs/django/utils/dates.py:34
-msgctxt "abbrev. month"
-msgid "April"
-msgstr ""
-
-#: libs/django/utils/dates.py:35
-msgctxt "abbrev. month"
-msgid "May"
-msgstr ""
-
-#: libs/django/utils/dates.py:36
-msgctxt "abbrev. month"
-msgid "June"
-msgstr ""
-
-#: libs/django/utils/dates.py:37
-msgctxt "abbrev. month"
-msgid "July"
-msgstr ""
-
-#: libs/django/utils/dates.py:38
-msgctxt "abbrev. month"
-msgid "Aug."
-msgstr ""
-
-#: libs/django/utils/dates.py:39
-msgctxt "abbrev. month"
-msgid "Sept."
-msgstr ""
-
-#: libs/django/utils/dates.py:40
-msgctxt "abbrev. month"
-msgid "Oct."
-msgstr ""
-
-#: libs/django/utils/dates.py:41
-msgctxt "abbrev. month"
-msgid "Nov."
-msgstr ""
-
-#: libs/django/utils/dates.py:42
-msgctxt "abbrev. month"
-msgid "Dec."
-msgstr ""
-
-#: libs/django/utils/dates.py:45
-msgctxt "alt. month"
-msgid "January"
-msgstr ""
-
-#: libs/django/utils/dates.py:46
-msgctxt "alt. month"
-msgid "February"
-msgstr ""
-
-#: libs/django/utils/dates.py:47
-msgctxt "alt. month"
-msgid "March"
-msgstr ""
-
-#: libs/django/utils/dates.py:48
-msgctxt "alt. month"
-msgid "April"
-msgstr ""
-
-#: libs/django/utils/dates.py:49
-msgctxt "alt. month"
-msgid "May"
-msgstr ""
-
-#: libs/django/utils/dates.py:50
-msgctxt "alt. month"
-msgid "June"
-msgstr ""
-
-#: libs/django/utils/dates.py:51
-msgctxt "alt. month"
-msgid "July"
-msgstr ""
-
-#: libs/django/utils/dates.py:52
-msgctxt "alt. month"
-msgid "August"
-msgstr ""
-
-#: libs/django/utils/dates.py:53
-msgctxt "alt. month"
-msgid "September"
-msgstr ""
-
-#: libs/django/utils/dates.py:54
-msgctxt "alt. month"
-msgid "October"
-msgstr ""
-
-#: libs/django/utils/dates.py:55
-msgctxt "alt. month"
-msgid "November"
-msgstr ""
-
-#: libs/django/utils/dates.py:56
-msgctxt "alt. month"
-msgid "December"
-msgstr ""
-
-#: libs/django/utils/ipv6.py:10
-msgid "This is not a valid IPv6 address."
-msgstr ""
-
-#: libs/django/utils/text.py:76
-#, python-format
-msgctxt "String to return when truncating text"
-msgid "%(truncated_text)s..."
-msgstr ""
-
-#: libs/django/utils/text.py:245
-msgid "or"
-msgstr ""
-
-#. Translators: This string is used as a separator between list elements
-#: libs/django/utils/text.py:264 libs/django/utils/timesince.py:57
-msgid ", "
-msgstr ""
-
-#: libs/django/utils/timesince.py:25
-#, python-format
-msgid "%d year"
-msgid_plural "%d years"
-msgstr[0] ""
-msgstr[1] ""
-
-#: libs/django/utils/timesince.py:26
-#, python-format
-msgid "%d month"
-msgid_plural "%d months"
-msgstr[0] ""
-msgstr[1] ""
-
-#: libs/django/utils/timesince.py:27
-#, python-format
-msgid "%d week"
-msgid_plural "%d weeks"
-msgstr[0] ""
-msgstr[1] ""
-
-#: libs/django/utils/timesince.py:28
-#, python-format
-msgid "%d day"
-msgid_plural "%d days"
-msgstr[0] ""
-msgstr[1] ""
-
-#: libs/django/utils/timesince.py:29
-#, python-format
-msgid "%d hour"
-msgid_plural "%d hours"
-msgstr[0] ""
-msgstr[1] ""
-
-#: libs/django/utils/timesince.py:30
-#, python-format
-msgid "%d minute"
-msgid_plural "%d minutes"
-msgstr[0] ""
-msgstr[1] ""
-
-#: libs/django/utils/timesince.py:46
-msgid "0 minutes"
-msgstr ""
-
-#: libs/django/views/csrf.py:105
-msgid "Forbidden"
-msgstr ""
-
-#: libs/django/views/csrf.py:106
-msgid "CSRF verification failed. Request aborted."
-msgstr ""
-
-#: libs/django/views/csrf.py:110
-msgid ""
-"You are seeing this message because this HTTPS site requires a 'Referer "
-"header' to be sent by your Web browser, but none was sent. This header is "
-"required for security reasons, to ensure that your browser is not being "
-"hijacked by third parties."
-msgstr ""
-
-#: libs/django/views/csrf.py:115
-msgid ""
-"If you have configured your browser to disable 'Referer' headers, please re-"
-"enable them, at least for this site, or for HTTPS connections, or for 'same-"
-"origin' requests."
-msgstr ""
-
-#: libs/django/views/csrf.py:120
-msgid ""
-"You are seeing this message because this site requires a CSRF cookie when "
-"submitting forms. This cookie is required for security reasons, to ensure "
-"that your browser is not being hijacked by third parties."
-msgstr ""
-
-#: libs/django/views/csrf.py:125
-msgid ""
-"If you have configured your browser to disable cookies, please re-enable "
-"them, at least for this site, or for 'same-origin' requests."
-msgstr ""
-
-#: libs/django/views/csrf.py:129
-msgid "More information is available with DEBUG=True."
-msgstr ""
-
-#: libs/django/views/generic/dates.py:43
-msgid "No year specified"
-msgstr ""
-
-#: libs/django/views/generic/dates.py:99
-msgid "No month specified"
-msgstr ""
-
-#: libs/django/views/generic/dates.py:158
-msgid "No day specified"
-msgstr ""
-
-#: libs/django/views/generic/dates.py:214
-msgid "No week specified"
-msgstr ""
-
-#: libs/django/views/generic/dates.py:369
-#: libs/django/views/generic/dates.py:397
-#, python-format
-msgid "No %(verbose_name_plural)s available"
-msgstr ""
-
-#: libs/django/views/generic/dates.py:650
-#, python-format
-msgid ""
-"Future %(verbose_name_plural)s not available because %(class_name)s."
-"allow_future is False."
-msgstr ""
-
-#: libs/django/views/generic/dates.py:682
-#, python-format
-msgid "Invalid date string '%(datestr)s' given format '%(format)s'"
-msgstr ""
-
-#: libs/django/views/generic/detail.py:54
-#, python-format
-msgid "No %(verbose_name)s found matching the query"
-msgstr ""
-
-#: libs/django/views/generic/list.py:62
-msgid "Page is not 'last', nor can it be converted to an int."
-msgstr ""
-
-#: libs/django/views/generic/list.py:67
-#, python-format
-msgid "Invalid page (%(page_number)s): %(message)s"
-msgstr ""
-
-#: libs/django/views/generic/list.py:158
-#, python-format
-msgid "Empty list and '%(class_name)s.allow_empty' is False."
-msgstr ""
-
-#: libs/django/views/static.py:54
-msgid "Directory indexes are not allowed here."
-msgstr ""
-
-#: libs/django/views/static.py:56
-#, python-format
-msgid "\"%(path)s\" does not exist"
-msgstr ""
-
-#: libs/django/views/static.py:97
-#, python-format
-msgid "Index of %(directory)s"
 msgstr ""
 
 #: templates/core/alert.html.tmpl:16 templates/core/feed.html.tmpl:23
@@ -1124,7 +98,7 @@ msgid "Last updated"
 msgstr ""
 
 #: templates/include/footer.inc.tmpl:11
-msgid "Current"
+msgid "Current alerts"
 msgstr ""
 
 #: templates/include/footer.inc.tmpl:17
@@ -1155,448 +129,461 @@ msgstr ""
 msgid "Review & Release"
 msgstr ""
 
-#: templates/index.html.tmpl:59
-msgid "Issue a New Alert"
+#: templates/index.html.tmpl:58
+msgid "Issue a new alert"
 msgstr ""
 
-#: templates/index.html.tmpl:62
+#: templates/index.html.tmpl:61
 msgid "Close"
 msgstr ""
 
-#: templates/index.html.tmpl:65
+#: templates/index.html.tmpl:64
 msgid "Update This Alert"
 msgstr ""
 
-#: templates/index.html.tmpl:66
+#: templates/index.html.tmpl:65
 msgid "Cancel This Alert"
 msgstr ""
 
-#: templates/index.html.tmpl:67
+#: templates/index.html.tmpl:66
 msgid "View Alert XML"
 msgstr ""
 
-#: templates/index.html.tmpl:72
-msgid "Show Alert Feed"
+#: templates/index.html.tmpl:71
+msgid "Show alert feed"
 msgstr ""
 
-#: templates/index.html.tmpl:74
+#: templates/index.html.tmpl:73
 msgid "About CAPCreator&trade;"
 msgstr ""
 
-#: templates/index.html.tmpl:77
+#: templates/index.html.tmpl:76
 msgid "About CAPCreator"
 msgstr ""
 
-#: templates/index.html.tmpl:111
-msgid "Message Template (Optional)"
+#: templates/index.html.tmpl:112
+msgid "Message template"
 msgstr ""
 
-#: templates/index.html.tmpl:114 templates/index.html.tmpl.py:327
+#: templates/index.html.tmpl:115 templates/index.html.tmpl.py:342
 msgid "None"
 msgstr ""
 
-#: templates/index.html.tmpl:118
-msgid "Create a New Message Template"
-msgstr ""
-
-#: templates/index.html.tmpl:123
-msgid "Set Type of Message"
+#: templates/index.html.tmpl:119
+msgid "Create a new message template"
 msgstr ""
 
 #: templates/index.html.tmpl:125
-msgid "Status"
+msgid "Reapply template"
 msgstr ""
 
-#: templates/index.html.tmpl:127
-msgid "Actual"
-msgstr ""
-
-#: templates/index.html.tmpl:128
-msgid "Exercise"
-msgstr ""
-
-#: templates/index.html.tmpl:129
-msgid "Test"
-msgstr ""
-
-#: templates/index.html.tmpl:130
-msgid "Draft"
-msgstr ""
-
-#: templates/index.html.tmpl:132
-msgid "Type"
-msgstr ""
-
-#: templates/index.html.tmpl:134
-msgid "Alert"
+#: templates/index.html.tmpl:133
+msgid "Type of message"
 msgstr ""
 
 #: templates/index.html.tmpl:135
-msgid "Update"
+msgid "Status"
 msgstr ""
 
-#: templates/index.html.tmpl:136
-msgid "Cancel"
+#: templates/index.html.tmpl:137
+msgid "Actual"
 msgstr ""
 
 #: templates/index.html.tmpl:138
-msgid "Scope"
+msgid "Exercise"
+msgstr ""
+
+#: templates/index.html.tmpl:139
+msgid "Test"
 msgstr ""
 
 #: templates/index.html.tmpl:140
-msgid "Public"
-msgstr ""
-
-#: templates/index.html.tmpl:141
-msgid "Restricted"
+msgid "Draft"
 msgstr ""
 
 #: templates/index.html.tmpl:142
-msgid "Private"
+msgid "Type"
+msgstr ""
+
+#: templates/index.html.tmpl:144
+msgid "Alert"
+msgstr ""
+
+#: templates/index.html.tmpl:145
+msgid "Update"
+msgstr ""
+
+#: templates/index.html.tmpl:146
+msgid "Cancel"
 msgstr ""
 
 #: templates/index.html.tmpl:148
-msgid "Set Hazard Type and Recommended Protective Action"
+msgid "Scope"
 msgstr ""
 
 #: templates/index.html.tmpl:150
-msgid "Set Hazard Type"
+msgid "Public"
+msgstr ""
+
+#: templates/index.html.tmpl:151
+msgid "Restricted"
 msgstr ""
 
 #: templates/index.html.tmpl:152
-msgid "--Hazard Class--"
+msgid "Private"
 msgstr ""
 
-#: templates/index.html.tmpl:153
-msgid "Geophysical"
-msgstr ""
-
-#: templates/index.html.tmpl:154
-msgid "Weather"
-msgstr ""
-
-#: templates/index.html.tmpl:155
-msgid "Public Safety"
-msgstr ""
-
-#: templates/index.html.tmpl:156
-msgid "Security"
-msgstr ""
-
-#: templates/index.html.tmpl:157
-msgid "Rescue"
+#: templates/index.html.tmpl:158 templates/index.html.tmpl.py:160
+msgid "Hazard type"
 msgstr ""
 
 #: templates/index.html.tmpl:158
-msgid "Fire"
-msgstr ""
-
-#: templates/index.html.tmpl:159
-msgid "Health"
-msgstr ""
-
-#: templates/index.html.tmpl:160
-msgid "Environmental"
-msgstr ""
-
-#: templates/index.html.tmpl:161
-msgid "Transportation"
+msgid "and Recommended protective action"
 msgstr ""
 
 #: templates/index.html.tmpl:162
-msgid "Infrastructure/Utilities"
+msgid "--Hazard Class--"
 msgstr ""
 
 #: templates/index.html.tmpl:163
-msgid "Weapon of Mass Destruction"
+msgid "Geophysical"
 msgstr ""
 
 #: templates/index.html.tmpl:164
-msgid "Not Otherwise Categorized"
+msgid "Weather"
+msgstr ""
+
+#: templates/index.html.tmpl:165
+msgid "Public Safety"
 msgstr ""
 
 #: templates/index.html.tmpl:166
-msgid "Response Type"
+msgid "Security"
+msgstr ""
+
+#: templates/index.html.tmpl:167
+msgid "Rescue"
 msgstr ""
 
 #: templates/index.html.tmpl:168
-msgid "--Recommended Action--"
+msgid "Fire"
 msgstr ""
 
 #: templates/index.html.tmpl:169
-msgid "Take Shelter"
+msgid "Health"
 msgstr ""
 
 #: templates/index.html.tmpl:170
-msgid "Evacuate"
+msgid "Environmental"
 msgstr ""
 
 #: templates/index.html.tmpl:171
-msgid "Make Preparations"
+msgid "Transportation"
 msgstr ""
 
 #: templates/index.html.tmpl:172
-msgid "Execute Pre-Planned Action"
+msgid "Infrastructure/Utilities"
 msgstr ""
 
 #: templates/index.html.tmpl:173
-msgid "Avoid the Area"
+msgid "Weapon of Mass Destruction"
 msgstr ""
 
 #: templates/index.html.tmpl:174
-msgid "Monitor Conditions"
-msgstr ""
-
-#: templates/index.html.tmpl:175
-msgid "Resume Normal Activities"
+msgid "Not Otherwise Categorized"
 msgstr ""
 
 #: templates/index.html.tmpl:176
-msgid "Take No Action"
+msgid "Response type"
 msgstr ""
 
-#: templates/index.html.tmpl:177
-msgid "Evaluate Situation [not for Public alerts]"
+#: templates/index.html.tmpl:178
+msgid "--Recommended Action--"
+msgstr ""
+
+#: templates/index.html.tmpl:179
+msgid "Take Shelter"
+msgstr ""
+
+#: templates/index.html.tmpl:180
+msgid "Evacuate"
+msgstr ""
+
+#: templates/index.html.tmpl:181
+msgid "Make Preparations"
+msgstr ""
+
+#: templates/index.html.tmpl:182
+msgid "Execute Pre-Planned Action"
 msgstr ""
 
 #: templates/index.html.tmpl:183
-msgid "Set Message Priority"
+msgid "Avoid the Area"
+msgstr ""
+
+#: templates/index.html.tmpl:184
+msgid "Monitor Conditions"
 msgstr ""
 
 #: templates/index.html.tmpl:185
-msgid "Urgency"
+msgid "Resume Normal Activities"
+msgstr ""
+
+#: templates/index.html.tmpl:186
+msgid "Take No Action"
 msgstr ""
 
 #: templates/index.html.tmpl:187
-msgid "-Urgency-"
+msgid "Evaluate Situation [not for Public alerts]"
 msgstr ""
 
-#: templates/index.html.tmpl:188
-msgid "Immediate"
+#: templates/index.html.tmpl:193
+msgid "Message Priority"
 msgstr ""
 
-#: templates/index.html.tmpl:189
-msgid "Expected"
-msgstr ""
-
-#: templates/index.html.tmpl:190
-msgid "Future"
-msgstr ""
-
-#: templates/index.html.tmpl:191
-msgid "Already Occurred"
-msgstr ""
-
-#: templates/index.html.tmpl:194
-msgid "Severity"
-msgstr ""
-
-#: templates/index.html.tmpl:196
-msgid "-Severity-"
+#: templates/index.html.tmpl:195
+msgid "Urgency"
 msgstr ""
 
 #: templates/index.html.tmpl:197
-msgid "Extreme"
+msgid "-Urgency-"
 msgstr ""
 
 #: templates/index.html.tmpl:198
-msgid "Severe"
+msgid "Immediate"
 msgstr ""
 
 #: templates/index.html.tmpl:199
-msgid "Moderate"
+msgid "Expected"
 msgstr ""
 
 #: templates/index.html.tmpl:200
-msgid "Minor"
+msgid "Future"
 msgstr ""
 
-#: templates/index.html.tmpl:203
-msgid "Certainty"
+#: templates/index.html.tmpl:201
+msgid "Already Occurred"
 msgstr ""
 
-#: templates/index.html.tmpl:205
-msgid "-Certainty-"
+#: templates/index.html.tmpl:202 templates/index.html.tmpl.py:211
+#: templates/index.html.tmpl:220
+msgid "Unknown"
+msgstr ""
+
+#: templates/index.html.tmpl:204
+msgid "Severity"
 msgstr ""
 
 #: templates/index.html.tmpl:206
-msgid "Observed Event"
+msgid "-Severity-"
 msgstr ""
 
 #: templates/index.html.tmpl:207
-msgid "Likely"
+msgid "Extreme"
 msgstr ""
 
 #: templates/index.html.tmpl:208
-msgid "Possible"
+msgid "Severe"
 msgstr ""
 
 #: templates/index.html.tmpl:209
-msgid "Unlikely"
+msgid "Moderate"
+msgstr ""
+
+#: templates/index.html.tmpl:210
+msgid "Minor"
+msgstr ""
+
+#: templates/index.html.tmpl:213
+msgid "Certainty"
+msgstr ""
+
+#: templates/index.html.tmpl:215
+msgid "-Certainty-"
 msgstr ""
 
 #: templates/index.html.tmpl:216
-msgid "Set Alert Expiration"
+msgid "Observed Event"
+msgstr ""
+
+#: templates/index.html.tmpl:217
+msgid "Likely"
 msgstr ""
 
 #: templates/index.html.tmpl:218
-msgid "Time to Expiration"
+msgid "Possible"
 msgstr ""
 
-#: templates/index.html.tmpl:221
-msgid "- Effective Period (from now) -"
-msgstr ""
-
-#: templates/index.html.tmpl:222
-msgid "15 Minutes"
-msgstr ""
-
-#: templates/index.html.tmpl:223
-msgid "30 Minutes"
-msgstr ""
-
-#: templates/index.html.tmpl:224
-msgid "45 Minutes"
-msgstr ""
-
-#: templates/index.html.tmpl:225
-msgid "1 Hour"
+#: templates/index.html.tmpl:219
+msgid "Unlikely"
 msgstr ""
 
 #: templates/index.html.tmpl:226
-msgid "90 Minutes"
-msgstr ""
-
-#: templates/index.html.tmpl:227
-msgid "2 Hours"
+msgid "Alert expiration"
 msgstr ""
 
 #: templates/index.html.tmpl:228
-msgid "3 Hours"
-msgstr ""
-
-#: templates/index.html.tmpl:229
-msgid "4 Hours"
-msgstr ""
-
-#: templates/index.html.tmpl:230
-msgid "5 Hours"
+msgid "Time to Expiration"
 msgstr ""
 
 #: templates/index.html.tmpl:231
-msgid "6 Hours"
+msgid "- Effective Period (from now) -"
 msgstr ""
 
 #: templates/index.html.tmpl:232
-msgid "Other"
+msgid "15 Minutes"
+msgstr ""
+
+#: templates/index.html.tmpl:233
+msgid "30 Minutes"
+msgstr ""
+
+#: templates/index.html.tmpl:234
+msgid "45 Minutes"
+msgstr ""
+
+#: templates/index.html.tmpl:235
+msgid "1 Hour"
+msgstr ""
+
+#: templates/index.html.tmpl:236
+msgid "90 Minutes"
 msgstr ""
 
 #: templates/index.html.tmpl:237
-msgid "Set Manual Effective Expiration"
+msgid "2 Hours"
 msgstr ""
 
 #: templates/index.html.tmpl:238
+msgid "3 Hours"
+msgstr ""
+
+#: templates/index.html.tmpl:239
+msgid "4 Hours"
+msgstr ""
+
+#: templates/index.html.tmpl:240
+msgid "5 Hours"
+msgstr ""
+
+#: templates/index.html.tmpl:241
+msgid "6 Hours"
+msgstr ""
+
+#: templates/index.html.tmpl:242
+msgid "Other"
+msgstr ""
+
+#: templates/index.html.tmpl:247
+msgid "Manual effective expiration"
+msgstr ""
+
+#: templates/index.html.tmpl:248
 msgid "Enter expiration time in minutes"
 msgstr ""
 
-#: templates/index.html.tmpl:245
+#: templates/index.html.tmpl:255
 msgid "NEXT: Add Alert Details"
 msgstr ""
 
-#: templates/index.html.tmpl:260
+#: templates/index.html.tmpl:270
 msgid "Language"
 msgstr ""
 
-#: templates/index.html.tmpl:275
-msgid "Who is Issuing This Alert"
+#: templates/index.html.tmpl:286
+msgid "Event"
 msgstr ""
 
-#: templates/index.html.tmpl:280
-msgid "Short-Text Headline (REQUIRED)"
-msgstr ""
-
-#: templates/index.html.tmpl:280
-msgid "characters left)"
-msgstr ""
-
-#: templates/index.html.tmpl:281
-msgid "Required - 140 characters maximum"
-msgstr ""
-
-#: templates/index.html.tmpl:285
-msgid "Describe the Event or Hazard"
-msgstr ""
-
-#: templates/index.html.tmpl:290
-msgid "What Should Affected People Do"
-msgstr ""
-
-#: templates/index.html.tmpl:295
-msgid "Who is Media Contact"
+#: templates/index.html.tmpl:291
+msgid "Who is issuing this alert"
 msgstr ""
 
 #: templates/index.html.tmpl:296
-msgid "Include telephone and/or email"
+msgid "Short-text headline"
 msgstr ""
 
-#: templates/index.html.tmpl:300
-msgid "Alternate Alert Website"
+#: templates/index.html.tmpl:296
+msgid "characters left)"
+msgstr ""
+
+#: templates/index.html.tmpl:297
+msgid "140 characters maximum"
 msgstr ""
 
 #: templates/index.html.tmpl:301
+msgid "Describe the event or hazard"
+msgstr ""
+
+#: templates/index.html.tmpl:306
+msgid "What should affected people do"
+msgstr ""
+
+#: templates/index.html.tmpl:311
+msgid "Who is media contact"
+msgstr ""
+
+#: templates/index.html.tmpl:312
+msgid "Include telephone and/or email"
+msgstr ""
+
+#: templates/index.html.tmpl:316
+msgid "Alternate alert website"
+msgstr ""
+
+#: templates/index.html.tmpl:317
 msgid "URL for a separate HTML version of this alert"
 msgstr ""
 
-#: templates/index.html.tmpl:308
+#: templates/index.html.tmpl:323
 msgid "NEXT: Target Area"
 msgstr ""
 
-#: templates/index.html.tmpl:324
-msgid "Area Template (Optional)"
-msgstr ""
-
-#: templates/index.html.tmpl:331
-msgid "Create a New Area Template"
-msgstr ""
-
-#: templates/index.html.tmpl:335
-msgid "Describe the Alert Area (REQUIRED)"
+#: templates/index.html.tmpl:339
+msgid "Add area from template"
 msgstr ""
 
 #: templates/index.html.tmpl:346
+msgid "Create a new area template"
+msgstr ""
+
+#: templates/index.html.tmpl:353
+msgid "Describe the alert area"
+msgstr ""
+
+#: templates/index.html.tmpl:365
 msgid "Drag"
 msgstr ""
 
-#: templates/index.html.tmpl:348
+#: templates/index.html.tmpl:367
 msgid "Circle"
 msgstr ""
 
-#: templates/index.html.tmpl:350
+#: templates/index.html.tmpl:369
 msgid "Shape"
 msgstr ""
 
-#: templates/index.html.tmpl:351
-msgid "Clear Last"
+#: templates/index.html.tmpl:370
+msgid "Clear last"
 msgstr ""
 
-#: templates/index.html.tmpl:352
-msgid "Clear All"
+#: templates/index.html.tmpl:371
+msgid "Clear all"
 msgstr ""
 
-#: templates/index.html.tmpl:359
-msgid "NEXT: Review &amp; Release"
+#: templates/index.html.tmpl:379
+msgid "NEXT: Review &amp; release"
 msgstr ""
 
-#: templates/index.html.tmpl:374
-msgid "Review Message Content"
+#: templates/index.html.tmpl:394
+msgid "Review message content"
 msgstr ""
 
-#: templates/index.html.tmpl:377
-msgid "Authorize Release"
+#: templates/index.html.tmpl:397
+msgid "Authorize release"
 msgstr ""
 
-#: templates/index.html.tmpl:380
-msgid "Release Alert"
+#: templates/index.html.tmpl:402
+msgid "Release alert"
 msgstr ""
 
 #: templates/login.html.tmpl:12

@@ -1,4 +1,6 @@
 {% load i18n %}
+{% load l10n %}
+
 
 {# TODO(arcadiy): extract styles to CSS file. #}
 
@@ -29,11 +31,13 @@
   <script src="client/js/config.js"></script>
   <script>
     // Define default viewport for map.
+    {% localize off %}
     var mapDefaultViewport = {
       centerLat: {{ map_default_viewport.center_lat }},
       centerLon: {{ map_default_viewport.center_lon }},
       zoomLevel: {{ map_default_viewport.zoom_level }}
     };
+    {% endlocalize %}
     // Now create a global config object for the whole.
     var config = new CAPCreatorConfiguration(mapDefaultViewport);
   </script>
@@ -54,10 +58,10 @@
   <div data-role="content" class="jqm-content">
     <div id="current_alerts_div"><span id="current_alerts_span"></span></div>
 
-    <a href="#alert" data-role="button" data-mini="true" class="ui-mini-smaller" data-icon="arrow-r"
-      data-iconpos="right" style="whitespace:normal; width:200px">{% trans "Issue a New Alert" %}</a>
+    <a href="#alert" data-role="button" data-mini="true" class="ui-mini-smaller main" data-icon="arrow-r"
+      data-iconpos="right" style="whitespace:normal; width:200px">{% trans "Issue a new alert" %}</a>
 
-    <div id="alert_view_div" data-role="popup" data-mini="true" data-position-to="#current_alerts_div" class="ui-content">
+    <div id="alert_view_div" data-role="popup" data-mini="true" data-position-to="#current_alerts_div">
     <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">{% trans "Close" %}</a>
       <span id="alert_view_span"></span>
       <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true" >
@@ -67,10 +71,10 @@
       </fieldset>
     </div>
     </br>
-    <a href="{% url "feed" "xml" %}" target="_blank" data-role="button" data-mini="true" class="ui-mini-smaller" data-icon="arrow-r"
-      data-iconpos="right" style="whitespace:normal; width:200px">{% trans "Show Alert Feed" %}</a>
+    <a href="{% url "feed" "xml" %}" target="_blank" data-role="button" data-mini="true" class="ui-mini-smaller main" data-icon="arrow-r"
+      data-iconpos="right" style="whitespace:normal; width:200px">{% trans "Show alert feed" %}</a>
     </br>
-    <a href="#popup-about" data-rel="popup" data-role="button" data-mini="true" class="ui-mini" style="width:200px; font-style:italic; font-weight:normal">{% trans "About CAPCreator&trade;" %}</a>
+    <a href="#popup-about" data-rel="popup" data-role="button" data-mini="true" class="ui-mini about">{% trans "About CAPCreator&trade;" %}</a>
     <div class="about_div" id="popup-about" data-role="popup" data-mini="true">
     <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
       <h3>{% trans "About CAPCreator" %}</h3>
@@ -107,35 +111,46 @@
 
   <div data-role="content" class="jqm-content" >
     <div class="form_row_div">
-      <label class="field_label">{% trans "Message Template (Optional)" %}:</label>
-      <fieldset data-role="controlgroup" data-type="horizontal" >
-        <select name="select-message-template" id="select-message-template" data-mini="true" data-inline="true" onchange="handleMessageTemplateChange('{% url 'template' 'message' %}', '{% url 'admin:core_messagetemplate_add' %}');">
-          <option value="None">{% trans "None" %}</option>
-         {% for template in message_templates %}
-           <option value="{{ template.id }}">{{ template.title }}</option>
-         {% endfor %}
-         <option value="CreateNewMessageTemplate">{% trans "Create a New Message Template" %}</option>
-        </select>
-      </fieldset>
+      <div class="templates-control">
+        <div class="templates">
+          <label class="field_label">{% trans "Message template" %}</label>
+          <fieldset data-role="controlgroup" data-type="horizontal" >
+            <select name="select-message-template" id="select-message-template" data-mini="true" data-inline="true" onchange="handleMessageTemplateChange('{% url 'template' 'message' %}', '{% url 'admin:core_messagetemplate_add' %}');">
+              <option value="None">{% trans "None" %}</option>
+             {% for template in message_templates %}
+               <option value="{{ template.id }}">{{ template.title }}</option>
+             {% endfor %}
+             <option value="CreateNewMessageTemplate">{% trans "Create a new message template" %}</option>
+            </select>
+          </fieldset>
+        </div>
+        <div class="re-apply">
+          <a id="reapply-message-template" href="#" onclick="handleMessageTemplateChange('{% url 'template' 'message' %}', '{% url 'admin:core_messagetemplate_add' %}');">
+              {% trans "Reapply template" %}
+          </a>
+        </div>
+      </div>
     </div>
+    <div class="divider"></div>
+
     <div class="form_row_div">
-    <label class="field_label">{% trans "Set Type of Message" %}:</label>
+    <label class="field_label">{% trans "Type of message" %}<span class="required">*</span></label>
     <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
       <label for="select-status" class="ui-hidden-accessible">{% trans "Status" %}</label>
-      <select name="select-status" id="select-status" data-mini="true" data-inline="true" onchange="view2model()">
+      <select name="select-status" id="select-status" data-mini="true" data-inline="true" onchange="view2model(this)">
         <option value="Actual">{% trans "Actual" %}</option>
         <option value="Exercise">{% trans "Exercise" %}</option>
         <option value="Test">{% trans "Test" %}</option>
         <option value="Draft">{% trans "Draft" %}</option>
       </select>
       <label for="select-msgType" class="ui-hidden-accessible">{% trans "Type" %}</label>
-      <select name="select-msgType" id="select-msgType" data-mini="true" data-inline="true" onchange="view2model()">
+      <select name="select-msgType" id="select-msgType" data-mini="true" data-inline="true" onchange="view2model(this)">
         <option value="Alert">{% trans "Alert" %}</option>
         <option value="Update">{% trans "Update" %}</option>
         <option value="Cancel">{% trans "Cancel" %}</option>
       </select>
       <label for="select-scope" class="ui-hidden-accessible">{% trans "Scope" %}</label>
-      <select name="select-scope" id="select-scope" data-mini="true" data-inline="true" onchange="view2model()">
+      <select name="select-scope" id="select-scope" data-mini="true" data-inline="true" onchange="view2model(this)">
         <option value="Public">{% trans "Public" %}</option>
         <option value="Restricted">{% trans "Restricted" %}</option>
         <option value="Private">{% trans "Private" %}</option>
@@ -144,10 +159,10 @@
     </div>
 
     <div class="form_row_div">
-     <label class="field_label">{% trans "Set Hazard Type and Recommended Protective Action" %}:</label>
+     <label class="field_label">{% trans "Hazard type" %}<span class="required">*</span> {% trans "and Recommended protective action" %}</label>
        <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true" >
-     <label for="select-categories" class="ui-hidden-accessible">{% trans "Set Hazard Type" %}</label>
-      <select name="select-categories" id="select-categories" data-mini="true" data-native-menu="false" onchange="view2model()">
+     <label for="select-categories" class="ui-hidden-accessible">{% trans "Hazard type" %}</label>
+      <select name="select-categories" id="select-categories" data-mini="true" data-native-menu="false" onchange="view2model(this)">
         <option value="Other">{% trans "--Hazard Class--" %}</option>
         <option value="Geo">{% trans "Geophysical" %}</option>
         <option value="Met">{%trans "Weather" %}</option>
@@ -162,8 +177,8 @@
         <option value="CBRNE">{% trans "Weapon of Mass Destruction" %}</option>
         <option value="Other">{% trans "Not Otherwise Categorized" %}</option>
       </select>
-      <label for="select-responseTypes" class="ui-hidden-accessible">{% trans "Response Type" %}</label>
-      <select name="select-responseTypes" id="select-responseTypes" data-mini="true" data-native-menu="false" onchange="view2model()">
+      <label for="select-responseTypes" class="ui-hidden-accessible">{% trans "Response type" %}</label>
+      <select name="select-responseTypes" id="select-responseTypes" data-mini="true" data-native-menu="false" onchange="view2model(this)">
         <option value="None">{% trans "--Recommended Action--" %}</option>
         <option value="Shelter">{% trans "Take Shelter" %}</option>
         <option value="Evacuate">{% trans "Evacuate" %}</option>
@@ -179,10 +194,10 @@
     </div>
 
     <div class="form_row_div">
-    <label class="field_label">{% trans "Set Message Priority" %}:</label>
+    <label class="field_label">{% trans "Message Priority" %}<span class="required">*</span></label>
     <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true" >
       <label for="select-urgency" class="ui-hidden-accessible">{% trans "Urgency" %}</label>
-      <select name="select-urgency" id="select-urgency" data-mini="true" data-inline="true" onchange="view2model()">
+      <select name="select-urgency" id="select-urgency" data-mini="true" data-inline="true" onchange="view2model(this)">
         <option value="Unknown">{% trans "-Urgency-" %}</option>
         <option value="Immediate">{% trans "Immediate" %}</option>
         <option value="Expected">{% trans "Expected" %}</option>
@@ -191,7 +206,7 @@
         <option value="Unknown">{% trans "Unknown" %}</option>
       </select>
       <label for="select-severity" class="ui-hidden-accessible">{% trans "Severity" %}</label>
-      <select name="select-severity" id="select-severity" data-mini="true" data-inline="true" onchange="view2model()">
+      <select name="select-severity" id="select-severity" data-mini="true" data-inline="true" onchange="view2model(this)">
         <option value="Unknown">{% trans "-Severity-" %}</option>
         <option value="Extreme">{% trans "Extreme" %}</option>
         <option value="Severe">{% trans "Severe" %}</option>
@@ -199,8 +214,8 @@
         <option value="Minor">{% trans "Minor" %}</option>
         <option value="Unknown">{% trans "Unknown" %}</option>
       </select>
-      <label for="select-certainty" class="ui-hidden-accessible">{% trans "Certainty" %} </label>
-      <select name="select-certainty" id="select-certainty" data-mini="true" data-inline="true" onchange="view2model()">
+      <label for="select-certainty" class="ui-hidden-accessible">{% trans "Certainty" %}</label>
+      <select name="select-certainty" id="select-certainty" data-mini="true" data-inline="true" onchange="view2model(this)">
         <option value="Unknown">{% trans "-Certainty-" %}</option>
         <option value="Observed">{% trans "Observed Event" %}</option>
         <option value="Likely">{% trans "Likely" %}</option>
@@ -212,11 +227,11 @@
     </div>
 
     <div class="form_row_div">
-    <label class="field_label">{% trans "Set Alert Expiration" %}:</label>
+    <label class="field_label">{% trans "Alert expiration" %}<span class="required">*</span></label>
     <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true" >
       <label for="select-expires-min" class="ui-hidden-accessible">{% trans "Time to Expiration" %}</label>
       {# TODO(arcadiy): Make effective periods easily configurable by installer. #}
-      <select name="select-expires-min" id="select-expires-min" data-mini="true" data-inline="true" onchange="view2model()">
+      <select name="select-expires-min" id="select-expires-min" data-mini="true" data-inline="true" onchange="view2model(this)">
         <option value="60">{% trans "- Effective Period (from now) -" %}</option>
         <option value="15">{% trans "15 Minutes" %}</option>
         <option value="30">{% trans "30 Minutes" %}</option>
@@ -233,14 +248,14 @@
     </fieldset>
     </div>
      <div id="custom-expiration-time-block">
-       <label class="field_label">{% trans "Set Manual Effective Expiration" %}:</label>
+       <label class="field_label">{% trans "Manual effective expiration" %}</label>
        <input type="text" id="text-expires" name="text-expires" placeholder="{% trans "Enter expiration time in minutes" %}" value="" />
     </div>
     <div>
       <input type="hidden" id="hidden-references" name="hidden-references" value="" />
     </div>
-    <br>
-    <a href="#info" data-role="button" data-mini="true" class="ui-mini" data-icon="arrow-r"
+    <div class="divider"></div>
+    <a href="#info" data-role="button" data-mini="true" class="ui-mini next" data-icon="arrow-r"
       data-iconpos="right" style="whitespace:normal; width:200px" >{% trans "NEXT: Add Alert Details" %}</a>
   </div><!-- /content -->
 
@@ -255,13 +270,13 @@
   {% include "include/header.inc.tmpl" with tab='info' %}
 
   <div data-role="content" class="jqm-content">
-    <div>
-      <label class="field_label">{% trans "Language" %}:</label>
+    <div class="form_row_div">
+      <label class="field_label">{% trans "Language" %}</label>
         <select name="select-language"
                 id="select-language"
                 data-mini="true"
                 data-inline="true"
-                onchange="view2model()">
+                onchange="view2model(this)">
         {% get_language_info_list for LANGUAGES as languages %}
         {% for language in languages %}
           <option value="{{ language.code }}">
@@ -270,45 +285,74 @@
         {% endfor %}
       </select>
     </div>
-    <div>
-      <label class="field_label">{% trans "Who is Issuing This Alert" %}:</label>
-      <input type="text" name="text-senderName" id="text-senderName" data-mini="true" placeholder="" value="" onchange="view2model()">
+
+    <div class="form_row_div">
+      <label class="field_label">{% trans "Who is issuing this alert" %}</label>
+      <input type="text" name="text-senderName" id="text-senderName" 
+             data-mini="true"
+             onkeydown="removePrepopulatedStyle(this)"
+             onpaste="removePrepopulatedStyle(this)"
+             onchange="view2model(this)">
     </div>
 
     <div class="form_row_div">
-      <label class="field_label">{% trans "Event (REQUIRED)" %}:</label>
-      <input type="text" name="text-event" id="text-event" data-mini="true" placeholder="" value="" onchange="view2model()">
+      <label class="field_label">{% trans "Event" %}<span class="required">*</span></label>
+      <input type="text" name="text-event" id="text-event" data-mini="true"
+             onkeydown="removePrepopulatedStyle(this)"
+             onpaste="removePrepopulatedStyle(this)" 
+             onchange="view2model(this)">
     </div>
 
     <div class="form_row_div">
-      <label class="field_label">{% trans "Short-Text Headline (REQUIRED)" %}:&nbsp;&nbsp;<span id="headline_length">(<span id="headline_counter">140</span> {% trans "characters left)" %}</span></label>
-      <input type="text" name="text-headline" id="text-headline" data-mini="true" placeholder="{% trans "Required - 140 characters maximum" %}" value="" onchange="view2model()">
+      <label class="field_label">{% trans "Short-text headline" %}
+        <span id="headline_length">(<span id="headline_counter">140</span> {% trans "characters left)" %}</span>
+      </label>
+      <input type="text" name="text-headline" id="text-headline" data-mini="true"
+             placeholder="{% trans "140 characters maximum" %}"
+             onkeydown="removePrepopulatedStyle(this)"
+             onpaste="removePrepopulatedStyle(this)"
+             onchange="view2model(this)">
     </div>
 
     <div class="form_row_div">
-      <label class="field_label">{% trans "Describe the Event or Hazard" %}:</label>
-      <textarea name="textarea-description" id="textarea-description" data-mini="true" placeholder="" onchange="view2model()"></textarea>
+      <label class="field_label">{% trans "Describe the event or hazard" %}</label>
+      <textarea name="textarea-description" id="textarea-description" 
+                data-mini="true"
+                onkeydown="removePrepopulatedStyle(this)"
+                onpaste="removePrepopulatedStyle(this)" 
+                onchange="view2model(this)"></textarea>
     </div>
 
     <div class="form_row_div">
-      <label class="field_label">{% trans "What Should Affected People Do" %}:</label>
-      <textarea name="textarea-instruction" id="textarea-instruction" data-mini="true" placeholder="" onchange="view2model()"></textarea>
+      <label class="field_label">{% trans "What should affected people do" %}</label>
+      <textarea name="textarea-instruction" id="textarea-instruction"
+                data-mini="true"
+                onchange="view2model(this)"
+                onkeydown="removePrepopulatedStyle(this)"
+                onpaste="removePrepopulatedStyle(this)"></textarea>
     </div>
 
     <div class="form_row_div">
-      <label class="field_label" >{% trans "Who is Media Contact" %}:</label>
-      <input type="text" name="text-contact" id="text-contact" data-mini="true" placeholder="{% trans "Include telephone and/or email" %}" value="" onchange="view2model()">
+      <label class="field_label" >{% trans "Who is media contact" %}</label>
+      <input type="text" name="text-contact" id="text-contact" data-mini="true"
+             placeholder="{% trans "Include telephone and/or email" %}"
+             onchange="view2model(this)"
+             onkeydown="removePrepopulatedStyle(this)"
+             onpaste="removePrepopulatedStyle(this)">
     </div>
 
     <div class="form_row_div">
-      <label class="field_label" >{% trans "Alternate Alert Website" %}:</label>
-      <input type="text" name="text-web" id="text-web" data-mini="true" placeholder="{% trans "URL for a separate HTML version of this alert" %}" value="" onchange="view2model()">
+      <label class="field_label" >{% trans "Alternate alert website" %}</label>
+      <input type="text" name="text-web" id="text-web" data-mini="true" 
+             placeholder="{% trans "URL for a separate HTML version of this alert" %}"
+             onchange="view2model(this)"
+             onkeydown="removePrepopulatedStyle(this)"
+             onpaste="removePrepopulatedStyle(this)">
     </div>
 
     <div id="parameter_div" class="form_row_div"></div>
-    <br>
-
-    <a href="#area" data-role="button" data-mini="true" class="ui-mini-smaller" data-icon="arrow-r"
+    <div class="divider"></div>
+    <a href="#area" data-role="button" data-mini="true" class="ui-mini-smaller next" data-icon="arrow-r"
       data-iconpos="right" style="whitespace:normal; margin-top:8px; width:160px" >{% trans "NEXT: Target Area" %}</a>
 
   </div><!-- /content -->
@@ -325,19 +369,23 @@
 
   <div data-role="content" data-role="content" class="jqm-content">
     <div class="form_row_div">
-      <label class="field_label">{% trans "Area Template (Optional)" %}:</label>
+      <label class="field_label">{% trans "Add area from template" %}</label>
       <fieldset data-role="controlgroup" data-mini="true" data-type="horizontal" data-inline="true">
         <select name="select-area-template" id="select-area-template" data-mini="true" data-inline="true" onchange="handleAreaTemplateChange('{% url 'template' 'area' %}', '{% url 'admin:core_areatemplate_add' %}');">
           <option value="None">{% trans "None" %}</option>
           {% for template in area_templates %}
             <option value="{{ template.id }}">{{ template.title }}</option>
           {% endfor %}
-          <option value="CreateNewAreaTemplate">{% trans "Create a New Area Template" %}</option>
+          <option value="CreateNewAreaTemplate">{% trans "Create a new area template" %}</option>
         </select>
       </fieldset>
     </div>
-    <label class="field_label">{% trans "Describe the Alert Area (REQUIRED)" %}:</label>
-    <textarea name="textarea-areaDesc" id="textarea-areaDesc" data-mini="true" placeholder="" onchange="view2model()"></textarea>
+
+    <div class="divider"></div>
+    <div class="form_row_div">
+      <label class="field_label">{% trans "Describe the alert area" %}<span class="required">*</span></label>
+      <textarea name="textarea-areaDesc" id="textarea-areaDesc" data-mini="true" onchange="view2model(this)"></textarea>
+    </div>
 
     <div id="map_panel">
       <div id="map" class="largemap" ></div>
@@ -352,15 +400,16 @@
         <label for="circleToggle">{% trans "Circle" %}</label>
         <input type="radio" name="map_mode" value="polygon" id="polygonToggle" onclick="showPrompt(); toggleControl(this);" class="ui-mini-smaller"/>
         <label for="polygonToggle">{% trans "Shape" %}</label>
-        <a onclick="clearLast()" data-role="button" class="ui-mini-smaller">{% trans "Clear Last" %}</a>
-        <a onclick="clearAll()" data-role="button" class="ui-mini-smaller">{% trans "Clear All" %}</a>
+        <a onclick="clearLast()" data-role="button" class="ui-mini-smaller">{% trans "Clear last" %}</a>
+        <a onclick="clearAll()" data-role="button" class="ui-mini-smaller">{% trans "Clear all" %}</a>
+        <!-- TODO(arcadiy): add "Clear all templates" -->
       </fieldset>
     </div>
 
     <div id="geocode_div"></div>
-
-    <a href="#release" type="button" data-mini="true" class="ui-mini-smaller" data-icon="arrow-r"
-        data-iconpos="right" style="whitespace:normal; margin-top:8px; width:200px">{% trans "NEXT: Review &amp; Release" %}</a>
+    <div class="divider"></div>
+    <a href="#release" type="button" data-mini="true" class="ui-mini-smaller next" data-icon="arrow-r"
+        data-iconpos="right" style="whitespace:normal; margin-top:8px; width:200px">{% trans "NEXT: Review &amp; release" %}</a>
 
   </div><!-- /content -->
 
@@ -375,14 +424,15 @@
   {% include "include/header.inc.tmpl" with tab='release' %}
 
   <div data-role="content" class="jqm-content">
-    <label class="field_label" style="margin-top 15px; margin-left:8px">{% trans "Review Message Content" %}:</label>
+    <label class="field_label" style="margin-top 15px; margin-left:8px">{% trans "Review message content" %}</label>
     <div id="review_div"><pre><span id="review_span"></span></pre></div>
     <div id="release_div" data-role="collapsible" data-collapsed="false">
-      <label class="field_label" style="margin-top 15px; margin-left:8px">{% trans "Authorize Release" %}:</label>
+      <label class="field_label" style="margin-top 15px; margin-left:8px">{% trans "Authorize release" %}</label>
       <input type="text" name="text-uid" id="text-uid" data-mini="true" placeholder="User ID" width="20" value="">
       <input type="password" name="text-pwd" id="text-pwd" data-mini="true" placeholder="Password" value="">
-      <a onclick="sendAlert('{{ csrf_token}}');" data-role="button" data-mini="true" data-icon="check" class="ui-mini-smaller" style="width:180px; margin-top:8px">{% trans "Release Alert" %}</a>
     </div>
+    <div class="divider"></div>
+    <a onclick="sendAlert('{{ csrf_token}}');" data-role="button" data-mini="true" data-icon="check" class="ui-mini-smaller release">{% trans "Release alert" %}</a>
     <span id="response_status"></span>
     <span id="response_uuid"></span>
   </div><!-- /content -->

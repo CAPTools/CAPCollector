@@ -67,7 +67,7 @@ wget http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.js -O ./client/
 wget http://code.jquery.com/mobile/1.3.0/images/icons-36-white.png -O ./client/css/images/icons-36-white.png
 
 # Download OpenLayers JS library, for displaying a dynamic map to create areas.
-wget https://github.com/openlayers/openlayers/blob/master/lib/OpenLayers.js -O ./client/js/OpenLayers.js
+wget https://raw.githubusercontent.com/openlayers/openlayers/master/lib/OpenLayers.js -O ./client/js/OpenLayers.js
 wget https://github.com/openlayers/openlayers/blob/master/img/east-mini.png -O ./client/img/east-mini.png
 wget https://github.com/openlayers/openlayers/blob/master/img/north-mini.png -O ./client/img/north-mini.png
 wget https://github.com/openlayers/openlayers/blob/master/img/south-mini.png -O ./client/img/south-mini.png
@@ -78,6 +78,31 @@ wget https://github.com/openlayers/openlayers/blob/master/img/zoom-world-mini.pn
 
 # Download JQuery mobile CSS file.
 wget http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.css -O ./client/css/jquery.mobile-1.3.0.min.css
+
+# Get database related input.
+echo "For development, the CAP Collector tool stores alerts in a built-in local database."
+echo "To use the CAP Collector in a production environment, you must connect it to a persistent database and configure that here."
+echo "For Google Cloud Storage, refer to https://cloud.google.com/appengine/docs/python/cloud-sql/django#usage for the correct parameters."
+echo "For MySQL, refer to https://docs.djangoproject.com/en/dev/ref/databases/#connecting-to-the-database."
+echo "For Oracle or others, you will also have to edit settings_prod.py."
+echo -n "Enter database host or IP address (leave blank to use a local database): "
+read DB_HOST
+
+if [ "$DB_HOST" ]; then
+  echo -n "Enter database name: "
+  read DB_NAME
+
+  echo -n "Enter database username: "
+  read DB_USER
+
+  echo -n "Enter database password: "
+  read -s DB_PASSWORD
+fi
+
+echo "DATABASE_HOST='$DB_HOST'" >> ./sensitive.py
+echo "DATABASE_NAME='$DB_NAME'" >> ./sensitive.py
+echo "DATABASE_USER='$DB_USER'" >> ./sensitive.py
+echo "DATABASE_PASSWORD='$DB_PASSWORD'" >> ./sensitive.py
 
 # Sync Django models to databse. This involves superuser creation.
 $PYTHON manage.py syncdb
