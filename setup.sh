@@ -4,7 +4,7 @@
 # It installs required Python modules and does post-configuration steps.
 # The script was tested on Debian Linux OS with Python 2.7.
 # Please run the following command first to install the required packages:
-# sudo apt-get install python-virtualenv libxml2-dev libxslt-dev libxmlsec1-dev libmysqlclient-dev python-dev
+# sudo apt-get install $(grep -vE "^\s*#" packages.txt | tr "\n" " ")
 # This script should be from a new directory you create to contain the running
 # server. No superuser privileges required.
 
@@ -22,32 +22,7 @@ then
 fi
 
 # Install required modules if they don't already exist:
-
-# beautifulsoup4 - Used to pretty-print HTML and XML feeds.
-$PIP install beautifulsoup4
-
-# django - CAP collector is written on top of the Django framework.
-$PIP install django
-
-# gunicorn - Python WSGI HTTP Server for Unix. To serve as the prod webserver.
-# https://docs.djangoproject.com/en/dev/howto/deployment/wsgi/gunicorn/
-$PIP install gunicorn
-
-# lxml - Required for parsing XML.
-$PIP install lxml
-
-# python-dateutil - Easy dates parsing.
-$PIP install python-dateutil
-
-# pytz - Timezone support for Python.
-$PIP install pytz
-
-# pyXMLSecurity - Required for computing XML signatures for CAP messages.
-$PIP install pyXMLSecurity
-
-# selenium - Functional testing framework.
-$PIP install selenium
-
+$PIP install -r requirements.txt
 
 # Generate Django secret key.
 SECRET_KEY=$(cat /dev/urandom | tr -dc 'a-z0-9!@#$%^&*()_+' | fold -w 50 | head -n 1)

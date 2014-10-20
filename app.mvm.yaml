@@ -1,0 +1,27 @@
+# Runtime configuration for hosting cap_collector on Google AppEngine Managed
+# VMs. See https://cloud.google.com/appengine/docs/managed-vms/config
+
+module: default
+version: managed-vm-prod
+runtime: python27
+vm: true
+api_version: 1
+threadsafe: no
+
+manual_scaling:
+  instances: 1
+vm_settings:
+  machine_type: n1-standard-1
+
+handlers:
+- url: /client
+  static_dir: client
+  secure: always
+
+- url: .*
+  script: CAPCollector.wsgi.application
+  secure: always
+
+env_variables:
+  DJANGO_SETTINGS_MODULE: 'CAPCollector.settings'
+

@@ -135,7 +135,8 @@ TESTING = "test" in sys.argv
 # Export CAP_TOOLS_DEV=1 environment variable to include dev settings.
 # AppEngine development environment includes dev settings automatically.
 if (os.environ.get("CAP_TOOLS_DEV") or
-    os.getenv("SERVER_SOFTWARE", "").startswith("Development")):
+    (os.environ.get("SERVER_SOFTWARE") and
+     os.environ.get("SERVER_SOFTWARE").startswith("Development"))):
   from settings_dev import *
 if TESTING:
   from settings_test import *

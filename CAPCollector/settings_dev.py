@@ -25,7 +25,7 @@ if SITE_PORT:
 
 # Default database settings.
 # Running in development, but want to access production database.
-if os.getenv("CAP_TOOLS_DB") == "prod":
+if os.environ.get("CAP_TOOLS_DB") == "prod":
   DATABASES = {
       "default": {
           "ENGINE": "django.db.backends.mysql",
@@ -35,7 +35,8 @@ if os.getenv("CAP_TOOLS_DB") == "prod":
       }
   }
 # For AppEngine development environment.
-elif os.getenv("SERVER_SOFTWARE", "").startswith("Development"):
+elif (os.environ.get("SERVER_SOFTWARE") and
+      os.environ.get("SERVER_SOFTWARE").startswith("Development")):
   DATABASES = {
       "default": {
           "ENGINE": "django.db.backends.mysql",
