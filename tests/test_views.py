@@ -179,6 +179,7 @@ class End2EndTests(CAPCollectorLiveServer):
         "certainty": "Likely",
         "title": "Alert that will be updated",
         "area_desc": "This and that area",
+        "event": "Some event to be updated",
     }
 
     update_dict = {
@@ -230,7 +231,8 @@ class End2EndTests(CAPCollectorLiveServer):
         "severity": "Moderate",
         "certainty": "Likely",
         "title": "Alert that will be cancelled",
-        "area_desc": "This and that area"
+        "area_desc": "This and that area",
+        "event": "Some event to be cancelled",
     }
 
     # Create initial alert.
@@ -339,7 +341,61 @@ class End2EndTests(CAPCollectorLiveServer):
     self.Login()
 
     self.GoToAlertTab()
+    self.SetMessageTemplate(1)
     self.GoToMessageTab()
     language = settings.LANGUAGES[1]  # Hindi.
     self.SetUserLanguage(language[0])
     self.assertEquals(self.GetLanguage(), language[1])
+
+  def test_alert_validation(self):
+    """Tests alert validation: all required fields should be filled in.
+
+       Next tab should be available only when validation succeeded.
+    """
+
+    self.GoToAlertsTab()
+    self.Login()
+
+    # Alert tab.
+    self.GoToAlertTab()
+    alert_tab_url = self.webdriver.current_url
+    self.GoToMessageTab()  # Trying to go to next tab.
+    # Make sure that error message is visible and URL still the same.
+    self.assertTrue(self.alert_tab_required_placeholder.is_displayed())
+    self.assertEqual(alert_tab_url, self.webdriver.current_url)
+
+    # Populate required fields. We use template to speed up the process.
+    self.SetMessageTemplate(2)
+    self.GoToMessageTab()  # Trying to go to next tab.
+    # Make sure that error message is not visible and URL changed.
+    self.assertFalse(self.alert_tab_required_placeholder.is_displayed())
+    self.assertNotEqual(alert_tab_url, self.webdriver.current_url)
+
+    # Message tab.
+    message_tab_url = self.webdriver.current_url
+    self.GoToAreaTab()  # Trying to go to next tab.
+    # Make sure that error message is visible and URL still the same.
+    self.assertTrue(self.message_tab_required_placeholder.is_displayed())
+    self.assertEqual(message_tab_url, self.webdriver.current_url)
+
+    # Populate required fields.
+    self.event_element.send_keys("Event field text")
+    self.GoToAreaTab()
+    # Make sure that error message is not visible and URL changed.
+    self.assertFalse(self.message_tab_required_placeholder.is_displayed())
+    self.assertNotEqual(message_tab_url, self.webdriver.current_url)
+
+    # Area tab.
+    area_tab_url = self.webdriver.current_url
+    self.GoToReleaseTab()  # Trying to go to next tab.
+    # Make sure that error message is visible and URL still the same.
+    self.assertTrue(self.area_tab_required_placeholder.is_displayed())
+    self.assertEqual(area_tab_url, self.webdriver.current_url)
+
+    # Populate required fields.
+    self.area_element.send_keys("Area description")
+    self.GoToReleaseTab()
+    # Make sure that error message is not visible and URL changed.
+    self.assertFalse(self.area_tab_required_placeholder.is_displayed())
+    self.assertNotEqual(area_tab_url, self.webdriver.current_url)
+

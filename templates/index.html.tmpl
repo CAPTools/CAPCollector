@@ -137,20 +137,20 @@
     <label class="field_label">{% trans "Type of message" %}<span class="required">*</span></label>
     <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
       <label for="select-status" class="ui-hidden-accessible">{% trans "Status" %}</label>
-      <select name="select-status" id="select-status" data-mini="true" data-inline="true" onchange="view2model(this)">
+      <select name="select-status" id="select-status" class="required-field" data-mini="true" data-inline="true" onchange="view2model(this)">
         <option value="Actual">{% trans "Actual" %}</option>
         <option value="Exercise">{% trans "Exercise" %}</option>
         <option value="Test">{% trans "Test" %}</option>
         <option value="Draft">{% trans "Draft" %}</option>
       </select>
       <label for="select-msgType" class="ui-hidden-accessible">{% trans "Type" %}</label>
-      <select name="select-msgType" id="select-msgType" data-mini="true" data-inline="true" onchange="view2model(this)">
+      <select name="select-msgType" id="select-msgType" class="required-field" data-mini="true" data-inline="true" onchange="view2model(this)">
         <option value="Alert">{% trans "Alert" %}</option>
         <option value="Update">{% trans "Update" %}</option>
         <option value="Cancel">{% trans "Cancel" %}</option>
       </select>
       <label for="select-scope" class="ui-hidden-accessible">{% trans "Scope" %}</label>
-      <select name="select-scope" id="select-scope" data-mini="true" data-inline="true" onchange="view2model(this)">
+      <select name="select-scope" id="select-scope" class="required-field" data-mini="true" data-inline="true" onchange="view2model(this)">
         <option value="Public">{% trans "Public" %}</option>
         <option value="Restricted">{% trans "Restricted" %}</option>
         <option value="Private">{% trans "Private" %}</option>
@@ -159,103 +159,103 @@
     </div>
 
     <div class="form_row_div">
-     <label class="field_label">{% trans "Hazard type" %}<span class="required">*</span> {% trans "and Recommended protective action" %}</label>
-       <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true" >
-     <label for="select-categories" class="ui-hidden-accessible">{% trans "Hazard type" %}</label>
-      <select name="select-categories" id="select-categories" data-mini="true" data-native-menu="false" onchange="view2model(this)">
-        <option value="Other">{% trans "--Hazard Class--" %}</option>
-        <option value="Geo">{% trans "Geophysical" %}</option>
-        <option value="Met">{%trans "Weather" %}</option>
-        <option value="Safety">{% trans "Public Safety" %}</option>
-        <option value="Security">{% trans "Security" %}</option>
-        <option value="Rescue">{% trans "Rescue" %}</option>
-        <option value="Fire">{% trans "Fire" %}</option>
-        <option value="Health">{% trans "Health" %}</option>
-        <option value="Env">{% trans "Environmental" %}</option>
-        <option value="Transport">{% trans "Transportation" %}</option>
-        <option value="Infra">{% trans "Infrastructure/Utilities" %}</option>
-        <option value="CBRNE">{% trans "Weapon of Mass Destruction" %}</option>
-        <option value="Other">{% trans "Not Otherwise Categorized" %}</option>
-      </select>
-      <label for="select-responseTypes" class="ui-hidden-accessible">{% trans "Response type" %}</label>
-      <select name="select-responseTypes" id="select-responseTypes" data-mini="true" data-native-menu="false" onchange="view2model(this)">
-        <option value="None">{% trans "--Recommended Action--" %}</option>
-        <option value="Shelter">{% trans "Take Shelter" %}</option>
-        <option value="Evacuate">{% trans "Evacuate" %}</option>
-        <option value="Prepare">{% trans "Make Preparations" %}</option>
-        <option value="Execute">{% trans "Execute Pre-Planned Action" %}</option>
-        <option value="Avoid">{% trans "Avoid the Area" %}</option>
-        <option value="Monitor">{% trans "Monitor Conditions" %}</option>
-        <option value="AllClear">{% trans "Resume Normal Activities" %}</option>
-        <option value="None">{% trans "Take No Action" %}</option>
-        <option value="Assess">{% trans "Evaluate Situation [not for Public alerts]" %}</option>
-      </select>
-    </fieldset>
+      <label class="field_label">{% trans "Hazard type" %}<span class="required">*</span> {% trans "and Recommended protective action" %}</label>
+      <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true" >
+        <label for="select-categories" class="ui-hidden-accessible">{% trans "Hazard type" %}</label>
+        <select name="select-categories" id="select-categories" class="required-field" data-mini="true" onchange="view2model(this);">
+          <option value="">{% trans "--Hazard Class--" %}</option>
+          <option value="Geo">{% trans "Geophysical" %}</option>
+          <option value="Met">{%trans "Weather" %}</option>
+          <option value="Safety">{% trans "Public Safety" %}</option>
+          <option value="Security">{% trans "Security" %}</option>
+          <option value="Rescue">{% trans "Rescue" %}</option>
+          <option value="Fire">{% trans "Fire" %}</option>
+          <option value="Health">{% trans "Health" %}</option>
+          <option value="Env">{% trans "Environmental" %}</option>
+          <option value="Transport">{% trans "Transportation" %}</option>
+          <option value="Infra">{% trans "Infrastructure/Utilities" %}</option>
+          <option value="CBRNE">{% trans "Weapon of Mass Destruction" %}</option>
+          <option value="Other">{% trans "Not Otherwise Categorized" %}</option>
+        </select>
+        <label for="select-responseTypes" class="ui-hidden-accessible">{% trans "Response type" %}</label>
+        <select name="select-responseTypes" id="select-responseTypes" data-mini="true" onchange="view2model(this)">
+          <option value="None">{% trans "--Recommended Action--" %}</option>
+          <option value="Shelter">{% trans "Take Shelter" %}</option>
+          <option value="Evacuate">{% trans "Evacuate" %}</option>
+          <option value="Prepare">{% trans "Make Preparations" %}</option>
+          <option value="Execute">{% trans "Execute Pre-Planned Action" %}</option>
+          <option value="Avoid">{% trans "Avoid the Area" %}</option>
+          <option value="Monitor">{% trans "Monitor Conditions" %}</option>
+          <option value="AllClear">{% trans "Resume Normal Activities" %}</option>
+          <option value="None">{% trans "Take No Action" %}</option>
+          <option value="Assess">{% trans "Evaluate Situation [not for Public alerts]" %}</option>
+        </select>
+      </fieldset>
     </div>
 
     <div class="form_row_div">
-    <label class="field_label">{% trans "Message Priority" %}<span class="required">*</span></label>
-    <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true" >
-      <label for="select-urgency" class="ui-hidden-accessible">{% trans "Urgency" %}</label>
-      <select name="select-urgency" id="select-urgency" data-mini="true" data-inline="true" onchange="view2model(this)">
-        <option value="Unknown">{% trans "-Urgency-" %}</option>
-        <option value="Immediate">{% trans "Immediate" %}</option>
-        <option value="Expected">{% trans "Expected" %}</option>
-        <option value="Future">{% trans "Future" %}</option>
-        <option value="Past">{% trans "Already Occurred" %}</option>
-        <option value="Unknown">{% trans "Unknown" %}</option>
-      </select>
-      <label for="select-severity" class="ui-hidden-accessible">{% trans "Severity" %}</label>
-      <select name="select-severity" id="select-severity" data-mini="true" data-inline="true" onchange="view2model(this)">
-        <option value="Unknown">{% trans "-Severity-" %}</option>
-        <option value="Extreme">{% trans "Extreme" %}</option>
-        <option value="Severe">{% trans "Severe" %}</option>
-        <option value="Moderate">{% trans "Moderate" %}</option>
-        <option value="Minor">{% trans "Minor" %}</option>
-        <option value="Unknown">{% trans "Unknown" %}</option>
-      </select>
-      <label for="select-certainty" class="ui-hidden-accessible">{% trans "Certainty" %}</label>
-      <select name="select-certainty" id="select-certainty" data-mini="true" data-inline="true" onchange="view2model(this)">
-        <option value="Unknown">{% trans "-Certainty-" %}</option>
-        <option value="Observed">{% trans "Observed Event" %}</option>
-        <option value="Likely">{% trans "Likely" %}</option>
-        <option value="Possible">{% trans "Possible" %}</option>
-        <option value="Unlikely">{% trans "Unlikely" %}</option>
-        <option value="Unknown">{% trans "Unknown" %}</option>
-      </select>
-    </fieldset>
+      <label class="field_label">{% trans "Message Priority" %}<span class="required">*</span></label>
+      <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true" >
+        <label for="select-urgency" class="ui-hidden-accessible">{% trans "Urgency" %}</label>
+        <select name="select-urgency" id="select-urgency" class="required-field" data-mini="true" data-inline="true" onchange="view2model(this)">
+          <option value="">{% trans "-Urgency-" %}</option>
+          <option value="Immediate">{% trans "Immediate" %}</option>
+          <option value="Expected">{% trans "Expected" %}</option>
+          <option value="Future">{% trans "Future" %}</option>
+          <option value="Past">{% trans "Already Occurred" %}</option>
+          <option value="Unknown">{% trans "Unknown" %}</option>
+        </select>
+        <label for="select-severity" class="ui-hidden-accessible">{% trans "Severity" %}</label>
+        <select name="select-severity" id="select-severity" class="required-field" data-mini="true" data-inline="true" onchange="view2model(this)">
+          <option value="">{% trans "-Severity-" %}</option>
+          <option value="Extreme">{% trans "Extreme" %}</option>
+          <option value="Severe">{% trans "Severe" %}</option>
+          <option value="Moderate">{% trans "Moderate" %}</option>
+          <option value="Minor">{% trans "Minor" %}</option>
+          <option value="Unknown">{% trans "Unknown" %}</option>
+        </select>
+        <label for="select-certainty" class="ui-hidden-accessible">{% trans "Certainty" %}</label>
+        <select name="select-certainty" id="select-certainty" class="required-field" data-mini="true" data-inline="true" onchange="view2model(this)">
+          <option value="">{% trans "-Certainty-" %}</option>
+          <option value="Observed">{% trans "Observed Event" %}</option>
+          <option value="Likely">{% trans "Likely" %}</option>
+          <option value="Possible">{% trans "Possible" %}</option>
+          <option value="Unlikely">{% trans "Unlikely" %}</option>
+          <option value="Unknown">{% trans "Unknown" %}</option>
+        </select>
+      </fieldset>
     </div>
 
     <div class="form_row_div">
-    <label class="field_label">{% trans "Alert expiration" %}<span class="required">*</span></label>
-    <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true" >
-      <label for="select-expires-min" class="ui-hidden-accessible">{% trans "Time to Expiration" %}</label>
-      {# TODO(arcadiy): Make effective periods easily configurable by installer. #}
-      <select name="select-expires-min" id="select-expires-min" data-mini="true" data-inline="true" onchange="view2model(this)">
-        <option value="60">{% trans "- Effective Period (from now) -" %}</option>
-        <option value="15">{% trans "15 Minutes" %}</option>
-        <option value="30">{% trans "30 Minutes" %}</option>
-        <option value="45">{% trans "45 Minutes" %}</option>
-        <option value="60">{% trans "1 Hour" %}</option>
-        <option value="90">{% trans "90 Minutes" %}</option>
-        <option value="120">{% trans "2 Hours" %}</option>
-        <option value="180">{% trans "3 Hours" %}</option>
-        <option value="240">{% trans "4 Hours" %}</option>
-        <option value="300">{% trans "5 Hours" %}</option>
-        <option value="360">{% trans "6 Hours" %}</option>
-        <option value="Other">{% trans "Other" %}...</option>
-      </select>
-    </fieldset>
+      <label class="field_label">{% trans "Alert expiration" %}<span class="required">*</span></label>
+      <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true" >
+        {# TODO(arcadiy): Make effective periods easily configurable by installer. #}
+        <select name="select-expires-min" id="select-expires-min" data-mini="true"
+            data-inline="true" class="required-field" onchange="view2model(this)">
+          <option value="15">{% trans "15 Minutes" %}</option>
+          <option value="30">{% trans "30 Minutes" %}</option>
+          <option value="45">{% trans "45 Minutes" %}</option>
+          <option value="60">{% trans "1 Hour" %}</option>
+          <option value="90">{% trans "90 Minutes" %}</option>
+          <option value="120">{% trans "2 Hours" %}</option>
+          <option value="180">{% trans "3 Hours" %}</option>
+          <option value="240">{% trans "4 Hours" %}</option>
+          <option value="300">{% trans "5 Hours" %}</option>
+          <option value="360">{% trans "6 Hours" %}</option>
+          <option value="Other">{% trans "Other" %}...</option>
+        </select>
+      </fieldset>
     </div>
-     <div id="custom-expiration-time-block">
-       <label class="field_label">{% trans "Manual effective expiration" %}</label>
-       <input type="text" id="text-expires" name="text-expires" placeholder="{% trans "Enter expiration time in minutes" %}" value="" />
+    <div id="custom-expiration-time-block">
+      <label class="field_label">{% trans "Manual effective expiration" %}</label>
+      <input type="text" id="text-expires" name="text-expires" placeholder="{% trans "Enter expiration time in minutes" %}" value="" />
     </div>
     <div>
       <input type="hidden" id="hidden-references" name="hidden-references" value="" />
     </div>
     <div class="divider"></div>
-    <a href="#info" data-role="button" data-mini="true" class="ui-mini next" data-icon="arrow-r"
+    <span class="required-placeholder hidden">* {% trans "Required fields" %}</span>
+    <a href="#" id="alert-next-button" data-role="button" data-mini="true" class="ui-mini next" data-icon="arrow-r"
       data-iconpos="right" style="whitespace:normal; width:200px" >{% trans "NEXT: Add Alert Details" %}</a>
   </div><!-- /content -->
 
@@ -290,16 +290,16 @@
       <label class="field_label">{% trans "Who is issuing this alert" %}</label>
       <input type="text" name="text-senderName" id="text-senderName" 
              data-mini="true"
-             onkeydown="removePrepopulatedStyle(this)"
-             onpaste="removePrepopulatedStyle(this)"
+             onkeydown="removeStyles(this)"
+             onpaste="removeStyles(this)"
              onchange="view2model(this)">
     </div>
 
     <div class="form_row_div">
       <label class="field_label">{% trans "Event" %}<span class="required">*</span></label>
-      <input type="text" name="text-event" id="text-event" data-mini="true"
-             onkeydown="removePrepopulatedStyle(this)"
-             onpaste="removePrepopulatedStyle(this)" 
+      <input type="text" name="text-event" id="text-event" class="required-field" data-mini="true"
+             onkeydown="removeStyles(this)"
+             onpaste="removeStyles(this)"
              onchange="view2model(this)">
     </div>
 
@@ -309,8 +309,8 @@
       </label>
       <input type="text" name="text-headline" id="text-headline" data-mini="true"
              placeholder="{% trans "140 characters maximum" %}"
-             onkeydown="removePrepopulatedStyle(this)"
-             onpaste="removePrepopulatedStyle(this)"
+             onkeydown="removeStyles(this)"
+             onpaste="removeStyles(this)"
              onchange="view2model(this)">
     </div>
 
@@ -318,8 +318,8 @@
       <label class="field_label">{% trans "Describe the event or hazard" %}</label>
       <textarea name="textarea-description" id="textarea-description" 
                 data-mini="true"
-                onkeydown="removePrepopulatedStyle(this)"
-                onpaste="removePrepopulatedStyle(this)" 
+                onkeydown="removeStyles(this)"
+                onpaste="removeStyles(this)"
                 onchange="view2model(this)"></textarea>
     </div>
 
@@ -328,8 +328,8 @@
       <textarea name="textarea-instruction" id="textarea-instruction"
                 data-mini="true"
                 onchange="view2model(this)"
-                onkeydown="removePrepopulatedStyle(this)"
-                onpaste="removePrepopulatedStyle(this)"></textarea>
+                onkeydown="removeStyles(this)"
+                onpaste="removeStyles(this)"></textarea>
     </div>
 
     <div class="form_row_div">
@@ -337,8 +337,8 @@
       <input type="text" name="text-contact" id="text-contact" data-mini="true"
              placeholder="{% trans "Include telephone and/or email" %}"
              onchange="view2model(this)"
-             onkeydown="removePrepopulatedStyle(this)"
-             onpaste="removePrepopulatedStyle(this)">
+             onkeydown="removeStyles(this)"
+             onpaste="removeStyles(this)">
     </div>
 
     <div class="form_row_div">
@@ -346,13 +346,14 @@
       <input type="text" name="text-web" id="text-web" data-mini="true" 
              placeholder="{% trans "URL for a separate HTML version of this alert" %}"
              onchange="view2model(this)"
-             onkeydown="removePrepopulatedStyle(this)"
-             onpaste="removePrepopulatedStyle(this)">
+             onkeydown="removeStyles(this)"
+             onpaste="removeStyles(this)">
     </div>
 
     <div id="parameter_div" class="form_row_div"></div>
     <div class="divider"></div>
-    <a href="#area" data-role="button" data-mini="true" class="ui-mini-smaller next" data-icon="arrow-r"
+    <span class="required-placeholder hidden">* {% trans "Required fields" %}</span>
+    <a href="#" id="info-next-button" data-role="button" data-mini="true" class="ui-mini-smaller next" data-icon="arrow-r"
       data-iconpos="right" style="whitespace:normal; margin-top:8px; width:160px" >{% trans "NEXT: Target Area" %}</a>
 
   </div><!-- /content -->
@@ -383,8 +384,14 @@
 
     <div class="divider"></div>
     <div class="form_row_div">
-      <label class="field_label">{% trans "Describe the alert area" %}<span class="required">*</span></label>
-      <textarea name="textarea-areaDesc" id="textarea-areaDesc" data-mini="true" onchange="view2model(this)"></textarea>
+      <label class="field_label">{% trans "Describe the alert area" %}
+        <span class="required">*</span>
+      </label>
+      <textarea name="textarea-areaDesc" id="textarea-areaDesc" 
+          class="required-field" data-mini="true"
+          onkeydown="removeStyles(this)"
+          onpaste="removeStyles(this)"
+          onchange="view2model(this)"></textarea>
     </div>
 
     <div id="map_panel">
@@ -408,7 +415,8 @@
 
     <div id="geocode_div"></div>
     <div class="divider"></div>
-    <a href="#release" type="button" data-mini="true" class="ui-mini-smaller next" data-icon="arrow-r"
+    <span class="required-placeholder hidden">* {% trans "Required fields" %}</span>
+    <a href="#" id="area-next-button" type="button" data-mini="true" class="ui-mini-smaller next" data-icon="arrow-r"
         data-iconpos="right" style="whitespace:normal; margin-top:8px; width:200px">{% trans "NEXT: Review &amp; release" %}</a>
 
   </div><!-- /content -->

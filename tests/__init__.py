@@ -41,27 +41,26 @@ class CAPCollectorLiveServer(TestBase, LiveServerTestCase):
   CANCEL_ALERT_BUTTON_XPATH = "//*[@id='cancel_button']"
 
   ISSUE_NEW_ALERT_BUTTON_XPATH = "//*[@id='current']/div[2]/a[1]/span"
-  ADD_ALERT_DETAILS_BUTTON_XPATH = "//*[@id='alert']/div[2]/a/span"
-  TARGET_AREA_BUTTON_XPATH = "//*[@id='info']/div[2]/a/span"
-  RELEASE_BUTTON_XPATH = "//*[@id='area']/div[2]/a/span"
-  RELEASE_ALERT_BUTTON_XPATH = "//*[@id='release']/div[2]/a/span/span[1]"
+  ADD_ALERT_DETAILS_BUTTON_XPATH = "//*[@id='alert-next-button']/span"
+  TARGET_AREA_BUTTON_XPATH = "//*[@id='info-next-button']/span"
+  RELEASE_BUTTON_XPATH = "//*[@id='area-next-button']/span"
+  RELEASE_ALERT_BUTTON_XPATH = "//*[@id='release']/div[2]/a/span"
 
   MESSAGE_TEMPLATE_ELEMENT = "//*[@id='select-message-template']"
   MESSAGE_TEMPLATE_ITEMS_XPATH = "//*[@id='select-message-template']/option[%s]"
-  CATEGORY_MENU_XPATH = "//*[@id='select-categories-button']/span"
+
   CATEGORY_SELECT_ELEMENT = "//*[@id='select-categories']"
   CATEGORY_KEYS = ("geo", "met", "safety", "security", "rescue", "fire",
                    "health", "env", "transport", "infra", "cbrne", "other")
   CATEGORY_XPATHS = {
-      key: "//*[@id='select-categories-menu']/li[%s]/div/div/a" % (index + 2)
+      key: "//*[@id='select-categories']/option[%s]" % (index + 2)
       for index, key in enumerate(CATEGORY_KEYS)}
 
-  RESPONSE_TYPE_MENU_XPATH = "//*[@id='select-responseTypes-button']/span"
   RESPONSE_TYPE_SELECT_ELEMENT = "//*[@id='select-responseTypes']"
   RESPONSE_TYPE_KEYS = ("shelter", "evacuate", "prepare", "execute", "avoid",
                         "monitor", "assess", "allclear", "none")
   RESPONSE_TYPE_XPATHS = {
-      key: "//*[@id='select-responseTypes-menu']/li[%s]/div/div/a" % (index + 2)
+      key: "//*[@id='select-responseTypes']/option[%s]" % (index + 2)
       for index, key in enumerate(RESPONSE_TYPE_KEYS)}
 
   URGENCY_SELECT_ELEMENT = "//*[@id='select-urgency']"
@@ -84,7 +83,7 @@ class CAPCollectorLiveServer(TestBase, LiveServerTestCase):
 
   EXPIRATION_SELECT_ELEMENT = "//*[@id='select-expires-min']"
   EXPIRATION_XPATHS = {
-      120: "//*[@id='select-expires-min']/option[7]",
+      120: "//*[@id='select-expires-min']/option[6]",
   }
 
   # Message tab.
@@ -120,6 +119,10 @@ class CAPCollectorLiveServer(TestBase, LiveServerTestCase):
       language_tuple[0]: "//*[@id='ui-language']/option[%s]" % (index + 1)
       for index, language_tuple in enumerate(settings.LANGUAGES)
   }
+
+  ALERT_TAB_REQUIRED_PLACEHOLDER_XPATH = "//*[@id='alert']/div[2]/span"
+  MESSAGE_TAB_REQUIRED_PLACEHOLDER_XPATH = "//*[@id='info']/div[2]/span"
+  AREA_TAB_REQUIRED_PLACEHOLDER_XPATH = "//*[@id='area']/div[2]/span"
 
   @classmethod
   def setUpClass(cls):
@@ -170,20 +173,27 @@ class CAPCollectorLiveServer(TestBase, LiveServerTestCase):
     return self.WaitUntilVisible(self.RELEASE_ALERT_BUTTON_XPATH)
 
   @property
+  def alert_tab_required_placeholder(self):
+    return self.webdriver.find_element_by_xpath(
+        self.ALERT_TAB_REQUIRED_PLACEHOLDER_XPATH)
+
+  @property
+  def message_tab_required_placeholder(self):
+    return self.webdriver.find_element_by_xpath(
+        self.MESSAGE_TAB_REQUIRED_PLACEHOLDER_XPATH)
+
+  @property
+  def area_tab_required_placeholder(self):
+    return self.webdriver.find_element_by_xpath(
+        self.AREA_TAB_REQUIRED_PLACEHOLDER_XPATH)
+
+  @property
   def message_template_select(self):
     return self.WaitUntilVisible(self.MESSAGE_TEMPLATE_ELEMENT)
 
   @property
-  def category_menu(self):
-    return self.WaitUntilVisible(self.CATEGORY_MENU_XPATH)
-
-  @property
   def category_select(self):
-    return self.WaitUntilVisible(self.CATEGORY_SELECT_ELEMENT)
-
-  @property
-  def response_type_menu(self):
-    return self.WaitUntilVisible(self.RESPONSE_TYPE_MENU_XPATH)
+    return self.find_element_by_xpath(self.CATEGORY_SELECT_ELEMENT)
 
   @property
   def response_type_select(self):
@@ -307,7 +317,6 @@ class CAPCollectorLiveServer(TestBase, LiveServerTestCase):
     return self.message_template_select.get_attribute("value")
 
   def SetCategory(self, category):
-    self.category_menu.click()
     category_xpath = self.CATEGORY_XPATHS.get(category.lower())
     menu_item = self.WaitUntilVisible(category_xpath)
     menu_item.click()
@@ -316,7 +325,6 @@ class CAPCollectorLiveServer(TestBase, LiveServerTestCase):
     return self.category_select.get_attribute("value")
 
   def SetResponseType(self, response_type):
-    self.response_type_menu.click()
     response_type_xpath = self.RESPONSE_TYPE_XPATHS.get(response_type.lower())
     menu_item = self.WaitUntilVisible(response_type_xpath)
     menu_item.click()
