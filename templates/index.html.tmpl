@@ -418,7 +418,6 @@
     <span class="required-placeholder hidden">* {% trans "Required fields" %}</span>
     <a href="#" id="area-next-button" type="button" data-mini="true" class="ui-mini-smaller next" data-icon="arrow-r"
         data-iconpos="right" style="whitespace:normal; margin-top:8px; width:200px">{% trans "NEXT: Review &amp; release" %}</a>
-
   </div><!-- /content -->
 
   {% include "include/footer.inc.tmpl" with tab='area' %}
@@ -440,7 +439,10 @@
       <input type="password" name="text-pwd" id="text-pwd" data-mini="true" placeholder="Password" value="">
     </div>
     <div class="divider"></div>
-    <a onclick="sendAlert('{{ csrf_token}}');" data-role="button" data-mini="true" data-icon="check" class="ui-mini-smaller release">{% trans "Release alert" %}</a>
+    <a onclick="sendAlert('{{ csrf_token}}', this);" data-role="button" data-mini="true" data-icon="check" class="ui-mini-smaller release">
+      <span id="sending-alert-button">{% trans "Release alert" %}</span>
+      <span id="sending-alert-indicator" class="hidden">{% trans "Sending alert" %}...</span>
+    </a>
     <span id="response_status"></span>
     <span id="response_uuid"></span>
   </div><!-- /content -->
