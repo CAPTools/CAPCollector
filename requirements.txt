@@ -15,6 +15,9 @@ gunicorn
 # lxml - Required for parsing XML.
 lxml
 
+# MySQL-python - MySQL support.
+MySQL-python
+
 # python-dateutil - Easy dates parsing.
 python-dateutil
 

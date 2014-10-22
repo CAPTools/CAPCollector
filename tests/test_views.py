@@ -356,7 +356,7 @@ class End2EndTests(CAPCollectorLiveServer):
     self.SetUserLanguage(language[0])
     self.assertEquals(self.GetLanguage(), language[1])
 
-  def test_alert_validation(self):
+  def test_alert_required_fields_validation(self):
     """Tests alert validation: all required fields should be filled in.
 
        Next tab should be available only when validation succeeded.
@@ -462,3 +462,54 @@ class End2EndTests(CAPCollectorLiveServer):
     # Make sure it succeeds if any of geocode, circle or polygon set.
     for template_name, template_id in test_area_template_dict.iteritems():
       AreaTabSpecificTestCase(template_name, template_id)
+
+  def test_alert_template_placeholder_fields_validation(self):
+    """Tests alert validation: checks fields for {{placeholder text}}.
+
+       Next tab should be available only when validation succeeded (no
+       placeholder text found).
+    """
+    self.GoToAlertsTab()
+    self.Login()
+    # Alert tab.
+    self.GoToAlertTab()
+    # Populate fields from template with place holders.
+    self.SetMessageTemplate(3)
+
+    # Message tab.
+    self.GoToMessageTab()
+    message_tab_url = self.webdriver.current_url
+    self.GoToAreaTab()  # Trying to go to next tab.
+    # Make sure that error message is visible and URL still the same.
+    self.assertTrue(
+        self.message_tab_invalid_placeholder.is_displayed())
+    self.assertEqual(message_tab_url, self.webdriver.current_url)
+
+    # Replace template placeholders with real data.
+    self.ClearEvent()
+    self.SetEvent("Some event with no placeholder")
+    self.ClearDescription()
+    self.SetDescription("Some description with no placeholder")
+    self.ClearInstruction()
+    self.SetInstruction("Some instruction with no placeholder")
+    self.GoToAreaTab()
+    # Make sure that error message is not visible and URL changed.
+    self.assertFalse(
+        self.message_tab_invalid_placeholder.is_displayed())
+    self.assertNotEqual(message_tab_url, self.webdriver.current_url)
+
+    # Area tab.
+    area_tab_url = self.webdriver.current_url
+    self.SetAreaTemplate(5)
+    self.GoToReleaseTab()  # Trying to go to next tab.
+    # Make sure that error message is visible and URL still the same.
+    self.assertTrue(self.area_tab_invalid_placeholder.is_displayed())
+    self.assertEqual(area_tab_url, self.webdriver.current_url)
+
+    # Replace template placeholders with real data.
+    self.ClearArea()
+    self.SetArea("Some area with no placeholder")
+    self.GoToReleaseTab()
+    # Make sure that error message is not visible and URL changed.
+    self.assertFalse(self.area_tab_invalid_placeholder.is_displayed())
+    self.assertNotEqual(area_tab_url, self.webdriver.current_url)

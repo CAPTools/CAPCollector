@@ -287,8 +287,13 @@
     </div>
 
     <div class="form_row_div">
-      <label class="field_label">{% trans "Who is issuing this alert" %}</label>
-      <input type="text" name="text-senderName" id="text-senderName" 
+      <label class="field_label">{% trans "Who is issuing this alert" %}
+        {% include "include/placeholder-field-error.inc.tmpl" %}
+      </label>
+      <input type="text"
+             name="text-senderName"
+             id="text-senderName"
+             class="placeholder-field"
              data-mini="true"
              onkeydown="removeStyles(this)"
              onpaste="removeStyles(this)"
@@ -296,8 +301,13 @@
     </div>
 
     <div class="form_row_div">
-      <label class="field_label">{% trans "Event" %}<span class="required">*</span></label>
-      <input type="text" name="text-event" id="text-event" class="required-field" data-mini="true"
+      <label class="field_label">{% trans "Event" %}
+        <span class="required">*</span>
+        {% include "include/placeholder-field-error.inc.tmpl" %}
+      </label>
+      <input type="text" name="text-event" id="text-event"
+             class="required-field placeholder-field"
+             data-mini="true"
              onkeydown="removeStyles(this)"
              onpaste="removeStyles(this)"
              onchange="view2model(this)">
@@ -306,8 +316,13 @@
     <div class="form_row_div">
       <label class="field_label">{% trans "Short-text headline" %}
         <span id="headline_length">(<span id="headline_counter">140</span> {% trans "characters left)" %}</span>
+        {% include "include/placeholder-field-error.inc.tmpl" %}
       </label>
-      <input type="text" name="text-headline" id="text-headline" data-mini="true"
+      <input type="text"
+             name="text-headline"
+             id="text-headline"
+             class="placeholder-field"
+             data-mini="true"
              placeholder="{% trans "140 characters maximum" %}"
              onkeydown="removeStyles(this)"
              onpaste="removeStyles(this)"
@@ -315,8 +330,12 @@
     </div>
 
     <div class="form_row_div">
-      <label class="field_label">{% trans "Describe the event or hazard" %}</label>
-      <textarea name="textarea-description" id="textarea-description" 
+      <label class="field_label">{% trans "Describe the event or hazard" %}
+        {% include "include/placeholder-field-error.inc.tmpl" %}
+      </label>
+      <textarea name="textarea-description"
+                id="textarea-description"
+                class="placeholder-field"
                 data-mini="true"
                 onkeydown="removeStyles(this)"
                 onpaste="removeStyles(this)"
@@ -324,8 +343,12 @@
     </div>
 
     <div class="form_row_div">
-      <label class="field_label">{% trans "What should affected people do" %}</label>
-      <textarea name="textarea-instruction" id="textarea-instruction"
+      <label class="field_label">{% trans "What should affected people do" %}
+        {% include "include/placeholder-field-error.inc.tmpl" %}
+      </label>
+      <textarea name="textarea-instruction"
+                id="textarea-instruction"
+                class="placeholder-field"
                 data-mini="true"
                 onchange="view2model(this)"
                 onkeydown="removeStyles(this)"
@@ -333,8 +356,14 @@
     </div>
 
     <div class="form_row_div">
-      <label class="field_label" >{% trans "Who is media contact" %}</label>
-      <input type="text" name="text-contact" id="text-contact" data-mini="true"
+      <label class="field_label">{% trans "Who is media contact" %}
+        {% include "include/placeholder-field-error.inc.tmpl" %}
+      </label>
+      <input type="text"
+             name="text-contact"
+             id="text-contact"
+             class="placeholder-field"
+             data-mini="true"
              placeholder="{% trans "Include telephone and/or email" %}"
              onchange="view2model(this)"
              onkeydown="removeStyles(this)"
@@ -342,8 +371,14 @@
     </div>
 
     <div class="form_row_div">
-      <label class="field_label" >{% trans "Alternate alert website" %}</label>
-      <input type="text" name="text-web" id="text-web" data-mini="true" 
+      <label class="field_label" >{% trans "Alternate alert website" %}
+        {% include "include/placeholder-field-error.inc.tmpl" %}
+      </label>
+      <input type="text"
+             name="text-web"
+             id="text-web"
+             class="placeholder-field"
+             data-mini="true"
              placeholder="{% trans "URL for a separate HTML version of this alert" %}"
              onchange="view2model(this)"
              onkeydown="removeStyles(this)"
@@ -352,7 +387,8 @@
 
     <div id="parameter_div" class="form_row_div"></div>
     <div class="divider"></div>
-    <span class="required-placeholder hidden">* {% trans "Required fields" %}</span>
+    <div class="required-placeholder hidden">* {% trans "Required fields" %}</div>
+    <div class="invalid-placeholder hidden">* {% trans "Invalid {{ template placeholders }}" %}</div>
     <a href="#" id="info-next-button" data-role="button" data-mini="true" class="ui-mini-smaller next" data-icon="arrow-r"
       data-iconpos="right" style="whitespace:normal; margin-top:8px; width:160px" >{% trans "NEXT: Target Area" %}</a>
 
@@ -386,12 +422,15 @@
     <div class="form_row_div">
       <label class="field_label">{% trans "Describe the alert area" %}
         <span class="required">*</span>
+        {% include "include/placeholder-field-error.inc.tmpl" %}
       </label>
-      <textarea name="textarea-areaDesc" id="textarea-areaDesc" 
-          class="required-field" data-mini="true"
-          onkeydown="removeStyles(this)"
-          onpaste="removeStyles(this)"
-          onchange="view2model(this)"></textarea>
+      <textarea name="textarea-areaDesc"
+                id="textarea-areaDesc"
+                class="required-field placeholder-field"
+                data-mini="true"
+                onkeydown="removeStyles(this)"
+                onpaste="removeStyles(this)"
+                onchange="view2model(this)"></textarea>
     </div>
 
     <div id="map_panel">
@@ -416,6 +455,7 @@
     <div id="geocode_div"></div>
     <div class="divider"></div>
     <div class="required-placeholder hidden">* {% trans "Required fields" %}</div>
+    <div class="invalid-placeholder hidden">* {% trans "Invalid {{ placeholders }}" %}</div>
     <div class="required-combined-placeholder hidden">* {% trans "Fill in at least one of geocode, polygon or circle" %}</div>
     <a href="#" id="area-next-button" type="button" data-mini="true" class="ui-mini-smaller next" data-icon="arrow-r"
        onclick="view2model(this)" data-iconpos="right" style="whitespace:normal; margin-top:8px; width:200px">{% trans "NEXT: Review &amp; release" %}</a>

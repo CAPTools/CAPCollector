@@ -42,7 +42,7 @@ wget http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.js -O ./client/
 wget http://code.jquery.com/mobile/1.3.0/images/icons-36-white.png -O ./client/css/images/icons-36-white.png
 
 # Download OpenLayers JS library, for displaying a dynamic map to create areas.
-wget https://raw.githubusercontent.com/openlayers/openlayers/master/lib/OpenLayers.js -O ./client/js/OpenLayers.js
+wget https://cdnjs.cloudflare.com/ajax/libs/openlayers/2.13.1/OpenLayers.js -O ./client/js/OpenLayers.js
 wget https://github.com/openlayers/openlayers/blob/master/img/east-mini.png -O ./client/img/east-mini.png
 wget https://github.com/openlayers/openlayers/blob/master/img/north-mini.png -O ./client/img/north-mini.png
 wget https://github.com/openlayers/openlayers/blob/master/img/south-mini.png -O ./client/img/south-mini.png

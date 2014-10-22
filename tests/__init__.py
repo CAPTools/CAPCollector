@@ -106,8 +106,8 @@ class CAPCollectorLiveServer(TestBase, LiveServerTestCase):
   AREA_TEMPLATE_ITEMS_XPATH = "//*[@id='select-area-template']/option[%s]"
   AREA_ELEMENT_NAME = "textarea-areaDesc"
   AREA_GEOCODE_ADD_BUTTON_XPATH = "//*[@id='geocode_div']/a"
-  AREA_GEOCODE_NAME_XPATH = "//*[@id='geocode_div']/div/div[1]/input"
-  AREA_GEOCODE_VALUE_XPATH = "//*[@id='geocode_div']/div/div[2]/input"
+  AREA_GEOCODE_NAME_XPATH = "//*[@id='geocode_div']/div/div[1]/div[2]/input"
+  AREA_GEOCODE_VALUE_XPATH = "//*[@id='geocode_div']/div/div[2]/div[2]/input"
 
   # Release tab.
   USERNAME_ELEMENT_XPATH = "//*[@id='text-uid']"
@@ -124,10 +124,14 @@ class CAPCollectorLiveServer(TestBase, LiveServerTestCase):
   }
 
   ALERT_TAB_REQUIRED_PLACEHOLDER_XPATH = "//*[@id='alert']/div[2]/span"
-  MESSAGE_TAB_REQUIRED_PLACEHOLDER_XPATH = "//*[@id='info']/div[2]/span"
+
+  MESSAGE_TAB_REQUIRED_PLACEHOLDER_XPATH = "//*[@id='info']/div[2]/div[11]"
   AREA_TAB_REQUIRED_PLACEHOLDER_XPATH = "//*[@id='area']/div[2]/div[8]"
 
-  AREA_TAB_REQUIRED_COMBINED_PLACEHOLDER_XPATH = "//*[@id='area']/div[2]/div[9]"
+  MESSAGE_TAB_INVALID_PLACEHOLDER_XPATH = (
+      "//*[@id='info']/div[2]/div[12]")
+  AREA_TAB_INVALID_PLACEHOLDER_XPATH = "//*[@id='area']/div[2]/div[9]"
+  AREA_TAB_REQUIRED_COMBINED_PLACEHOLDER_XPATH = "//*[@id='area']/div[2]/div[10]"
 
   @classmethod
   def setUpClass(cls):
@@ -191,9 +195,19 @@ class CAPCollectorLiveServer(TestBase, LiveServerTestCase):
         self.MESSAGE_TAB_REQUIRED_PLACEHOLDER_XPATH)
 
   @property
+  def message_tab_invalid_placeholder(self):
+    return self.webdriver.find_element_by_xpath(
+        self.MESSAGE_TAB_INVALID_PLACEHOLDER_XPATH)
+
+  @property
   def area_tab_required_placeholder(self):
     return self.webdriver.find_element_by_xpath(
         self.AREA_TAB_REQUIRED_PLACEHOLDER_XPATH)
+
+  @property
+  def area_tab_invalid_placeholder(self):
+    return self.webdriver.find_element_by_xpath(
+        self.AREA_TAB_INVALID_PLACEHOLDER_XPATH)
 
   @property
   def area_tab_required_combined_placeholder(self):
@@ -415,11 +429,20 @@ class CAPCollectorLiveServer(TestBase, LiveServerTestCase):
     self.Clear(self.headline_element)
     self.headline_element.send_keys(head_line)
 
+  def ClearEvent(self):
+    self.Clear(self.event_element)
+
   def SetEvent(self, event):
     self.event_element.send_keys(event)
 
+  def ClearDescription(self):
+    self.Clear(self.description_element)
+
   def SetDescription(self, description):
     self.description_element.send_keys(description)
+
+  def ClearInstruction(self):
+    self.Clear(self.instruction_element)
 
   def SetInstruction(self, instruction):
     self.instruction_element.send_keys(instruction)
@@ -429,6 +452,9 @@ class CAPCollectorLiveServer(TestBase, LiveServerTestCase):
 
   def SetWeb(self, url):
     self.web_element.send_keys(url)
+
+  def ClearArea(self):
+    self.Clear(self.area_element)
 
   def SetArea(self, area):
     self.Clear(self.area_element)

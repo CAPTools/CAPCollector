@@ -12,17 +12,20 @@ libxml2-dev
 # XSLT 1.0 processing library - development kit.
 libxslt-dev
 
-# Implements XML Signature and XML Encryption XML standards
+# Implements XML Signature and XML Encryption XML standards.
 libxmlsec1-dev
 
-# MySQL database development files
+# MySQL database development files.
 libmysqlclient-dev
 
 # Header files and a static library for Python.
 python-dev
 
-#Python interface to MySQL
+# Python interface to MySQL.
 python-mysqldb
 
-# Python package installer
+# Python package installer.
 python-pip
+
+# Python virtual environments.
+python-virtualenv
