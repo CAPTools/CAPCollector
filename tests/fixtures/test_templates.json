@@ -11,6 +11,36 @@
 },
 {
   "fields": {
+    "content": "<alert xmlns=\"urn:oasis:names:tc:emergency:cap:1.2\">\r\n  <info>\r\n    <area>\r\n      <areaDesc>Area template with geocode</areaDesc>\r\n      <geocode>\r\n    <valueName>geocode1</valueName>\r\n        <value>one</value>\r\n      </geocode>\r\n    </area>\r\n  </info>\r\n</alert>",
+    "created_at": "2014-09-12T21:14:39.783Z",
+    "last_modified_at": "2014-09-17T20:41:45.612Z",
+    "title": "Area template with geocode"
+  },
+  "model": "core.areatemplate",
+  "pk": 2
+},
+{
+  "fields": {
+    "content": "<alert xmlns=\"urn:oasis:names:tc:emergency:cap:1.2\">\r\n  <info>\r\n    <area>\r\n      <areaDesc>Area template with polygon</areaDesc>\r\n      <polygon>13.63724,100.36765 13.82267,100.44044 13.70796,100.55167 13.60654,100.46790 13.63724,100.36765</polygon>\r\n    </area>\r\n  </info>\r\n</alert>",
+    "created_at": "2014-09-12T21:14:39.783Z",
+    "last_modified_at": "2014-09-17T20:41:45.612Z",
+    "title": "Area template with polygon"
+  },
+  "model": "core.areatemplate",
+  "pk": 3
+},
+{
+  "fields": {
+    "content": "<alert xmlns=\"urn:oasis:names:tc:emergency:cap:1.2\">\r\n  <info>\r\n    <area>\r\n      <areaDesc>Area template with circle</areaDesc>\r\n      <circle>13.85867,100.14381 14.29924</circle>\r\n    </area>\r\n  </info>\r\n</alert>",
+    "created_at": "2014-09-12T21:14:39.783Z",
+    "last_modified_at": "2014-09-17T20:41:45.612Z",
+    "title": "Area template with circle"
+  },
+  "model": "core.areatemplate",
+  "pk": 4
+},
+{
+  "fields": {
     "content": "<alert xmlns=\"urn:oasis:names:tc:emergency:cap:1.2\">\r\n  <status>Actual</status>\r\n  <msgType>Update</msgType>\r\n  <scope>Public</scope>\r\n  <note>Example of a message template</note>\r\n  <info>\r\n    <language>hi</language>\r\n    <category>Env</category>\r\n    <event>Test event example</event>\r\n    <responseType>AllClear</responseType>\r\n    <urgency>Expected</urgency>\r\n    <severity>Severe</severity>\r\n    <certainty>Possible</certainty>\r\n    <description>This is a description</description>\r\n    <instruction>This is an instruction</instruction>\r\n   <parameter>\r\n      <valueName>name1</valueName>\r\n      <value>val1</value>\r\n    </parameter>\r\n    <parameter>\r\n      <valueName>name2</valueName>\r\n      <value>val2</value>\r\n    </parameter>\r\n   </info>\r\n</alert>",
     "created_at": "2014-09-13T00:17:12.272Z",
     "last_modified_at": "2014-09-17T20:42:38.267Z",

@@ -105,6 +105,9 @@ class CAPCollectorLiveServer(TestBase, LiveServerTestCase):
   AREA_TEMPLATE_ELEMENT = "//*[@id='select-area-template']"
   AREA_TEMPLATE_ITEMS_XPATH = "//*[@id='select-area-template']/option[%s]"
   AREA_ELEMENT_NAME = "textarea-areaDesc"
+  AREA_GEOCODE_ADD_BUTTON_XPATH = "//*[@id='geocode_div']/a"
+  AREA_GEOCODE_NAME_XPATH = "//*[@id='geocode_div']/div/div[1]/input"
+  AREA_GEOCODE_VALUE_XPATH = "//*[@id='geocode_div']/div/div[2]/input"
 
   # Release tab.
   USERNAME_ELEMENT_XPATH = "//*[@id='text-uid']"
@@ -122,7 +125,9 @@ class CAPCollectorLiveServer(TestBase, LiveServerTestCase):
 
   ALERT_TAB_REQUIRED_PLACEHOLDER_XPATH = "//*[@id='alert']/div[2]/span"
   MESSAGE_TAB_REQUIRED_PLACEHOLDER_XPATH = "//*[@id='info']/div[2]/span"
-  AREA_TAB_REQUIRED_PLACEHOLDER_XPATH = "//*[@id='area']/div[2]/span"
+  AREA_TAB_REQUIRED_PLACEHOLDER_XPATH = "//*[@id='area']/div[2]/div[8]"
+
+  AREA_TAB_REQUIRED_COMBINED_PLACEHOLDER_XPATH = "//*[@id='area']/div[2]/div[9]"
 
   @classmethod
   def setUpClass(cls):
@@ -138,6 +143,9 @@ class CAPCollectorLiveServer(TestBase, LiveServerTestCase):
   def WaitUntilVisible(self, xpath, by=By.XPATH, timeout=5):
     return WebDriverWait(self.webdriver, timeout).until(
         ec.visibility_of_element_located((by, xpath)))
+
+  def Clear(self, element):
+    return element.clear()
 
   @property
   def latest_alert_link(self):
@@ -186,6 +194,24 @@ class CAPCollectorLiveServer(TestBase, LiveServerTestCase):
   def area_tab_required_placeholder(self):
     return self.webdriver.find_element_by_xpath(
         self.AREA_TAB_REQUIRED_PLACEHOLDER_XPATH)
+
+  @property
+  def area_tab_required_combined_placeholder(self):
+    return self.webdriver.find_element_by_xpath(
+        self.AREA_TAB_REQUIRED_COMBINED_PLACEHOLDER_XPATH)
+
+  @property
+  def area_geocode_add_button(self):
+    return self.webdriver.find_element_by_xpath(
+        self.AREA_GEOCODE_ADD_BUTTON_XPATH)
+
+  @property
+  def area_geocode_name_element(self):
+    return self.webdriver.find_element_by_xpath(self.AREA_GEOCODE_NAME_XPATH)
+
+  @property
+  def area_geocode_value_element(self):
+    return self.webdriver.find_element_by_xpath(self.AREA_GEOCODE_VALUE_XPATH)
 
   @property
   def message_template_select(self):
@@ -386,6 +412,7 @@ class CAPCollectorLiveServer(TestBase, LiveServerTestCase):
     self.sender_element.send_keys(sender_name)
 
   def SetHeadline(self, head_line):
+    self.Clear(self.headline_element)
     self.headline_element.send_keys(head_line)
 
   def SetEvent(self, event):
@@ -404,7 +431,14 @@ class CAPCollectorLiveServer(TestBase, LiveServerTestCase):
     self.web_element.send_keys(url)
 
   def SetArea(self, area):
+    self.Clear(self.area_element)
     self.area_element.send_keys(area)
+
+  def SetGeocode(self, name, value):
+    """Sets geocode. Supports only one geocode item."""
+    self.area_geocode_add_button.click()
+    self.area_geocode_name_element.send_keys(name)
+    self.area_geocode_value_element.send_keys(value)
 
   def SetUsername(self, username):
     self.username_element.send_keys(username)

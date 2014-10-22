@@ -415,9 +415,10 @@
 
     <div id="geocode_div"></div>
     <div class="divider"></div>
-    <span class="required-placeholder hidden">* {% trans "Required fields" %}</span>
+    <div class="required-placeholder hidden">* {% trans "Required fields" %}</div>
+    <div class="required-combined-placeholder hidden">* {% trans "Fill in at least one of geocode, polygon or circle" %}</div>
     <a href="#" id="area-next-button" type="button" data-mini="true" class="ui-mini-smaller next" data-icon="arrow-r"
-        data-iconpos="right" style="whitespace:normal; margin-top:8px; width:200px">{% trans "NEXT: Review &amp; release" %}</a>
+       onclick="view2model(this)" data-iconpos="right" style="whitespace:normal; margin-top:8px; width:200px">{% trans "NEXT: Review &amp; release" %}</a>
   </div><!-- /content -->
 
   {% include "include/footer.inc.tmpl" with tab='area' %}

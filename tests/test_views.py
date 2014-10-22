@@ -70,13 +70,12 @@ class End2EndTests(CAPCollectorLiveServer):
   sender_name = "Mr. Web Driver"
   instruction = "Instructions: what should affected people do."
 
-  def CheckValues(self, uuid, initial_dict, is_update=False):
+  def CheckValues(self, uuid, initial_dict):
     """Asserts that initial and parsed data is equal.
 
     Args:
       uuid: (string) Alert UUID, assumed to be the filename of the alert XML.
       initial_dict: (dict) Initial alert data dictionary.
-      is_update: (bool) Whether to check new or updated alert values.
     Returns:
       Parsed alerts dictionary.
     """
@@ -85,8 +84,6 @@ class End2EndTests(CAPCollectorLiveServer):
 
     alert_dict = utils.ParseAlert(alert.content, "xml", uuid)
     for key in initial_dict:
-      if is_update and key in ("area_desc", "title", "event",):
-        continue
       self.assertEqual(alert_dict[key], initial_dict[key])
     return alert_dict
 
@@ -127,6 +124,10 @@ class End2EndTests(CAPCollectorLiveServer):
     self.GoToAreaTab()
     self.SetArea(golden_dict["area_desc"])
 
+    if "geocodes" in golden_dict:
+      geocodes = golden_dict["geocodes"][0]
+      self.SetGeocode(geocodes["name"], geocodes["value"])
+
     # Release tab.
     self.GoToReleaseTab()
     self.SetUsername(self.TEST_USER_LOGIN)
@@ -151,7 +152,11 @@ class End2EndTests(CAPCollectorLiveServer):
         "title": "Some really informative alert headline",
         "event": "And alert event",
         "language": "pt",
-        "area_desc": "This and that area"
+        "area_desc": "This and that area",
+        "geocodes": [{
+            "name": "geocode name",
+            "value": "geocode value",
+        }],
     }
 
     expiration_minutes = 120
@@ -180,6 +185,10 @@ class End2EndTests(CAPCollectorLiveServer):
         "title": "Alert that will be updated",
         "area_desc": "This and that area",
         "event": "Some event to be updated",
+        "geocodes": [{
+            "name": "geocode name",
+            "value": "geocode value",
+        }]
     }
 
     update_dict = {
@@ -212,15 +221,13 @@ class End2EndTests(CAPCollectorLiveServer):
     uuid = self.CreateAlert(update_dict, skip_login=True, update=True)
     self.assertTrue(models.Alert.objects.filter(uuid=uuid).exists())
 
-    updated_alert_dict = self.CheckValues(uuid, update_dict, is_update=True)
+    updated_alert_dict = self.CheckValues(uuid, update_dict)
     self.assertEqual(updated_alert_dict["msg_type"], "Update")
     sent_at = updated_alert_dict["sent"]
     expires_at = updated_alert_dict["expires"]
     self.assertEqual((expires_at - sent_at).seconds / 60, 60)
     updated_alert_references = updated_alert_dict["references"]
     self.assertEqual(initial_alert_reference, updated_alert_references)
-    self.assertEqual(updated_alert_dict["title"],
-                     initial_alert_dict["title"] + update_dict["title"])
 
   def test_end2end_alert_cancel(self):
     """Emulates existing alert cancellation process using webdriver."""
@@ -233,6 +240,10 @@ class End2EndTests(CAPCollectorLiveServer):
         "title": "Alert that will be cancelled",
         "area_desc": "This and that area",
         "event": "Some event to be cancelled",
+        "geocodes": [{
+            "name": "geocode name",
+            "value": "geocode value",
+        }]
     }
 
     # Create initial alert.
@@ -263,8 +274,6 @@ class End2EndTests(CAPCollectorLiveServer):
     initial_dict["alert_id"] = uuid
     self.assertTrue(models.Alert.objects.filter(uuid=uuid).exists())
 
-    # TODO(arcadiy): make sure the workflow is correct.
-    del initial_dict["title"]  # Currently title is omitted.
     canceled_alert_dict = self.CheckValues(uuid, initial_dict)
     self.assertEqual(canceled_alert_dict["msg_type"], "Cancel")
     sent_at = canceled_alert_dict["sent"]
@@ -294,7 +303,7 @@ class End2EndTests(CAPCollectorLiveServer):
 
     # Area tab.
     self.GoToAreaTab()
-    self.SetAreaTemplate(1)
+    self.SetAreaTemplate(4)
 
     # Release tab.
     self.GoToReleaseTab()
@@ -393,9 +402,63 @@ class End2EndTests(CAPCollectorLiveServer):
     self.assertEqual(area_tab_url, self.webdriver.current_url)
 
     # Populate required fields.
-    self.area_element.send_keys("Area description")
+    self.SetArea("Area description")
+    self.SetGeocode("geocode_name", "geocode_value")
     self.GoToReleaseTab()
     # Make sure that error message is not visible and URL changed.
     self.assertFalse(self.area_tab_required_placeholder.is_displayed())
     self.assertNotEqual(area_tab_url, self.webdriver.current_url)
 
+  def test_alert_area_tab_specific_validation(self):
+    """Tests alert area tab specific validation.
+
+       Next tab should be available only when validation succeeded (i.e.
+       at least one of geocode, polygon or circle is filled in).
+    """
+    test_area_template_dict = {
+        "Area with circle": 1,
+        "Area with geocode": 2,
+        "Area with polygon": 3,
+    }
+
+    def AreaTabSpecificTestCase(template_name, template_id=0):
+      """Helper function for area tab specific tests."""
+      # Alert tab.
+      self.GoToAlertsTab()
+      self.GoToAlertTab()
+      self.SetMessageTemplate(1)
+
+      # Message tab.
+      self.GoToMessageTab()
+      self.GoToAreaTab()
+
+      # Area tab.
+      area_tab_url = self.webdriver.current_url
+      self.GoToReleaseTab()  # Trying to go to next tab.
+      # Make sure that error message is visible and URL still the same.
+      self.assertTrue(
+          self.area_tab_required_combined_placeholder.is_displayed())
+      self.assertEqual(area_tab_url, self.webdriver.current_url)
+
+      if not template_id:
+        return
+      # Load template.
+      self.SetAreaTemplate(template_id)
+      self.GoToReleaseTab()  # Trying to go to next tab.
+
+      # Make sure that error message is not visible and URL still the same.
+      self.assertFalse(
+          self.area_tab_required_combined_placeholder.is_displayed(),
+          template_name)
+      self.assertNotEqual(area_tab_url, self.webdriver.current_url,
+                          template_name)
+
+    self.GoToAlertsTab()
+    self.Login()
+
+    # Make sure it fails if no geocode, circle or polygon set.
+    AreaTabSpecificTestCase("Area with no geocodes, circles or polygons")
+
+    # Make sure it succeeds if any of geocode, circle or polygon set.
+    for template_name, template_id in test_area_template_dict.iteritems():
+      AreaTabSpecificTestCase(template_name, template_id)
