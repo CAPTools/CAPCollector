@@ -58,7 +58,7 @@
   <div data-role="content" class="jqm-content">
     <div id="current_alerts_div"><span id="current_alerts_span"></span></div>
 
-    <a href="#alert" data-role="button" data-mini="true" class="ui-mini-smaller main" data-icon="arrow-r"
+    <a href="#" id="current-next-button" data-role="button" data-mini="true" class="ui-mini-smaller main" data-icon="arrow-r"
       data-iconpos="right" style="whitespace:normal; width:200px">{% trans "Issue a new alert" %}</a>
 
     <div id="alert_view_div" data-role="popup" data-mini="true" data-position-to="#current_alerts_div">
@@ -163,7 +163,7 @@
       <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true" >
         <label for="select-categories" class="ui-hidden-accessible">{% trans "Hazard type" %}</label>
         <select name="select-categories" id="select-categories" class="required-field" data-mini="true" onchange="view2model(this);">
-          <option value="">{% trans "--Hazard Class--" %}</option>
+          <option value="">{% trans "Hazard Class" %}</option>
           <option value="Geo">{% trans "Geophysical" %}</option>
           <option value="Met">{%trans "Weather" %}</option>
           <option value="Safety">{% trans "Public Safety" %}</option>
@@ -179,7 +179,7 @@
         </select>
         <label for="select-responseTypes" class="ui-hidden-accessible">{% trans "Response type" %}</label>
         <select name="select-responseTypes" id="select-responseTypes" data-mini="true" onchange="view2model(this)">
-          <option value="None">{% trans "--Recommended Action--" %}</option>
+          <option value="">{% trans "Recommended Action" %}</option>
           <option value="Shelter">{% trans "Take Shelter" %}</option>
           <option value="Evacuate">{% trans "Evacuate" %}</option>
           <option value="Prepare">{% trans "Make Preparations" %}</option>
@@ -198,7 +198,7 @@
       <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true" >
         <label for="select-urgency" class="ui-hidden-accessible">{% trans "Urgency" %}</label>
         <select name="select-urgency" id="select-urgency" class="required-field" data-mini="true" data-inline="true" onchange="view2model(this)">
-          <option value="">{% trans "-Urgency-" %}</option>
+          <option value="">{% trans "Urgency" %}</option>
           <option value="Immediate">{% trans "Immediate" %}</option>
           <option value="Expected">{% trans "Expected" %}</option>
           <option value="Future">{% trans "Future" %}</option>
@@ -207,7 +207,7 @@
         </select>
         <label for="select-severity" class="ui-hidden-accessible">{% trans "Severity" %}</label>
         <select name="select-severity" id="select-severity" class="required-field" data-mini="true" data-inline="true" onchange="view2model(this)">
-          <option value="">{% trans "-Severity-" %}</option>
+          <option value="">{% trans "Severity" %}</option>
           <option value="Extreme">{% trans "Extreme" %}</option>
           <option value="Severe">{% trans "Severe" %}</option>
           <option value="Moderate">{% trans "Moderate" %}</option>
@@ -216,7 +216,7 @@
         </select>
         <label for="select-certainty" class="ui-hidden-accessible">{% trans "Certainty" %}</label>
         <select name="select-certainty" id="select-certainty" class="required-field" data-mini="true" data-inline="true" onchange="view2model(this)">
-          <option value="">{% trans "-Certainty-" %}</option>
+          <option value="">{% trans "Certainty" %}</option>
           <option value="Observed">{% trans "Observed Event" %}</option>
           <option value="Likely">{% trans "Likely" %}</option>
           <option value="Possible">{% trans "Possible" %}</option>
