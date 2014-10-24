@@ -27,21 +27,9 @@
   {% endif %}
 
   <div class="normal locations">
-   <div class="subsection">
-     {% trans "Locations" %}
-   </div>
+    <div class="subsection">{% trans "Locations" %}</div>
     {{ alert.area_desc }}
-  </div>
-  {# TODO(arcadiy): Render shapes on map based on polys/circles. #}
-  <div>
-    {% for poly in alert.polys %}
-      cap:polygon: {{ poly }}
-    {% endfor %}
-  </div>
-  <div>
-    {% for circle in alert.circles %}
-      cap:circle: {{ circle }}
-    {% endfor %}
+    {# TODO(arcadiy): Render shapes on map based on polys/circles. #}
   </div>
 </div>
 
