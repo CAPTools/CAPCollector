@@ -21,3 +21,6 @@ LANGUAGES = (
     ("hi", "Hindi"),
     ("pt-br", "Portugues"),
 )
+
+# Dummy secret key for testing environment.
+SECRET_KEY = "@l@24ziuxky!8sh+yiq5ot#d^d4fqyxe$f39f@(ye183lq#hkf"

@@ -15,6 +15,9 @@ gunicorn
 # lxml - Required for parsing XML.
 lxml
 
+# mock - A Python mocking and patching library for testing.
+mock
+
 # MySQL-python - MySQL support.
 MySQL-python
 

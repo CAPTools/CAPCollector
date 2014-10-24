@@ -1,0 +1,16 @@
+language: python
+
+python:
+  - "2.7"
+
+env:
+  - CAP_TOOLS_DEV=1
+
+install:
+  - git clone https://github.com/CAPTools/CAPCreator.git static
+  - pip install -r requirements.txt
+  - python manage.py collectstatic -v0 --noinput
+
+script:
+  - python manage.py test tests
+
