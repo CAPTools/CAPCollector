@@ -27,11 +27,11 @@ CREDENTIALS_DIR = os.path.join(BASE_DIR, "credentials")
 # Schema files directory.
 SCHEMA_DIR = os.path.join(BASE_DIR, "schema")
 
-# Group name for persons allowed to create new alerts.
+# Group name for persons allowed to release alerts.
 # A User entry must exist for a given person to access the application.
-# Users who will post new alerts must additionally be in this group.
+# Users who will release alerts to the public must additionally be in this group.
 # See https://docs.djangoproject.com/en/dev/topics/auth/ for managing Users.
-ALERT_CREATORS_GROUP_NAME = "creators"
+ALERT_CREATORS_GROUP_NAME = "can release alerts"
 
 
 ###### Django framework settings (only modify for advanced configuration) ######

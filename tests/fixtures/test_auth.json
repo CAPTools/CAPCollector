@@ -21,7 +21,7 @@
 },
 {
   "fields": {
-    "name": "creators",
+    "name": "can release alerts",
     "permissions": []
   },
   "model": "auth.group",

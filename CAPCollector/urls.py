@@ -21,5 +21,7 @@ urlpatterns = [
     url(r"^i18n/", include("django.conf.urls.i18n")),
 ]
 
-if settings.DEBUG:
-  urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+# static() is a helper function to return a URL pattern for serving files in
+# debug mode. If not in debug mode, this is a no-op.
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
