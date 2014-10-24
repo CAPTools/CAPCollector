@@ -17,17 +17,21 @@ SITE_DOMAIN = "myagency.gov"
 TIME_ZONE = "US/Central"
 
 # Default language.
+# The exact code must also appear in LANGUAGES below.
 # See https://docs.djangoproject.com/en/dev/ref/settings/#language-code.
-LANGUAGE_CODE = "en"
+LANGUAGE_CODE = "en-us"
 
 # Add new languages here.
-# See https://docs.djangoproject.com/en/dev/ref/settings/#languages.
-# TODO(arcadiy): figure out a way to support CAP info language format (RFC 3066)
-# Django seems to treat fr-CA as just fr
+# The list is a tuple of two-tuples in the format (language code, language name)
+# Both the language and the country parts of language code are lower case.
+# The separator is a dash. Examples: it, de-at, es, pt-br.
+# See https://docs.djangoproject.com/en/dev/ref/settings/#languages
+# and https://docs.djangoproject.com/en/1.7/topics/i18n/#definitions for more
+# information.
 LANGUAGES = (
-    ("en", "English"),
+    ("en-us", "English"),
     ("hi", "हिंदी"),
-    ("pt", "Português"),
+    ("pt-br", "Português"),
 )
 
 # Set map default viewport here.

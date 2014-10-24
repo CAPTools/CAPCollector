@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-23 13:40-0500\n"
+"POT-Creation-Date: 2014-10-24 16:19-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -80,11 +80,11 @@ msgstr ""
 msgid "Instructions"
 msgstr ""
 
-#: templates/core/alert.html.tmpl:31 templates/core/feed.html.tmpl:31
+#: templates/core/alert.html.tmpl:30 templates/core/feed.html.tmpl:31
 msgid "Locations"
 msgstr ""
 
-#: templates/core/alert.html.tmpl:49
+#: templates/core/alert.html.tmpl:37
 msgid "Return to list"
 msgstr ""
 
@@ -169,7 +169,7 @@ msgstr ""
 msgid "Message template"
 msgstr ""
 
-#: templates/index.html.tmpl:119 templates/index.html.tmpl.py:411
+#: templates/index.html.tmpl:119 templates/index.html.tmpl.py:407
 msgid "None"
 msgstr ""
 
@@ -466,128 +466,128 @@ msgstr ""
 msgid "Enter expiration time in minutes"
 msgstr ""
 
-#: templates/index.html.tmpl:263 templates/index.html.tmpl.py:389
-#: templates/index.html.tmpl:455
+#: templates/index.html.tmpl:262 templates/index.html.tmpl.py:385
+#: templates/index.html.tmpl:451
 msgid "Required fields"
 msgstr ""
 
-#: templates/index.html.tmpl:265
+#: templates/index.html.tmpl:264
 msgid "NEXT: Add Alert Details"
 msgstr ""
 
-#: templates/index.html.tmpl:280
+#: templates/index.html.tmpl:279
 msgid "Language"
 msgstr ""
 
-#: templates/index.html.tmpl:296
+#: templates/index.html.tmpl:292
 msgid "Who is issuing this alert"
 msgstr ""
 
-#: templates/index.html.tmpl:309
+#: templates/index.html.tmpl:305
 msgid "Event"
 msgstr ""
 
-#: templates/index.html.tmpl:321
+#: templates/index.html.tmpl:317
 msgid "Short-text headline"
 msgstr ""
 
-#: templates/index.html.tmpl:322
+#: templates/index.html.tmpl:318
 msgid "characters left)"
 msgstr ""
 
-#: templates/index.html.tmpl:330
+#: templates/index.html.tmpl:326
 msgid "140 characters maximum"
 msgstr ""
 
-#: templates/index.html.tmpl:336
+#: templates/index.html.tmpl:332
 msgid "Describe the event or hazard"
 msgstr ""
 
-#: templates/index.html.tmpl:348
+#: templates/index.html.tmpl:344
 msgid "What should affected people do"
 msgstr ""
 
-#: templates/index.html.tmpl:360
+#: templates/index.html.tmpl:356
 msgid "Who is media contact"
 msgstr ""
 
-#: templates/index.html.tmpl:368
+#: templates/index.html.tmpl:364
 msgid "Include telephone and/or email"
 msgstr ""
 
-#: templates/index.html.tmpl:374
+#: templates/index.html.tmpl:370
 msgid "Alternate alert website"
 msgstr ""
 
-#: templates/index.html.tmpl:382
+#: templates/index.html.tmpl:378
 msgid "URL for a separate HTML version of this alert"
 msgstr ""
 
-#: templates/index.html.tmpl:390
+#: templates/index.html.tmpl:386
 msgid "Invalid {{ template placeholders }}"
 msgstr ""
 
-#: templates/index.html.tmpl:392
+#: templates/index.html.tmpl:388
 msgid "NEXT: Target Area"
 msgstr ""
 
-#: templates/index.html.tmpl:408
+#: templates/index.html.tmpl:404
 msgid "Add area from template"
 msgstr ""
 
-#: templates/index.html.tmpl:415
+#: templates/index.html.tmpl:411
 msgid "Create a new area template"
 msgstr ""
 
-#: templates/index.html.tmpl:422
+#: templates/index.html.tmpl:418
 msgid "Describe the alert area"
 msgstr ""
 
-#: templates/index.html.tmpl:442
+#: templates/index.html.tmpl:438
 msgid "Drag"
 msgstr ""
 
-#: templates/index.html.tmpl:444
+#: templates/index.html.tmpl:440
 msgid "Circle"
 msgstr ""
 
-#: templates/index.html.tmpl:446
+#: templates/index.html.tmpl:442
 msgid "Shape"
 msgstr ""
 
-#: templates/index.html.tmpl:447
+#: templates/index.html.tmpl:443
 msgid "Clear last"
 msgstr ""
 
-#: templates/index.html.tmpl:448
+#: templates/index.html.tmpl:444
 msgid "Clear all"
 msgstr ""
 
-#: templates/index.html.tmpl:456
+#: templates/index.html.tmpl:452
 msgid "Invalid {{ placeholders }}"
 msgstr ""
 
-#: templates/index.html.tmpl:457
+#: templates/index.html.tmpl:453
 msgid "Fill in at least one of geocode, polygon or circle"
 msgstr ""
 
-#: templates/index.html.tmpl:459
+#: templates/index.html.tmpl:455
 msgid "NEXT: Review &amp; release"
 msgstr ""
 
-#: templates/index.html.tmpl:473
+#: templates/index.html.tmpl:469
 msgid "Review message content"
 msgstr ""
 
-#: templates/index.html.tmpl:476
+#: templates/index.html.tmpl:472
 msgid "Authorize release"
 msgstr ""
 
-#: templates/index.html.tmpl:482
+#: templates/index.html.tmpl:478
 msgid "Release alert"
 msgstr ""
 
-#: templates/index.html.tmpl:483
+#: templates/index.html.tmpl:479
 msgid "Sending alert"
 msgstr ""
 

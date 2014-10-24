@@ -282,11 +282,8 @@
                 data-mini="true"
                 data-inline="true"
                 onchange="view2model(this)">
-        {% get_language_info_list for LANGUAGES as languages %}
-        {% for language in languages %}
-          <option value="{{ language.code }}">
-            {{ language.name_local }}
-          </option>
+        {% for language in LANGUAGES %}
+          <option value="{{ language.0 }}">{{ language.1 }}</option>
         {% endfor %}
       </select>
     </div>

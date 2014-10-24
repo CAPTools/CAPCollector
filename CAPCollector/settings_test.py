@@ -17,7 +17,7 @@ SITE_URL = SITE_SCHEME + "://" + SITE_DOMAIN + ":" + SITE_PORT
 ALLOWED_HOSTS = [SITE_DOMAIN]
 
 LANGUAGES = (
-    ("en", "English"),
+    ("en-us", "English"),
     ("hi", "Hindi"),
-    ("pt", "Portugues"),
+    ("pt-br", "Portugues"),
 )

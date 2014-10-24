@@ -151,7 +151,7 @@ class End2EndTests(CAPCollectorLiveServer):
         "web": "http://my.custom.uri",
         "title": "Some really informative alert headline",
         "event": "And alert event",
-        "language": "pt",
+        "language": "pt-br",
         "area_desc": "This and that area",
         "geocodes": [{
             "name": "geocode name",
