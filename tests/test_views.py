@@ -325,10 +325,14 @@ class End2EndTests(CAPCollectorLiveServer):
     alert_dict = utils.ParseAlert(alert.content, "xml", alert_uuid)
     message_dict = utils.ParseAlert(message_template_xml, "xml", alert_uuid)
     area_dict = utils.ParseAlert(area_template_xml, "xml", alert_uuid)
+    alert_expires_at = alert_dict["expires"]
+    alert_sent_at = alert_dict["sent"]
+    self.assertEqual((alert_expires_at - alert_sent_at).seconds / 60,
+                     int(message_dict["expiresDurationMinutes"]))
 
     # Message template assertions.
     for key in message_dict:
-      if not message_dict[key]:
+      if not message_dict.get(key) or not alert_dict.get(key):
         continue  # We need values present in both template and alert files.
       self.assertEqual(alert_dict[key], message_dict[key])
 

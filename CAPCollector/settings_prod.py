@@ -8,6 +8,8 @@ from sensitive import *
 SITE_SCHEME = "https"
 
 # Change to the URL where users will find this app.
+# If you using Appengine, put <application_id>.appspot.com (e.g.
+# cap-tools.appspot.com)
 SITE_DOMAIN = "myagency.gov"
 
 # A string representing the time zone for this installation.

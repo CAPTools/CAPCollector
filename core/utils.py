@@ -191,6 +191,11 @@ def ParseAlert(xml_string, feed_type, alert_uuid):
         "circles": GetAllText(GetCapElement("circle", xml_tree)),
         "polys": GetAllText(GetCapElement("polygon", xml_tree)),
     }
+    # Non-CAP-compliant fields used for message templates.
+    expiresDurationMinutes = GetFirstText(
+        GetCapElement("expiresDurationMinutes", xml_tree))
+    if expiresDurationMinutes:
+      alert_dict["expiresDurationMinutes"] = expiresDurationMinutes
   except lxml.etree.XMLSyntaxError:  # We don't expect any invalid XML alerts.
     pass  # TODO(arcadiy): log the exception after Django logging system setup.
   return alert_dict
