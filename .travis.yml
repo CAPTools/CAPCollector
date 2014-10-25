@@ -6,6 +6,10 @@ python:
 env:
   - CAP_TOOLS_DEV=1
 
+before_install:
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
+
 install:
   - git clone https://github.com/CAPTools/CAPCreator.git static
   - pip install -r requirements.txt
