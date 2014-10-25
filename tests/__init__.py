@@ -11,7 +11,7 @@ from django.contrib.auth.models import User
 from django.test import Client
 from django.test import LiveServerTestCase
 from django.test import TestCase
-from selenium.webdriver.chrome.webdriver import WebDriver
+from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.ui import WebDriverWait
