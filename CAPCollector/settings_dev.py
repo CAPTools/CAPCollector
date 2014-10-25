@@ -54,3 +54,6 @@ else:
           "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
       }
   }
+
+# Dummy secret key for development environment.
+SECRET_KEY = "@l@24ziuxky!8sh+yiq5ot#d^d4fqyxe$f39f@(ye183lq#hkf"
