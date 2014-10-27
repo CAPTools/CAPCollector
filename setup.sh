@@ -15,7 +15,7 @@ PIP="../venv/bin/pip"
 PYTHON="../venv/bin/python"
 
 # Check virtual environment setup.
-if [ ! -e "$PIP" ] && [ ! -e "$PYTHON" ] then
+if [ ! -e "$PIP" ] && [ ! -e "$PYTHON" ]; then
   echo "Script expects that you have first run 'virtualenv ../venv'"
   exit 1
 fi
@@ -28,7 +28,7 @@ SECRET_KEY=$(cat /dev/urandom | tr -dc 'a-z0-9!@#$%^&*()_+' | fold -w 50 | head 
 echo "SECRET_KEY='$SECRET_KEY'" > ./sensitive.py
 
 # Link client part of the application.
-if [ ! -e ./static ] then
+if [ ! -e ./static ]; then
   ln -s ../CAPCreator ./static
 fi
 
