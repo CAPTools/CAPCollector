@@ -31,4 +31,4 @@ pytz
 pyXMLSecurity
 
 # selenium - Functional testing framework.
-selenium
+selenium==2.43

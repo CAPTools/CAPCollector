@@ -40,7 +40,7 @@ class CAPCollectorLiveServer(TestBase, LiveServerTestCase):
   UPDATE_ALERT_BUTTON_XPATH = "//*[@id='update_button']"
   CANCEL_ALERT_BUTTON_XPATH = "//*[@id='cancel_button']"
 
-  ISSUE_NEW_ALERT_BUTTON_XPATH = "//*[@id='current']/div[2]/a[1]/span"
+  ISSUE_NEW_ALERT_BUTTON_XPATH = "//*[@id='current-next-button']/span"
   ADD_ALERT_DETAILS_BUTTON_XPATH = "//*[@id='alert-next-button']/span"
   TARGET_AREA_BUTTON_XPATH = "//*[@id='info-next-button']/span"
   RELEASE_BUTTON_XPATH = "//*[@id='area-next-button']/span"
@@ -137,6 +137,7 @@ class CAPCollectorLiveServer(TestBase, LiveServerTestCase):
   def setUpClass(cls):
     cls.client = Client()
     cls.webdriver = WebDriver()
+    cls.webdriver.maximize_window()
     super(CAPCollectorLiveServer, cls).setUpClass()
 
   @classmethod
@@ -165,8 +166,7 @@ class CAPCollectorLiveServer(TestBase, LiveServerTestCase):
 
   @property
   def issue_new_alert_button(self):
-    return self.webdriver.find_element_by_xpath(
-        self.ISSUE_NEW_ALERT_BUTTON_XPATH)
+    return self.WaitUntilVisible(self.ISSUE_NEW_ALERT_BUTTON_XPATH)
 
   @property
   def add_alert_details_button(self):
