@@ -15,5 +15,5 @@ install:
   - python manage.py collectstatic -v0 --noinput
 
 script:
-  - python manage.py test tests
+  - python manage.py test tests.test_utils
 
