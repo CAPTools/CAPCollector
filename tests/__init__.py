@@ -12,7 +12,9 @@ from django.test import Client
 from django.test import LiveServerTestCase
 from django.test import TestCase
 from selenium.webdriver.firefox.webdriver import WebDriver
+from selenium.webdriver.common import action_chains
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.ui import WebDriverWait
 
@@ -138,6 +140,7 @@ class CAPCollectorLiveServer(TestBase, LiveServerTestCase):
     cls.client = Client()
     cls.webdriver = WebDriver()
     cls.webdriver.maximize_window()
+    action_chains.ActionChains(cls.webdriver).send_keys(Keys.F11).perform()
     super(CAPCollectorLiveServer, cls).setUpClass()
 
   @classmethod

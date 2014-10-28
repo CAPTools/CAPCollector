@@ -7,8 +7,7 @@ env:
   - CAP_TOOLS_DEV=1
 
 before_install:
-  - "export DISPLAY=:99.0"
-  - "sh -e /etc/init.d/xvfb start"
+  - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1600x1200x16"
 
 install:
   - git clone https://github.com/CAPTools/CAPCreator.git static
