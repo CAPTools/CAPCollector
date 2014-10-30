@@ -27,6 +27,7 @@
   <script src="client/js/jquery.mobile-1.3.0.min.js"></script>
   <script src="client/js/OpenLayers.js"></script>
   <script src="https://maps.google.com/maps/api/js?v=3.7&amp;sensor=false"></script>
+  <script type="text/javascript" src="{% url 'django.views.i18n.javascript_catalog' %}"></script>
 
   <script src="client/js/config.js"></script>
   <script>
@@ -179,7 +180,7 @@
         </select>
         <label for="select-responseTypes" class="ui-hidden-accessible">{% trans "Response type" %}</label>
         <select name="select-responseTypes" id="select-responseTypes" data-mini="true" onchange="view2model(this)">
-          <option value="">{% trans "Recommended action" %}</option>
+          <option value="None">{% trans "Recommended action" %}</option>
           <option value="Shelter">{% trans "Take shelter" %}</option>
           <option value="Evacuate">{% trans "Evacuate" %}</option>
           <option value="Prepare">{% trans "Make preparations" %}</option>

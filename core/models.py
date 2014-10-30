@@ -13,6 +13,8 @@ class Alert(models.Model):
   created_at = models.DateTimeField(_("Alert creation time"), db_index=True)
   expires_at = models.DateTimeField(_("Alert expiration time"), db_index=True)
   content = models.TextField(_("Alert content"))
+  updated = models.BooleanField(_("Alert replaced by an update or cancel"),
+                                default=False, db_index=True)
 
   def __unicode__(self):
     return self.uuid

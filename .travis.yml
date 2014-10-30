@@ -7,7 +7,9 @@ env:
   - CAP_TOOLS_DEV=1
 
 before_install:
-  - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1600x1200x16"
+  - "export DISPLAY=:99.0"
+  # http://docs.travis-ci.com/user/gui-and-headless-browsers/#Configuring-xvfb-screen-size-and-more
+  - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x16"
 
 install:
   - git clone https://github.com/CAPTools/CAPCreator.git static
@@ -15,5 +17,5 @@ install:
   - python manage.py collectstatic -v0 --noinput
 
 script:
+  # e2e tests currently fail on travis-ci headless machines.
   - python manage.py test tests.test_utils
-

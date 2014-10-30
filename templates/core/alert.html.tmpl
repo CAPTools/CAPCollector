@@ -13,7 +13,7 @@
   <h2>{{ alert.title }}</h2>
 
   <div class="metadata subtitle">
-    {% blocktrans with sent=alert.sent|naturaltime %}Posted {{ sent }}{% endblocktrans%} · {{ alert.sender }} ·
+    {% blocktrans with sent=alert.sent|naturaltime %}Posted {{ sent }}{% endblocktrans%} · {% if alert.sender_name %}{{ alert.sender_name }}{% else %}{{ alert.sender }}{% endif %} ·
     {% blocktrans with expires=alert.expires|naturaltime  %}Expires in {{ expires }}{% endblocktrans %}
   </div>
   <div class="normal description">

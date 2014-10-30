@@ -228,6 +228,10 @@ class End2EndTests(CAPCollectorLiveServer):
     self.assertEqual((expires_at - sent_at).seconds / 60, 60)
     updated_alert_references = updated_alert_dict["references"]
     self.assertEqual(initial_alert_reference, updated_alert_references)
+    response = self.client.get("/feed.xml")
+    feed_html = response.content
+    self.assertTrue(uuid in feed_html)
+    self.assertFalse(initial_dict["alert_id"] in feed_html)
 
   def test_end2end_alert_cancel(self):
     """Emulates existing alert cancellation process using webdriver."""

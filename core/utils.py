@@ -79,6 +79,7 @@ def GenerateFeed(feed_type="xml"):
 
   # For each unexpired message, get the necessary values and add it to the feed.
   for alert in models.Alert.objects.filter(
+      updated=False,
       expires_at__gt=GetCurrentDate()).order_by("-created_at"):
     entries.append(ParseAlert(alert.content, feed_type, alert.uuid))
 
@@ -172,6 +173,7 @@ def ParseAlert(xml_string, feed_type, alert_uuid):
         "web": GetFirstText(GetCapElement("web", xml_tree)),
         "name": name,
         "sender": sender,
+        "sender_name": sender_name,
         "expires": expires,
         "msg_type": GetFirstText(GetCapElement("msgType", xml_tree)),
         "references": GetFirstText(GetCapElement("references", xml_tree)),
@@ -291,6 +293,10 @@ def CreateAlert(xml_string, username):
                                     namespaces={"p": settings.CAP_NS})
     expires = find_expires(xml_tree)[0]
 
+    find_references = lxml.etree.XPath("//p:references",
+                                       namespaces={"p": settings.CAP_NS})
+    has_references = len(find_references(xml_tree)) != 0
+
     # Sign the XML tree.
     xml_tree = SignAlert(xml_tree, username)
 
@@ -302,5 +308,11 @@ def CreateAlert(xml_string, username):
     alert_obj.expires_at = expires.text
     alert_obj.content = signed_xml_string
     alert_obj.save()
+
+    if has_references:
+      for element in find_references(xml_tree):
+        updated_alert_uuid = element.text.split(",")[1]
+        models.Alert.objects.filter(
+            uuid=updated_alert_uuid).update(updated=True)
 
   return (msg_id, valid, error)

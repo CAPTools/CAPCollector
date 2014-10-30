@@ -110,7 +110,6 @@ class PostView(View):
 
     alert_id, is_valid, error_message = utils.CreateAlert(xml_string, username)
     response = {
-        "authenticated": True if user else False,
         "error": error_message,
         "uuid": alert_id,
         "valid": is_valid,

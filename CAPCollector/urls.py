@@ -7,7 +7,7 @@ from django.conf.urls import include
 from django.conf.urls import url
 from django.conf.urls.static import static
 from django.contrib import admin
-
+from django.views.i18n import javascript_catalog
 
 admin.autodiscover()
 
@@ -19,6 +19,7 @@ urlpatterns = [
     url(r"^logout/$", "django.contrib.auth.views.logout"),
     url(r"^admin/", include(admin.site.urls)),
     url(r"^i18n/", include("django.conf.urls.i18n")),
+    url(r'^jsi18n/$', javascript_catalog),
 ]
 
 

@@ -12,9 +12,7 @@ from django.test import Client
 from django.test import LiveServerTestCase
 from django.test import TestCase
 from selenium.webdriver.firefox.webdriver import WebDriver
-from selenium.webdriver.common import action_chains
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.ui import WebDriverWait
 
@@ -133,14 +131,14 @@ class CAPCollectorLiveServer(TestBase, LiveServerTestCase):
   MESSAGE_TAB_INVALID_PLACEHOLDER_XPATH = (
       "//*[@id='info']/div[2]/div[12]")
   AREA_TAB_INVALID_PLACEHOLDER_XPATH = "//*[@id='area']/div[2]/div[9]"
-  AREA_TAB_REQUIRED_COMBINED_PLACEHOLDER_XPATH = "//*[@id='area']/div[2]/div[10]"
+  AREA_TAB_REQUIRED_COMBINED_PLACEHOLDER_XPATH = (
+      "//*[@id='area']/div[2]/div[10]")
+  AREA_TAB_MAP_VISIBLE_ELEMENT_ID = "OpenLayers_Control_MaximizeDiv_innerImage"
 
   @classmethod
   def setUpClass(cls):
     cls.client = Client()
     cls.webdriver = WebDriver()
-    cls.webdriver.maximize_window()
-    action_chains.ActionChains(cls.webdriver).send_keys(Keys.F11).perform()
     super(CAPCollectorLiveServer, cls).setUpClass()
 
   @classmethod
@@ -154,6 +152,9 @@ class CAPCollectorLiveServer(TestBase, LiveServerTestCase):
 
   def Clear(self, element):
     return element.clear()
+
+  def WaitUntilMapVisible(self):
+    self.WaitUntilVisible(self.AREA_TAB_MAP_VISIBLE_ELEMENT_ID, by=By.ID)
 
   @property
   def latest_alert_link(self):
@@ -406,6 +407,7 @@ class CAPCollectorLiveServer(TestBase, LiveServerTestCase):
     return self.certainty_select.get_attribute("value")
 
   def SetAreaTemplate(self, template_item_number):
+    self.WaitUntilMapVisible()
     area_template_xpath = (self.AREA_TEMPLATE_ITEMS_XPATH %
                            (template_item_number + 1))
     menu_item = self.WaitUntilVisible(area_template_xpath)
@@ -422,6 +424,7 @@ class CAPCollectorLiveServer(TestBase, LiveServerTestCase):
 
   def SetLanguage(self, language):
     language_xpath = self.ALERT_LANGUAGE_XPATHS.get(language.lower())
+    self.language_select.click()
     menu_item = self.WaitUntilVisible(language_xpath)
     menu_item.click()
 
@@ -460,11 +463,13 @@ class CAPCollectorLiveServer(TestBase, LiveServerTestCase):
     self.Clear(self.area_element)
 
   def SetArea(self, area):
+    self.WaitUntilMapVisible()
     self.Clear(self.area_element)
     self.area_element.send_keys(area)
 
   def SetGeocode(self, name, value):
     """Sets geocode. Supports only one geocode item."""
+    self.WaitUntilMapVisible()
     self.area_geocode_add_button.click()
     self.area_geocode_name_element.send_keys(name)
     self.area_geocode_value_element.send_keys(value)
