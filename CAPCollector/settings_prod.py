@@ -45,11 +45,13 @@ MAP_DEFAULT_VIEWPORT = {
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
 # See https://cloud.google.com/appengine/docs/python/cloud-sql/django for
 # Django on CloudSQL documentation.
+# DATABASE_* variables should be defined in sensitive.py module.
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
         "HOST": DATABASE_HOST,  # /cloudsql/... path or regular IP address.
         "NAME": DATABASE_NAME,
         "USER": DATABASE_USER,
+        "PASSWORD": DATABASE_PASSWORD,
     },
 }

@@ -92,7 +92,7 @@ class UtilsTests(test.TestCase):
         "severity": "Severe",
         "instruction": "This is an instruction",
         "description": "This is a description",
-        "msg_type": "Update",
+        "msg_type": "Alert",
         "category": "Env",
         "certainty": "Possible",
         "urgency": "Expected",
