@@ -29,7 +29,7 @@ if os.environ.get("CAP_TOOLS_DB") == "prod":
   DATABASES = {
       "default": {
           "ENGINE": "django.db.backends.mysql",
-          "INSTANCE": PROD_FROM_DEV_DATABASE_HOST,
+          "HOST": PROD_FROM_DEV_DATABASE_HOST,
           "NAME": PROD_FROM_DEV_DATABASE_NAME,
           "USER": PROD_FROM_DEV_DATABASE_USER,
           "PASSWORD": PROD_FROM_DEV_DATABASE_PASSWORD,

@@ -31,6 +31,7 @@
 
 import copy
 from datetime import datetime
+import logging
 import lxml
 import os
 import re
@@ -198,8 +199,9 @@ def ParseAlert(xml_string, feed_type, alert_uuid):
         GetCapElement("expiresDurationMinutes", xml_tree))
     if expiresDurationMinutes:
       alert_dict["expiresDurationMinutes"] = expiresDurationMinutes
-  except lxml.etree.XMLSyntaxError:  # We don't expect any invalid XML alerts.
-    pass  # TODO(arcadiy): log the exception after Django logging system setup.
+  # We don't expect any invalid XML alerts.
+  except lxml.etree.XMLSyntaxError as e:
+    logging.exception(e)
   return alert_dict
 
 

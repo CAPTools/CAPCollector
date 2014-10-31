@@ -111,8 +111,8 @@ echo "" >> ./sensitive.py
 echo "# Set this variables to access production CloudSQL instance from development environment." >> ./sensitive.py
 echo "PROD_FROM_DEV_DATABASE_HOST=''" >> ./sensitive.py
 echo "PROD_FROM_DEV_DATABASE_NAME=''" >> ./sensitive.py
-echo "PROD_FROM_DATABASE_USER=''" >> ./sensitive.py
-echo "PROD_FROM_DATABASE_PASSWORD=''" >> ./sensitive.py
+echo "PROD_FROM_DEV_DATABASE_USER=''" >> ./sensitive.py
+echo "PROD_FROM_DEV_DATABASE_PASSWORD=''" >> ./sensitive.py
 
 # Sync Django models to databse. This involves superuser creation.
 $PYTHON manage.py syncdb
