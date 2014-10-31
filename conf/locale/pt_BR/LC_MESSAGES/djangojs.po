@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-29 15:44-0500\n"
+"POT-Creation-Date: 2014-10-30 18:22-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,30 +17,59 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: static/js/CAPCreator.js:483
+#: static/js/CAPCreator.js:68
+msgid "Parameter"
+msgstr ""
+
+#: static/js/CAPCreator.js:85
+msgid "Geocode"
+msgstr ""
+
+#: static/js/CAPCreator.js:499
 msgid "Success: Valid CAP 1.2 MESSAGE SENT"
 msgstr ""
 
-#: static/js/CAPCreator.js:486
+#: static/js/CAPCreator.js:502
 msgid "INVALID CAP 1.2"
 msgstr ""
 
-#: static/js/CAPCreator.js:487
+#: static/js/CAPCreator.js:503
 msgid "SERVER MESSAGE"
 msgstr ""
 
-#: static/js/CAPCreator.js:511
+#: static/js/CAPCreator.js:527
 msgid "Please enter valid login and password."
 msgstr "Please enter valid login and password in Portugese"
 
-#: static/js/CAPCreator.js:516
+#: static/js/CAPCreator.js:532
 msgid "You are not authorized to release alerts. "
 msgstr ""
 
-#: static/js/CAPCreator.js:523
+#: static/js/CAPCreator.js:539
 msgid "POSSIBLE ERROR IN TRANSMISSION."
 msgstr ""
 
-#: static/js/CAPCreator.js:525
+#: static/js/CAPCreator.js:541
 msgid "Check active alerts before resending."
+msgstr ""
+
+#: static/js/widgets.js:62
+msgid "Fill in placeholder"
+msgstr ""
+
+#: static/js/widgets.js:77
+#, c-format
+msgid "Add a %s"
+msgstr "Adddd a %s"
+
+#: static/js/widgets.js:134
+msgid "name"
+msgstr ""
+
+#: static/js/widgets.js:138
+msgid "value"
+msgstr ""
+
+#: static/js/widgets.js:141
+msgid "Delete"
 msgstr ""

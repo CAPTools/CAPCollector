@@ -1,9 +1,6 @@
 {% load i18n %}
 {% load l10n %}
 
-
-{# TODO(arcadiy): extract styles to CSS file. #}
-
 <!DOCTYPE html>
 <html>
 <!--
@@ -60,7 +57,7 @@
     <div id="current_alerts_div"><span id="current_alerts_span"></span></div>
 
     <a href="#" id="current-next-button" data-role="button" data-mini="true" class="ui-mini-smaller main" data-icon="arrow-r"
-      data-iconpos="right" style="whitespace:normal; width:200px">{% trans "Issue a new alert" %}</a>
+      data-iconpos="right">{% trans "Issue a new alert" %}</a>
 
     <div id="alert_view_div" data-role="popup" data-mini="true" data-position-to="#current_alerts_div">
     <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">{% trans "Close" %}</a>
@@ -73,7 +70,7 @@
     </div>
     </br>
     <a href="{% url "feed" "xml" %}" target="_blank" data-role="button" data-mini="true" class="ui-mini-smaller main" data-icon="arrow-r"
-      data-iconpos="right" style="whitespace:normal; width:200px">{% trans "Show alert feed" %}</a>
+      data-iconpos="right">{% trans "Show alert feed" %}</a>
     </br>
     <a href="#popup-about" data-rel="popup" data-role="button" data-mini="true" class="ui-mini about">{% trans "About CAPCreator&trade;" %}</a>
     <div class="about_div" id="popup-about" data-role="popup" data-mini="true">
@@ -180,7 +177,7 @@
         </select>
         <label for="select-responseTypes" class="ui-hidden-accessible">{% trans "Response type" %}</label>
         <select name="select-responseTypes" id="select-responseTypes" data-mini="true" onchange="view2model(this)">
-          <option value="None">{% trans "Recommended action" %}</option>
+          <option value="">{% trans "Recommended action" %}</option>
           <option value="Shelter">{% trans "Take shelter" %}</option>
           <option value="Evacuate">{% trans "Evacuate" %}</option>
           <option value="Prepare">{% trans "Make preparations" %}</option>
@@ -262,7 +259,7 @@
     <div class="divider"></div>
     <span class="required-placeholder hidden">* {% trans "Required fields" %}</span>
     <a href="#" id="alert-next-button" data-role="button" data-mini="true" class="ui-mini next" data-icon="arrow-r"
-      data-iconpos="right" style="whitespace:normal; width:200px" >{% trans "NEXT: Add Alert Details" %}</a>
+      data-iconpos="right">{% trans "NEXT: Add Alert Details" %}</a>
   </div><!-- /content -->
 
   {% include "include/footer.inc.tmpl" with tab='alert' %}
@@ -386,7 +383,7 @@
     <div class="required-placeholder hidden">* {% trans "Required fields" %}</div>
     <div class="invalid-placeholder hidden">* {% trans "Invalid {{ template placeholders }}" %}</div>
     <a href="#" id="info-next-button" data-role="button" data-mini="true" class="ui-mini-smaller next" data-icon="arrow-r"
-      data-iconpos="right" style="whitespace:normal; margin-top:8px; width:160px" >{% trans "NEXT: Target Area" %}</a>
+      data-iconpos="right">{% trans "NEXT: Target Area" %}</a>
 
   </div><!-- /content -->
 
@@ -453,7 +450,7 @@
     <div class="invalid-placeholder hidden">* {% trans "Invalid {{ placeholders }}" %}</div>
     <div class="required-combined-placeholder hidden">* {% trans "Fill in at least one of geocode, polygon or circle" %}</div>
     <a href="#" id="area-next-button" type="button" data-mini="true" class="ui-mini-smaller next" data-icon="arrow-r"
-       onclick="view2model(this)" data-iconpos="right" style="whitespace:normal; margin-top:8px; width:200px">{% trans "NEXT: Review &amp; release" %}</a>
+       onclick="view2model(this)" data-iconpos="right">{% trans "NEXT: Review &amp; release" %}</a>
   </div><!-- /content -->
 
   {% include "include/footer.inc.tmpl" with tab='area' %}
@@ -467,12 +464,12 @@
   {% include "include/header.inc.tmpl" with tab='release' %}
 
   <div data-role="content" class="jqm-content">
-    <label class="field_label" style="margin-top 15px; margin-left:8px">{% trans "Review message content" %}</label>
+    <label class="field_label review-label">{% trans "Review message content" %}</label>
     <div id="review_div"><pre><span id="review_span"></span></pre></div>
     <div id="release_div" data-role="collapsible" data-collapsed="false">
-      <label class="field_label" style="margin-top 15px; margin-left:8px">{% trans "Authorize release" %}</label>
-      <input type="text" name="text-uid" id="text-uid" data-mini="true" placeholder="User ID" width="20" value="">
-      <input type="password" name="text-pwd" id="text-pwd" data-mini="true" placeholder="Password" value="">
+      <label class="field_label">{% trans "Authorize release" %}</label>
+      <input type="text" name="text-uid" id="text-uid" data-mini="true" placeholder="{% trans "User ID" %}" value="">
+      <input type="password" name="text-pwd" id="text-pwd" data-mini="true" placeholder="{% trans "Password" %}" value="">
     </div>
     <div class="divider"></div>
     <a onclick="sendAlert('{{ csrf_token}}', this);" data-role="button" data-mini="true" data-icon="check" class="ui-mini-smaller release">
