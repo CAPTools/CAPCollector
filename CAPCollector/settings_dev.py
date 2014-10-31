@@ -29,14 +29,16 @@ if os.environ.get("CAP_TOOLS_DB") == "prod":
   DATABASES = {
       "default": {
           "ENGINE": "django.db.backends.mysql",
-          "INSTANCE": DATABASE_HOST,
-          "NAME": DATABASE_NAME,
-          "USER": DATABASE_USER,
+          "INSTANCE": PROD_FROM_DEV_DATABASE_HOST,
+          "NAME": PROD_FROM_DEV_DATABASE_NAME,
+          "USER": PROD_FROM_DEV_DATABASE_USER,
+          "PASSWORD": PROD_FROM_DEV_DATABASE_PASSWORD,
       }
   }
 # For AppEngine development environment.
-elif (os.environ.get("SERVER_SOFTWARE") and
-      os.environ.get("SERVER_SOFTWARE").startswith("Development")):
+elif (os.environ.get("CAP_TOOLS_DB") == "dev" or
+      (os.environ.get("SERVER_SOFTWARE") and
+       os.environ.get("SERVER_SOFTWARE").startswith("Development"))):
   DATABASES = {
       "default": {
           "ENGINE": "django.db.backends.mysql",

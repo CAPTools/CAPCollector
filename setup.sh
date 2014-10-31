@@ -12,6 +12,7 @@
 # after we check in code to GitHub.
 
 PIP="../venv/bin/pip"
+PIP_LIBS="../venv/local/lib/python2.7/site-packages"
 PYTHON="../venv/bin/python"
 
 # Check virtual environment setup.
@@ -55,30 +56,63 @@ wget https://github.com/openlayers/openlayers/blob/master/img/zoom-world-mini.pn
 # Download JQuery mobile CSS file.
 wget http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.css -O ./static/css/jquery.mobile-1.3.0.min.css
 
+echo -n "Are you going to host this application on Google Appengine? [y/n]: "
+read APPENGINE
+
+if  [ "$APPENGINE" == "y" ]; then
+  if [ ! -e ./libs ]; then
+    mkdir libs
+  fi
+
+  LIBS=(bs4 dateutil django pytz six.py)
+
+  echo -n "Copying files, this might take a while..."
+  for lib in ${LIBS[@]}; do
+    cp -r $PIP_LIBS/$lib libs/
+  done
+fi
+
 # Get database related input.
 echo "For development, the CAP Collector tool stores alerts in a built-in local database."
 echo "To use the CAP Collector in a production environment, you must connect it to a persistent database and configure that here."
 echo "For Google Cloud Storage, refer to https://cloud.google.com/appengine/docs/python/cloud-sql/django#usage for the correct parameters."
 echo "For MySQL, refer to https://docs.djangoproject.com/en/dev/ref/databases/#connecting-to-the-database."
 echo "For Oracle or others, you will also have to edit settings_prod.py."
-echo -n "Enter database host or IP address (leave blank to use a local database): "
-read DB_HOST
+echo -n "Enter database host or IP address (leave blank to use a local development only database): "
+read DATABASE_HOST
 
-if [ "$DB_HOST" ]; then
+if [ "$DATABASE_HOST" ]; then
   echo -n "Enter database name: "
-  read DB_NAME
+  read DATABASE_NAME
 
   echo -n "Enter database username: "
-  read DB_USER
+  read DATABASE_USER
 
   echo -n "Enter database password: "
-  read -s DB_PASSWORD
+  read -s DATABASE_PASSWORD
 fi
 
-echo "DATABASE_HOST='$DB_HOST'" >> ./sensitive.py
-echo "DATABASE_NAME='$DB_NAME'" >> ./sensitive.py
-echo "DATABASE_USER='$DB_USER'" >> ./sensitive.py
-echo "DATABASE_PASSWORD='$DB_PASSWORD'" >> ./sensitive.py
+echo "DATABASE_HOST='$DATABASE_HOST'" >> ./sensitive.py
+echo "DATABASE_NAME='$DATABASE_NAME'" >> ./sensitive.py
+echo "DATABASE_USER='$DATABASE_USER'" >> ./sensitive.py
+echo "DATABASE_PASSWORD='$DATABASE_PASSWORD'" >> ./sensitive.py
+
+# Advanced configuration for development database.
+echo "" >> ./sensitive.py
+echo "# Flags for testing against a development MySQL database. This is used by default with AppEngine's dev_appserver," >> ./sensitive.py
+echo "# and can also be turned on by running 'export CAP_TOOLS_DB=dev', but this is not required if using Django's internal sqlite db." >> ./sensitive.py
+echo "DEV_DATABASE_HOST=''" >> ./sensitive.py
+echo "DEV_DATABASE_NAME=''" >> ./sensitive.py
+echo "DEV_DATABASE_USER=''" >> ./sensitive.py
+echo "DEV_DATABASE_PASSWORD=''" >> ./sensitive.py
+
+# Advanced configuration for accessing the CloudSQL production database from a development environment.
+echo "" >> ./sensitive.py
+echo "# Set this variables to access production CloudSQL instance from development environment." >> ./sensitive.py
+echo "PROD_FROM_DEV_DATABASE_HOST=''" >> ./sensitive.py
+echo "PROD_FROM_DEV_DATABASE_NAME=''" >> ./sensitive.py
+echo "PROD_FROM_DATABASE_USER=''" >> ./sensitive.py
+echo "PROD_FROM_DATABASE_PASSWORD=''" >> ./sensitive.py
 
 # Sync Django models to databse. This involves superuser creation.
 $PYTHON manage.py syncdb

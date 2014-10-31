@@ -55,3 +55,4 @@ DATABASES = {
         "PASSWORD": DATABASE_PASSWORD,
     },
 }
+
