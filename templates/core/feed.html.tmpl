@@ -21,7 +21,7 @@
           <div class="metadata">
             <div>
               {% blocktrans with sent=entry.sent|naturaltime %}Posted {{ sent }}{% endblocktrans %} ·
-              {% blocktrans with expires=entry.expires|naturaltime %}Expires in {{ expires }}{% endblocktrans %}
+              {% blocktrans with expires=entry.expires|naturaltime %}Expires {{ expires }}{% endblocktrans %}
             </div>
           </div>
           {# TODO(arcadiy): Render shapes on map based on polys/circles insetead of area_desc. #}

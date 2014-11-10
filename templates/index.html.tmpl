@@ -399,18 +399,26 @@
 
   <div data-role="content" data-role="content" class="jqm-content">
     <div class="form_row_div">
-      <label class="field_label">{% trans "Add area from template" %}</label>
-      <fieldset data-role="controlgroup" data-mini="true" data-type="horizontal" data-inline="true">
-        <select name="select-area-template" id="select-area-template" data-mini="true" data-inline="true" onchange="handleAreaTemplateChange('{% url 'template' 'area' %}', '{% url 'admin:core_areatemplate_add' %}');">
-          <option value="None">{% trans "None" %}</option>
-          {% for template in area_templates %}
-            <option value="{{ template.id }}">{{ template.title }}</option>
-          {% endfor %}
-          <option value="CreateNewAreaTemplate">{% trans "Create a new area template" %}</option>
-        </select>
-      </fieldset>
+      <div class="templates-control">
+        <div class="templates">
+          <label class="field_label">{% trans "Add area from template" %}</label>
+          <fieldset data-role="controlgroup" data-mini="true" data-type="horizontal" data-inline="true">
+            <select name="select-area-template" id="select-area-template" data-mini="true" data-inline="true" onchange="handleAreaTemplateChange('{% url 'template' 'area' %}', '{% url 'admin:core_areatemplate_add' %}');">
+              <option value="None">{% trans "None" %}</option>
+              {% for template in area_templates %}
+                <option value="{{ template.id }}">{{ template.title }}</option>
+              {% endfor %}
+              <option value="CreateNewAreaTemplate">{% trans "Create a new area template" %}</option>
+            </select>
+          </fieldset>
+        </div>
+        <div class="clear">
+          <a id="clear-area-templates" href="#" onclick="clearAreaTemplates();">
+              {% trans "Clear all area templates" %}
+          </a>
+        </div>
+      </div>
     </div>
-
     <div class="divider"></div>
     <div class="form_row_div">
       <label class="field_label">{% trans "Describe the alert area" %}
