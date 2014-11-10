@@ -215,10 +215,6 @@ msgstr ""
 msgid "Type of message"
 msgstr ""
 
-#: templates/index.html.tmpl:135
-msgid "Type of message"
-msgstr ""
-
 #: templates/index.html.tmpl:137
 msgid "Status"
 msgstr ""
