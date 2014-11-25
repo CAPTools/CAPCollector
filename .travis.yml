@@ -18,4 +18,4 @@ install:
 
 script:
   # e2e tests currently fail on travis-ci headless machines.
-  - python manage.py test tests.test_utils
+  - python manage.py test tests.test_auth tests.test_utils

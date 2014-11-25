@@ -18,6 +18,7 @@
       {{ form.username.label_tag }} {{ form.username }}
       {{ form.password.label_tag }} {{ form.password }}
       <input type="submit" value="Login" />
+      <a href="{% url 'django.contrib.auth.views.password_reset' %}">{% trans "Forgot password?" %}</a>
     </div>
 
     <input type="hidden" name="next" value="{{ next }}" />

@@ -19,6 +19,8 @@ CERT_NS = "http://www.w3.org/2000/09/xmldsig#"
 
 VERSION = "CAPCollector v1.0"
 
+EMAIL_SUBJECT_PREFIX = ""
+
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 # Your keys and certificates.
@@ -78,7 +80,7 @@ MIDDLEWARE_CLASSES = (
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    'core.middleware.ErrorLogMiddleware',
+    "core.middleware.ErrorLogMiddleware",
 )
 
 # A string representing the full Python import path to your root URLconf.
@@ -131,6 +133,10 @@ LOGIN_REDIRECT_URL = "/"
 
 # Helper variable indicating test environment.
 TESTING = "test" in sys.argv
+
+if os.environ.get("SERVER_SOFTWARE"):
+  # On appengine, we need to use a custom email backend
+  EMAIL_BACKEND = "CAPCollector.appengine_mail.EmailBackend"
 
 # Import development environment settings if needed.
 # Export CAP_TOOLS_DEV=1 environment variable to include dev settings.

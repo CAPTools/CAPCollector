@@ -23,6 +23,9 @@ ALLOWED_HOSTS = [SITE_DOMAIN]
 if SITE_PORT:
   SITE_URL = SITE_URL + ":" + SITE_PORT
 
+# print all outgoing email to the console during development
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
 # Default database settings.
 # Running in development, but want to access production database.
 if os.environ.get("CAP_TOOLS_DB") == "prod":

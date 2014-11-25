@@ -14,6 +14,29 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: CAPCollector/auth.py:17
+msgid "Password is too short."
+msgstr ""
+
+#: CAPCollector/auth.py:19
+msgid "Password contains only numbers."
+msgstr ""
+
+#: CAPCollector/auth.py:21
+msgid "Password contains no uppercase letters."
+msgstr ""
+
+#: CAPCollector/auth.py:23
+msgid "Password contains no lowercase letters."
+msgstr ""
+
+#: CAPCollector/auth.py:26
+msgid ""
+"Password must be at least 8 characters long and contain a mixture of "
+"lowercase and uppercase letters, numbers, punctuation, and special "
+"characters (such as ^ or %). Avoid using words more than 4 characters long."
+msgstr ""
+
 #: core/models.py:12
 msgid "Alert UUID"
 msgstr ""
@@ -604,4 +627,8 @@ msgstr ""
 
 #: templates/login.html.tmpl:12
 msgid "Your username and password didn't match. Please try again."
+msgstr ""
+
+#: templates/login.html.tmpl:21
+msgid "Forgot password?"
 msgstr ""
