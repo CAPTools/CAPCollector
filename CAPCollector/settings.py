@@ -3,11 +3,14 @@
 
 __author__ = "arcadiy@google.com (Arkadii Yakovets)"
 
+from distutils.version import StrictVersion
 import os
 import sys
 
+import django
 from sensitive import *
 from settings_prod import *
+
 
 ###### Default settings (only modify for advanced configuration) ######
 
@@ -72,16 +75,58 @@ INSTALLED_APPS = (
 
 # A tuple of middleware classes to use.
 # See https://docs.djangoproject.com/en/dev/ref/settings/#std:setting-MIDDLEWARE_CLASSES
+# Per https://github.com/mozilla/django-session-csrf
+# session_csrf.CsrfMiddleware must be listed after AuthenticationMiddleware.
 MIDDLEWARE_CLASSES = (
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "core.middleware.ErrorLogMiddleware",
+    "session_csrf.CsrfMiddleware",
 )
+
+# Set up session csrf in context processor.
+# For Django version 1.8 or above, update TEMPLATES OPTIONS section with
+# session csrf context processor.
+# For Django version less than 1.8, update TEMPLATE_CONTEXT_PROCESSORS.
+if StrictVersion(django.get_version()) >= StrictVersion("1.8"):
+  # see https://docs.djangoproject.com/en/dev/ref/settings/#templates
+  TEMPLATES = [
+      {
+          "BACKEND": "django.template.backends.django.DjangoTemplates",
+          "DIRS": [
+              "templates",
+          ],
+          "APP_DIRS": True,
+          "OPTIONS": {
+              "context_processors": [
+                  "django.contrib.auth.context_processors.auth",
+                  "django.template.context_processors.debug",
+                  "django.template.context_processors.i18n",
+                  "django.template.context_processors.media",
+                  "django.template.context_processors.static",
+                  "django.template.context_processors.tz",
+                  "django.contrib.messages.context_processors.messages",
+                  "session_csrf.context_processor",
+              ],
+          },
+      },
+  ]
+else:
+  # see https://docs.djangoproject.com/en/dev/ref/settings/#template-context-processors
+  TEMPLATE_CONTEXT_PROCESSORS = (
+      "django.contrib.auth.context_processors.auth",
+      "django.core.context_processors.debug",
+      "django.core.context_processors.i18n",
+      "django.core.context_processors.media",
+      "django.core.context_processors.static",
+      "django.core.context_processors.tz",
+      "django.contrib.messages.context_processors.messages",
+      "session_csrf.context_processor",
+  )
 
 # A string representing the full Python import path to your root URLconf.
 # https://docs.djangoproject.com/en/dev/ref/settings/#root-urlconf

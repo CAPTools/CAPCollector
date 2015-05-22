@@ -189,6 +189,7 @@ def ParseAlert(xml_string, feed_type, alert_uuid):
         "certainty": GetFirstText(GetCapElement("certainty", xml_tree)),
         "language": GetFirstText(GetCapElement("language", xml_tree)),
         "parameters": GetNameValuePairs(GetCapElement("parameter", xml_tree)),
+        "event_codes": GetNameValuePairs(GetCapElement("eventCode", xml_tree)),
         "area_desc": GetFirstText(GetCapElement("areaDesc", xml_tree)),
         "geocodes": GetNameValuePairs(GetCapElement("geocode", xml_tree)),
         "circles": GetAllText(GetCapElement("circle", xml_tree)),
@@ -249,7 +250,6 @@ def CreateAlert(xml_string, username):
 
   msg_id = None
   valid = False
-  xml_string = xml_string.replace("\n", "")
 
   try:
     # Clean up the XML format a bit.

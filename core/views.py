@@ -70,6 +70,31 @@ class AlertTemplateView(View):
     return HttpResponse(template.content, content_type="text/xml")
 
 
+class GeocodePolygonPreviewView(View):
+  """Get geocode preview polygons."""
+
+  def post(self, request, *args, **kwargs):
+    geocodes = request.POST.get("geocodes")
+    if not geocodes:
+      return HttpResponseBadRequest()
+
+    try:
+      geocodes = json.loads(geocodes)
+    except ValueError:
+      return HttpResponseBadRequest()
+
+    model = models.GeocodePreviewPolygon
+    keys = [model.make_key(geocode['valueName'], geocode['value'])
+            for geocode in geocodes]
+
+    try:
+      result = [{'id': p.id, 'content': p.content}
+                for p in model.objects.filter(pk__in=keys)]
+    except model.DoesNotExist:
+      raise Http404
+    return HttpResponse(json.dumps(result), content_type="application/json")
+
+
 class IndexView(TemplateView):
   template_name = "index.html.tmpl"
 
@@ -83,7 +108,11 @@ class IndexView(TemplateView):
     message_templates = models.MessageTemplate.objects.order_by("title")
     context["area_templates"] = area_templates
     context["message_templates"] = message_templates
-    context['map_default_viewport'] = settings.MAP_DEFAULT_VIEWPORT
+    context["map_default_viewport"] = settings.MAP_DEFAULT_VIEWPORT
+    context["default_expires_duration_minutes"] = (
+        settings.DEFAULT_EXPIRES_DURATION_MINUTES)
+    context["use_datetime_picker"] = settings.USE_DATETIME_PICKER_FOR_EXPIRES
+    context["time_zone"] = settings.TIME_ZONE
     return context
 
 

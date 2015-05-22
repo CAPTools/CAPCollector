@@ -56,3 +56,11 @@ DATABASES = {
     },
 }
 
+# Default Alert expiration duration. Set to "Other" if want to input duration
+# manually.
+DEFAULT_EXPIRES_DURATION_MINUTES = 60
+
+# A boolean that specifies whether to show datetime calender picker when
+# "Other" option is selected during "Alert expiration" specification.
+# If false, can input expiration duration in minutes.
+USE_DATETIME_PICKER_FOR_EXPIRES = False

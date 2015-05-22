@@ -84,7 +84,9 @@ class CAPCollectorLiveServer(TestBase, LiveServerTestCase):
   EXPIRATION_SELECT_ELEMENT = "//*[@id='select-expires-min']"
   EXPIRATION_XPATHS = {
       120: "//*[@id='select-expires-min']/option[6]",
+      "Other": "//*[@id='select-expires-min']/option[11]",
   }
+  EXPIRATION_OTHER_TEXT_INPUT_ELEMENT_NAME = "text-expires"
 
   # Message tab.
   ALERT_LANGUAGE_ELEMENT = ("//*[@id='info']/div[2]/div[1]/div/div/span/"
@@ -103,7 +105,11 @@ class CAPCollectorLiveServer(TestBase, LiveServerTestCase):
 
   # Area tab.
   AREA_TEMPLATE_ELEMENT = "//*[@id='select-area-template']"
-  AREA_TEMPLATE_ITEMS_XPATH = "//*[@id='select-area-template']/option[%s]"
+  AREA_TEMPLATE_SEARCH_XPATH = (
+      "//input[contains(@class, 'select2-search__field')]")
+  AREA_TEMPLATE_ITEMS_XPATH = (
+      "//ul[contains(@class, 'select2-results__options')]/"
+      "li[substring(@id, string-length(@id) - 1, 2) = '-%s']")
   AREA_ELEMENT_NAME = "textarea-areaDesc"
   AREA_GEOCODE_ADD_BUTTON_XPATH = "//*[@id='geocode_div']/a"
   AREA_GEOCODE_NAME_XPATH = "//*[@id='geocode_div']/div/div[1]/div[2]/input"
@@ -265,6 +271,11 @@ class CAPCollectorLiveServer(TestBase, LiveServerTestCase):
     return self.WaitUntilVisible(self.ALERT_LANGUAGE_ELEMENT)
 
   @property
+  def text_expire_element(self):
+    return self.WaitUntilVisible(self.EXPIRATION_OTHER_TEXT_INPUT_ELEMENT_NAME,
+                                 by=By.NAME)
+
+  @property
   def sender_element(self):
     return self.WaitUntilVisible(self.ALERT_SENDER_ELEMENT_NAME, by=By.NAME)
 
@@ -387,13 +398,16 @@ class CAPCollectorLiveServer(TestBase, LiveServerTestCase):
     severity_xpath = self.SEVERITY_XPATHS.get(severity.lower())
     self.webdriver.find_element_by_xpath(severity_xpath).click()
 
-  def GetExcipration(self):
+  def GetExpiration(self):
     return self.expiration_select.get_attribute("value")
 
   def SetExpiration(self, expiration):
     expiration_xpath = self.EXPIRATION_XPATHS.get(expiration)
     if expiration_xpath:
       self.webdriver.find_element_by_xpath(expiration_xpath).click()
+
+  def SetOtherTextExpireMinutes(self, expire_minutes):
+    self.text_expire_element.send_keys(expire_minutes)
 
   def GetSeverity(self):
     return self.severity_select.get_attribute("value")
@@ -408,9 +422,10 @@ class CAPCollectorLiveServer(TestBase, LiveServerTestCase):
 
   def SetAreaTemplate(self, template_item_number):
     self.WaitUntilMapVisible()
-    area_template_xpath = (self.AREA_TEMPLATE_ITEMS_XPATH %
-                           (template_item_number + 1))
-    menu_item = self.WaitUntilVisible(area_template_xpath)
+    search = self.WaitUntilVisible(self.AREA_TEMPLATE_SEARCH_XPATH)
+    search.click()
+    menu_item = self.WaitUntilVisible(
+        self.AREA_TEMPLATE_ITEMS_XPATH % template_item_number)
     menu_item.click()
 
   def GetAreaTemplate(self):

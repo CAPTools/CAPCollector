@@ -23,7 +23,7 @@
             data-mini="true"
             data-inline="true"
             style="float:left"
-            onchange="setLanguage(this.value, '{{ csrf_token }}');view2model();">
+            onchange="setLanguage(this.value);view2model();">
       {% for language in LANGUAGES %}
         <option value="{{ language.0 }}"
           {% if language.0 == LANGUAGE_CODE %} selected="selected"{% endif %}>

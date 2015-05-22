@@ -56,6 +56,30 @@ wget https://github.com/openlayers/openlayers/blob/master/img/zoom-world-mini.pn
 # Download JQuery mobile CSS file.
 wget http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.css -O ./static/css/jquery.mobile-1.3.0.min.css
 
+# Download jQuery UI library, required for displaying datetime picker for alert expiration "Other" option.
+wget http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js -O ./static/js/jquery-ui-1.10.4.min.js
+wget http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css -O ./static/css/jquery-ui-1.10.4.min.css
+wget http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/images/ui-bg_glass_75_dadada_1x400.png -O ./static/css/images/ui-bg_glass_75_dadada_1x400.png
+wget http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/images/ui-bg_glass_55_fbf9ee_1x400.png -O ./static/css/images/ui-bg_glass_55_fbf9ee_1x400.png
+wget http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/images/ui-bg_highlight-soft_75_cccccc_1x100.png -O ./static/css/images/ui-bg_highlight-soft_75_cccccc_1x100.png
+wget http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/images/ui-bg_glass_75_e6e6e6_1x400.png -O ./static/css/images/ui-bg_glass_75_e6e6e6_1x400.png
+wget http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/images/ui-bg_glass_65_ffffff_1x400.png -O ./static/css/images/ui-bg_glass_65_ffffff_1x400.png
+wget http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/images/ui-icons_222222_256x240.png -O ./static/css/images/ui-icons_222222_256x240.png
+wget http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/images/ui-bg_flat_75_ffffff_40x100.png  -O ./static/css/images/ui-bg_flat_75_ffffff_40x100.png
+wget http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/images/ui-icons_454545_256x240.png  -O ./static/css/images/ui-icons_454545_256x240.png
+
+# Download Timepicker addon to jQuery UI Datepicker, for displaying datetime picker for alert expiration "Other" option.
+wget http://trentrichardson.com/examples/timepicker/jquery-ui-timepicker-addon.js -O ./static/js/jquery-ui-timepicker-addon.js
+wget http://trentrichardson.com/examples/timepicker/jquery-ui-timepicker-addon.css -O ./static/css/jquery-ui-timepicker-addon.css
+
+# Download Select2 library for customizable select box.
+wget http://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js -O ./static/js/select2.min.js
+wget http://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css -O ./static/css/select2.min.css
+
+# Download Moment JS libraries with time zone suport for datetime conversion in any timezone.
+wget http://momentjs.com/downloads/moment.min.js -O ./static/js/moment.min.js
+wget http://momentjs.com/downloads/moment-timezone-with-data.min.js -O ./static/js/moment-timezone-with-data.min.js
+
 echo -n "Are you going to host this application on Google Appengine? [y/n]: "
 read APPENGINE
 
@@ -64,7 +88,7 @@ if  [ "$APPENGINE" == "y" ]; then
     mkdir libs
   fi
 
-  LIBS=(bs4 dateutil django pytz six.py)
+  LIBS=(bs4 dateutil django pytz session_csrf six.py)
 
   echo -n "Copying files, this might take a while..."
   for lib in ${LIBS[@]}; do

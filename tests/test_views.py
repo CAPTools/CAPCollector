@@ -2,6 +2,8 @@
 
 __author__ = "arcadiy@google.com (Arkadii Yakovets)"
 
+import json
+
 from core import models
 from core import utils
 from django.conf import settings
@@ -15,7 +17,8 @@ from tests import UUID_RE
 class SmokeTests(TestBase):
   """Basic views tests."""
 
-  fixtures = ["test_alerts.json", "test_auth.json", "test_templates.json"]
+  fixtures = ["test_alerts.json", "test_auth.json", "test_templates.json",
+              "test_geocodepreviewpolygons.json"]
 
   def setUp(self):
     super(SmokeTests, self).setUp()
@@ -59,8 +62,51 @@ class SmokeTests(TestBase):
   def test_index_page_context(self):
     self.login()
     response = self.client.get("/")
-    self.assertEquals(response.context['map_default_viewport'],
+    self.assertEquals(response.context["map_default_viewport"],
                       settings.MAP_DEFAULT_VIEWPORT)
+    self.assertEquals(response.context["default_expires_duration_minutes"],
+                      settings.DEFAULT_EXPIRES_DURATION_MINUTES)
+    self.assertEquals(response.context["use_datetime_picker"],
+                      settings.USE_DATETIME_PICKER_FOR_EXPIRES)
+    self.assertEquals(response.context["time_zone"], settings.TIME_ZONE)
+
+  def test_geocodepreviewpolygons(self):
+    self.login()
+    response = self.client.post("/preview/polygons")
+    self.assertEqual(response.status_code, 400)
+
+    response = self.client.post("/preview/polygons", {"geocodes": ""})
+    self.assertEqual(response.status_code, 400)
+
+    response = self.client.post("/preview/polygons", {"geocodes": "invalid"})
+    self.assertEqual(response.status_code, 400)
+
+    response = self.client.post("/preview/polygons", {"geocodes": "[]"})
+    self.assertEqual(response.status_code, 200)
+    self.assertEquals(response.content, "[]")
+
+    request = [{"valueName": "unsupported", "value": "geocode"}]
+    response = self.client.post("/preview/polygons",
+                                {"geocodes": json.dumps(request)})
+    self.assertEqual(response.status_code, 200)
+    self.assertEquals(response.content, "[]")
+
+    request = [{"valueName": "geocode1", "value": "one"}]
+    response = self.client.post("/preview/polygons",
+                                {"geocodes": json.dumps(request)})
+    self.assertEqual(response.status_code, 200)
+    parsed = json.loads(response.content)
+    self.assertEquals(1, len(parsed))
+    self.assertEquals("geocode1|one", parsed[0]["id"])
+    self.assertEquals(2, parsed[0]["content"].count("<polygon>"))
+
+    request = [{"valueName": "geocode1", "value": "one"},
+               {"valueName": "IN_IMD_DISTRICTS", "value": "36"}]
+    response = self.client.post("/preview/polygons",
+                                {"geocodes": json.dumps(request)})
+    self.assertEqual(response.status_code, 200)
+    parsed = json.loads(response.content)
+    self.assertEquals(2, len(parsed))
 
 
 class End2EndTests(CAPCollectorLiveServer):
@@ -68,7 +114,7 @@ class End2EndTests(CAPCollectorLiveServer):
 
   contact = "web@driver.com"
   sender_name = "Mr. Web Driver"
-  instruction = "Instructions: what should affected people do."
+  instruction = "Instructions: what should affected people do.\nLine 2"
 
   def CheckValues(self, uuid, initial_dict):
     """Asserts that initial and parsed data is equal.
@@ -106,6 +152,8 @@ class End2EndTests(CAPCollectorLiveServer):
     self.SetCertainty(golden_dict["certainty"])
     if expiration:
       self.SetExpiration(expiration)
+      if expiration == "Other":
+        self.SetOtherTextExpireMinutes(45)
 
     # Message tab.
     self.GoToMessageTab()
@@ -115,6 +163,8 @@ class End2EndTests(CAPCollectorLiveServer):
     if "event" in golden_dict:
       self.SetEvent(golden_dict["event"])
     self.SetAlertSenderName(self.sender_name)
+    if golden_dict.get("description"):
+      self.SetDescription(golden_dict["description"])
     self.SetInstruction(self.instruction)
     self.SetContact(self.contact)
     if "web" in golden_dict:
@@ -173,6 +223,8 @@ class End2EndTests(CAPCollectorLiveServer):
     alert_expires_at = alert_dict["expires"]
     self.assertEqual((alert_expires_at - alert_sent_at).seconds / 60,
                      expiration_minutes)
+    # Ensure newlines in free form text field are preserved.
+    self.assertTrue("\n" in alert_dict["instruction"])
 
   def test_end2end_alert_update(self):
     """Emulates existing alert update process using webdriver."""
@@ -185,6 +237,7 @@ class End2EndTests(CAPCollectorLiveServer):
         "title": "Alert that will be updated",
         "area_desc": "This and that area",
         "event": "Some event to be updated",
+        "description": "test'\"><img src=\"x\" onerror=\"alert(1)\">",
         "geocodes": [{
             "name": "geocode name",
             "value": "geocode value",
@@ -202,7 +255,7 @@ class End2EndTests(CAPCollectorLiveServer):
     }
 
     # Create initial alert.
-    uuid = self.CreateAlert(initial_dict)
+    uuid = self.CreateAlert(initial_dict, expiration="Other")
     initial_dict["alert_id"] = uuid
     self.assertTrue(models.Alert.objects.filter(uuid=uuid).exists())
 
@@ -221,7 +274,10 @@ class End2EndTests(CAPCollectorLiveServer):
     uuid = self.CreateAlert(update_dict, skip_login=True, update=True)
     self.assertTrue(models.Alert.objects.filter(uuid=uuid).exists())
 
-    updated_alert_dict = self.CheckValues(uuid, update_dict)
+    updated_dict = dict(initial_dict)
+    updated_dict.update(update_dict)
+    updated_dict["alert_id"] = uuid
+    updated_alert_dict = self.CheckValues(uuid, updated_dict)
     self.assertEqual(updated_alert_dict["msg_type"], "Update")
     sent_at = updated_alert_dict["sent"]
     expires_at = updated_alert_dict["expires"]
@@ -325,7 +381,7 @@ class End2EndTests(CAPCollectorLiveServer):
     # Check alert XML against initial values.
     alert = models.Alert.objects.get(uuid=alert_uuid)
     message_template_xml = models.MessageTemplate.objects.get(id=1).content
-    area_template_xml = models.AreaTemplate.objects.get(id=1).content
+    area_template_xml = models.AreaTemplate.objects.get(id=4).content
     alert_dict = utils.ParseAlert(alert.content, "xml", alert_uuid)
     message_dict = utils.ParseAlert(message_template_xml, "xml", alert_uuid)
     area_dict = utils.ParseAlert(area_template_xml, "xml", alert_uuid)
@@ -333,18 +389,17 @@ class End2EndTests(CAPCollectorLiveServer):
     alert_sent_at = alert_dict["sent"]
     self.assertEqual((alert_expires_at - alert_sent_at).seconds / 60,
                      int(message_dict["expiresDurationMinutes"]))
+    del message_dict["expiresDurationMinutes"]
 
     # Message template assertions.
     for key in message_dict:
-      if not message_dict.get(key) or not alert_dict.get(key):
-        continue  # We need values present in both template and alert files.
-      self.assertEqual(alert_dict[key], message_dict[key])
+      if message_dict.get(key):
+        self.assertEqual(alert_dict[key], message_dict[key])
 
     # Area template assertions.
     for key in area_dict:
-      if not area_dict[key]:
-        continue  # We need values present in both template and alert files.
-      self.assertEqual(alert_dict[key], area_dict[key])
+      if area_dict[key]:
+        self.assertEqual(alert_dict[key], area_dict[key])
 
     # Check web field is set to default.
     alert_default_web = "%s%s" % (settings.SITE_URL,

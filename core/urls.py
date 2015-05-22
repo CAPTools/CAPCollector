@@ -15,5 +15,8 @@ urlpatterns = [
     url(r"^post/$", views.PostView.as_view(), name="post"),
     url(r"^template/(?P<template_type>(area|message))/$",
         views.AlertTemplateView.as_view(), name="template"),
+    url(r"^preview/polygons$",
+        views.GeocodePolygonPreviewView.as_view(),
+        name="geocodepreviewpolygons"),
 ]
 

@@ -17,12 +17,20 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  <link rel="stylesheet" href="client/css/jquery-ui-1.10.4.min.css" />
+  <link rel="stylesheet" href="client/css/jquery-ui-timepicker-addon.css" />
   <link rel="stylesheet" href="client/css/jquery.mobile-1.3.0.min.css" />
-  <link rel="stylesheet" href="client/css/CAPCreator.css" type="text/css">
+  <link rel="stylesheet" href="client/css/select2.min.css" />
+  <link rel="stylesheet" href="client/css/CAPCreator.css" type="text/css" />
 
   <script src="client/js/jquery-1.10.2.min.js"></script>
   <script src="client/js/jquery.mobile-1.3.0.min.js"></script>
   <script src="client/js/OpenLayers.js"></script>
+  <script src="client/js/jquery-ui-1.10.4.min.js"></script>
+  <script src="client/js/jquery-ui-timepicker-addon.js"></script>
+  <script src="client/js/select2.min.js"></script>
+  <script src="client/js/moment.min.js"></script>
+  <script src="client/js/moment-timezone-with-data.min.js"></script>
   <script src="https://maps.google.com/maps/api/js?v=3.7&amp;sensor=false"></script>
   <script type="text/javascript" src="{% url 'django.views.i18n.javascript_catalog' %}"></script>
 
@@ -35,9 +43,16 @@
       centerLon: {{ map_default_viewport.center_lon }},
       zoomLevel: {{ map_default_viewport.zoom_level }}
     };
+    // Whether to use datetime picker for alert experiation other option.
+    var useDateTimePicker = {{ use_datetime_picker|yesno:"true,false" }};
     {% endlocalize %}
     // Now create a global config object for the whole.
-    var config = new CAPCreatorConfiguration(mapDefaultViewport);
+    var config = new CAPCreatorConfiguration(mapDefaultViewport,
+        '{{ default_expires_duration_minutes }}',
+        useDateTimePicker,
+        '{{ time_zone }}');
+    var csrfToken = '{{ csrf_token}}';
+    var polygonPreviewUrl = '{% url 'geocodepreviewpolygons' %}';
   </script>
   <script src="client/js/caplib.js"></script>
   <script src="client/js/cap_map.js"></script>
@@ -246,12 +261,29 @@
     </div>
     <div id="custom-expiration-time-block" class="form_row_div">
       <label class="field_label">{% trans "Manual effective expiration" %}</label>
-      <input type="text"
-             id="text-expires"
-             name="text-expires"
-             placeholder="{% trans "Enter expiration time in minutes" %}"
-             onkeydown="removeStyles(this)"
-             onpaste="removeStyles(this)">
+      {% if use_datetime_picker %}
+        <div id="picker-expires-block">
+          <input type="text"
+                 id="picker-expires"
+                 class="required-field"
+                 name="picker-expires"
+                 readonly="readonly"
+                 placeholder="{% trans "Select expiration date and time" %}"
+                 onkeydown="removeStyles(this)"
+                 onchange="removeStyles(this)">
+        </div>
+      {% else %}
+        <div id="text-expires-block">
+          <input type="text"
+                 id="text-expires"
+                 class="required-field"
+                 name="text-expires"
+                 placeholder="{% trans "Enter expiration time in minutes" %}"
+                 onkeydown="removeStyles(this)"
+                 oninput="removeStyles(this)"
+                 onpaste="removeStyles(this)">
+        </div>
+      {% endif %}
     </div>
     <div>
       <input type="hidden" id="hidden-references" name="hidden-references" value="" />
@@ -403,19 +435,18 @@
         <div class="templates">
           <label class="field_label">{% trans "Add area from template" %}</label>
           <fieldset data-role="controlgroup" data-mini="true" data-type="horizontal" data-inline="true">
-            <select name="select-area-template" id="select-area-template" data-mini="true" data-inline="true" onchange="handleAreaTemplateChange('{% url 'template' 'area' %}', '{% url 'admin:core_areatemplate_add' %}');">
-              <option value="None">{% trans "None" %}</option>
-              {% for template in area_templates %}
-                <option value="{{ template.id }}">{{ template.title }}</option>
-              {% endfor %}
-              <option value="CreateNewAreaTemplate">{% trans "Create a new area template" %}</option>
-            </select>
+            {% if area_templates %}
+              <select name="select-area-template" id="select-area-template" multiple="multiple" data-role="none" data-placeholder="{% trans "None" %}" onchange="handleAreaTemplateChange('{% url 'template' 'area' %}');" style="width: 500px" >
+                {% for template in area_templates %}
+                  <option value="{{ template.id }}">{{ template.title }}</option>
+                {% endfor %}
+              </select>
+            {% else %}
+              <a href="#" onclick="createPopupWindow('{% url 'admin:core_areatemplate_add' %}', 800, 400);">
+                {% trans "Create a new area template" %}
+              </a>
+            {% endif %}
           </fieldset>
-        </div>
-        <div class="clear">
-          <a id="clear-area-templates" href="#" onclick="clearAreaTemplates();">
-              {% trans "Clear all area templates" %}
-          </a>
         </div>
       </div>
     </div>
@@ -446,8 +477,8 @@
         <label for="circleToggle">{% trans "Circle" %}</label>
         <input type="radio" name="map_mode" value="polygon" id="polygonToggle" onclick="showPrompt(); toggleControl(this);" class="ui-mini-smaller"/>
         <label for="polygonToggle">{% trans "Shape" %}</label>
-        <a onclick="clearLast()" data-role="button" class="ui-mini-smaller">{% trans "Clear last" %}</a>
-        <a onclick="clearAll()" data-role="button" class="ui-mini-smaller">{% trans "Clear all" %}</a>
+        <a onclick="clearLastDrawnArea()" data-role="button" class="ui-mini-smaller">{% trans "Clear last" %}</a>
+        <a onclick="clearAllDrawnAreas()" data-role="button" class="ui-mini-smaller">{% trans "Clear all" %}</a>
         <!-- TODO(arcadiy): add "Clear all templates" -->
       </fieldset>
     </div>
@@ -457,7 +488,7 @@
     <div class="required-placeholder hidden">* {% trans "Required fields" %}</div>
     <div class="invalid-placeholder hidden">* {% trans "Invalid {{ placeholders }}" %}</div>
     <div class="required-combined-placeholder hidden">* {% trans "Fill in at least one of geocode, polygon or circle" %}</div>
-    <a href="#" id="area-next-button" type="button" data-mini="true" class="ui-mini-smaller next" data-icon="arrow-r"
+    <a href="#" id="area-next-button" data-role="button" data-mini="true" class="ui-mini-smaller next" data-icon="arrow-r"
        onclick="view2model(this)" data-iconpos="right">{% trans "NEXT: Review &amp; release" %}</a>
   </div><!-- /content -->
 
@@ -480,7 +511,7 @@
       <input type="password" name="text-pwd" id="text-pwd" data-mini="true" placeholder="{% trans "Password" %}" value="">
     </div>
     <div class="divider"></div>
-    <a onclick="sendAlert('{{ csrf_token}}', this);" data-role="button" data-mini="true" data-icon="check" class="ui-mini-smaller release">
+    <a onclick="sendAlert(this);" data-role="button" data-mini="true" data-icon="check" class="ui-mini-smaller release">
       <span id="sending-alert-button">{% trans "Release alert" %}</span>
       <span id="sending-alert-indicator" class="hidden">{% trans "Sending alert" %}...</span>
     </a>

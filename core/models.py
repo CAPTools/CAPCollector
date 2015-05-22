@@ -37,6 +37,26 @@ class AreaTemplate(models.Model):
     verbose_name_plural = _("Area Templates")
 
 
+class GeocodePreviewPolygon(models.Model):
+  """Geocode preview polygon entity definition."""
+  id = models.CharField("ID", max_length=255, primary_key=True)
+  created_at = models.DateTimeField(_("Creation time"), auto_now_add=True)
+  last_modified_at = models.DateTimeField(_("Last modification time"),
+                                          auto_now=True)
+  content = models.TextField(_("Polygons"))
+
+  def __unicode__(self):
+    return self.id
+
+  @classmethod
+  def make_key(cls, value_name, value):
+    return '%s|%s' % (value_name, value)
+
+  class Meta:
+    verbose_name = _("Geocode Preview Polygon")
+    verbose_name_plural = _("Geocode Preview Polygon")
+
+
 class MessageTemplate(models.Model):
   """Message template entity definition."""
   title = models.CharField(_("Template Title"), max_length=50)

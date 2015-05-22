@@ -17,18 +17,18 @@
     {% blocktrans with expires=alert.expires|naturaltime  %}Expires {{ expires }}{% endblocktrans %}
   </div>
   <div class="normal description">
-    {{ alert.description }}
+    {{ alert.description|linebreaksbr }}
   </div>
   {% if alert.instruction %}
     <div class="normal instructions">
       <div class="subsection">{% trans "Instructions" %}</div>
-      {{ alert.instruction }}
+      {{ alert.instruction|linebreaksbr }}
    </div>
   {% endif %}
 
   <div class="normal locations">
     <div class="subsection">{% trans "Locations" %}</div>
-    {{ alert.area_desc }}
+    {{ alert.area_desc|linebreaksbr }}
     {# TODO(arcadiy): Render shapes on map based on polys/circles. #}
   </div>
 </div>

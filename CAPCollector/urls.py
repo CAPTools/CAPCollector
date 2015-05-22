@@ -2,15 +2,23 @@
 
 __author__ = "arcadiy@google.com (Arkadii Yakovets)"
 
+import session_csrf
+# As per https://github.com/mozilla/django-session-csrf, make sure the patch
+# is applied before views are imported.
+session_csrf.monkeypatch()
+
 import auth
 from django.conf import settings
 from django.conf.urls import include
 from django.conf.urls import url
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.contrib.auth import views
 from django.views.i18n import javascript_catalog
 
 admin.autodiscover()
+admin.site.login = session_csrf.anonymous_csrf(admin.site.login)
+views.login = session_csrf.anonymous_csrf(views.login)
 
 # See https://docs.djangoproject.com/en/dev/topics/http/urls/
 # and https://docs.djangoproject.com/en/dev/ref/contrib/admin/#adding-a-password-reset-feature
